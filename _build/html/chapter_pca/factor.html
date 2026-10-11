@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>2.10.4. PCA vs. Factor Analysis &#8212; Dive into Deep Learning Personalized 1.0.3 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Probabilistic Matrix Factorization" href="../chapter_lda/index.html" />
+    <link rel="prev" title="2.10.3. PCA vs. Autoencoder" href="autoencoder.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">2. </span>Principal Component Analysis</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2.10.4. </span>PCA vs. Factor Analysis</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_pca/factor.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Principal Component Analysis</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html">2.10.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html">2.10.2. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.10.4. PCA vs. Factor Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. Probabilistic Matrix Factorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lsa.html">3.1. LSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.2. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_1.html">3.3. LDA 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_2.html">3.4. LDA 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.5. LDA VI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.6. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Principal Component Analysis</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html">2.10.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html">2.10.2. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.10.4. PCA vs. Factor Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. Probabilistic Matrix Factorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lsa.html">3.1. LSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.2. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_1.html">3.3. LDA 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_2.html">3.4. LDA 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.5. LDA VI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.6. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="pca-vs-factor-analysis">
+<span id="sec-factor"></span><h1><span class="section-number">2.10.4. </span>PCA vs. Factor Analysis<a class="headerlink" href="#pca-vs-factor-analysis" title="Permalink to this heading">¶</a><div class="d2l-tabs" style="float:right"><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-pytorch-colab/blob/master/chapter_pca/factor.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-pytorch-colab/blob/master/chapter_pca/factor.ipynb'); return false;"> <button style="float:right", id="Colab_[pytorch]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [pytorch] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[pytorch]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-en-colab/blob/master/chapter_pca/factor.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-en-colab/blob/master/chapter_pca/factor.ipynb'); return false;"> <button style="float:right", id="Colab_[mxnet]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [mxnet] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[mxnet]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-jax-colab/blob/master/chapter_pca/factor.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-jax-colab/blob/master/chapter_pca/factor.ipynb'); return false;"> <button style="float:right", id="Colab_[jax]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [jax] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[jax]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-tensorflow-colab/blob/master/chapter_pca/factor.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-tensorflow-colab/blob/master/chapter_pca/factor.ipynb'); return false;"> <button style="float:right", id="Colab_[tensorflow]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [tensorflow] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[tensorflow]"> Open the notebook in Colab</div></div></div></h1>
+<p>Factor analysis encompasses a variety of techniques used for uncovering
+the underlying factors or latent variables that explain the observed
+data. Each method makes different assumptions about the data and employs
+different statistical models. This chapter covers Probabilistic
+Principal Component Analysis (PPCA), Gaussian Matrix Factorization, and
+Poisson Matrix Factorization.</p>
+<section id="probabilistic-principal-component-analysis-ppca">
+<h2><span class="section-number">2.10.4.1. </span>Probabilistic Principal Component Analysis (PPCA)<a class="headerlink" href="#probabilistic-principal-component-analysis-ppca" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="overview">
+<h2><span class="section-number">2.10.4.2. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PPCA</strong> is a probabilistic approach to PCA that frames the
+dimensionality reduction problem in a probabilistic context.</p></li>
+<li><p>It models the data as being generated by a set of latent variables
+with added Gaussian noise.</p></li>
+</ul>
+</section>
+<section id="model">
+<h2><span class="section-number">2.10.4.3. </span>Model<a class="headerlink" href="#model" title="Permalink to this heading">¶</a></h2>
+<p>The data <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> is modeled as:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-0">
+<span class="eqno">(2.10.229)<a class="headerlink" href="#equation-chapter-pca-factor-0" title="Permalink to this equation">¶</a></span>\[\mathbf{x}_i = \mathbf{W}\mathbf{z}_i + \boldsymbol{\mu} + \boldsymbol{\epsilon}_i\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> is the observed data.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{W}\)</span> is the factor loading matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{z}_i\)</span> is the latent variable or factor.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> is the mean vector.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{\epsilon}_i\)</span> is Gaussian noise with covariance
+<span class="math notranslate nohighlight">\(\sigma^2\mathbf{I}\)</span>.</p></li>
+</ul>
+</section>
+<section id="characteristics">
+<h2><span class="section-number">2.10.4.4. </span>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Latent Variables:</strong> The latent variables are modeled as
+<span class="math notranslate nohighlight">\(\mathbf{z}_i \sim \mathcal{N}(0,\mathbf{I})\)</span>.</p></li>
+<li><p><strong>Maximum Likelihood:</strong> Parameters <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> and
+<span class="math notranslate nohighlight">\(\sigma^2\)</span> are estimated using maximum likelihood.</p></li>
+<li><p><strong>Principal Components:</strong> The principal components in PCA correspond
+to the maximum-likelihood solution in PPCA.</p></li>
+</ul>
+</section>
+<section id="gaussian-matrix-factorization">
+<span id="overview-1"></span><h2><span class="section-number">2.10.4.5. </span>Gaussian Matrix Factorization<a class="headerlink" href="#gaussian-matrix-factorization" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="model-1">
+<span id="id1"></span><h2><span class="section-number">2.10.4.6. </span>Overview<a class="headerlink" href="#model-1" title="Permalink to this heading">¶</a></h2>
+<p>Gaussian Matrix Factorization is used to decompose a matrix into
+lower-dimensional latent factors under the assumption of Gaussian noise.
+It is commonly used in collaborative filtering and recommendation
+systems.</p>
+</section>
+<section id="characteristics-1">
+<span id="id2"></span><h2><span class="section-number">2.10.4.7. </span>Model<a class="headerlink" href="#characteristics-1" title="Permalink to this heading">¶</a></h2>
+<p>The data matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is decomposed into two
+lower-dimensional matrices:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-1">
+<span class="eqno">(2.10.230)<a class="headerlink" href="#equation-chapter-pca-factor-1" title="Permalink to this equation">¶</a></span>\[\mathbf{X} \approx \mathbf{U}\mathbf{V}^T\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{U} \in \mathbb{R}^{n \times k}\)</span> is the matrix of
+latent factors for rows.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{V} \in \mathbb{R}^{m \times k}\)</span> is the matrix of
+latent factors for columns.</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> is the number of latent factors.</p></li>
+</ul>
+<p>The entries of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> are assumed to be Gaussian-distributed
+around <span class="math notranslate nohighlight">\(\mathbf{U}\mathbf{V}^T\)</span>.</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">2.10.4.8. </span>Characteristics<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Gaussian Noise:</strong> The model assumes Gaussian noise in the observed
+data.</p></li>
+<li><p><strong>Latent Factors:</strong> It captures latent factors that explain the
+observed data.</p></li>
+<li><p><strong>Optimization:</strong> It can be solved using alternating least squares or
+stochastic gradient descent.</p></li>
+</ul>
+</section>
+<section id="poisson-matrix-factorization">
+<span id="overview-2"></span><h2><span class="section-number">2.10.4.9. </span>Poisson Matrix Factorization<a class="headerlink" href="#poisson-matrix-factorization" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="model-2">
+<span id="id4"></span><h2><span class="section-number">2.10.4.10. </span>Overview<a class="headerlink" href="#model-2" title="Permalink to this heading">¶</a></h2>
+<p>Poisson Matrix Factorization is used for decomposing count data into
+latent factors. It is commonly used for applications such as topic
+modeling and collaborative filtering with count data.</p>
+</section>
+<section id="characteristics-2">
+<span id="id5"></span><h2><span class="section-number">2.10.4.11. </span>Model<a class="headerlink" href="#characteristics-2" title="Permalink to this heading">¶</a></h2>
+<p>The data matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is assumed to follow a Poisson
+distribution:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-2">
+<span class="eqno">(2.10.231)<a class="headerlink" href="#equation-chapter-pca-factor-2" title="Permalink to this equation">¶</a></span>\[X_{ij} \sim \operatorname{Poisson}\left((\mathbf{U}\mathbf{V}^T)_{ij}\right)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{U} \in \mathbb{R}^{n \times k}\)</span> is a non-negative
+latent factor matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{V} \in \mathbb{R}^{m \times k}\)</span> is a non-negative
+latent factor matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\((\mathbf{U}\mathbf{V}^T)_{ij}\)</span> is the expected rate parameter
+of the Poisson distribution.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h2><span class="section-number">2.10.4.12. </span>Characteristics<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Poisson Noise:</strong> The observed counts are assumed to follow a
+Poisson distribution.</p></li>
+<li><p><strong>Non-Negativity:</strong> The latent factors <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> and
+<span class="math notranslate nohighlight">\(\mathbf{V}\)</span> are non-negative.</p></li>
+<li><p><strong>Optimization:</strong> Parameters can be estimated using maximum
+likelihood or Bayesian inference.</p></li>
+</ul>
+</section>
+<section id="comparison-of-factor-analysis-methods">
+<h2><span class="section-number">2.10.4.13. </span>Comparison of Factor Analysis Methods<a class="headerlink" href="#comparison-of-factor-analysis-methods" title="Permalink to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Factor Analysis
+Method</p></th>
+<th class="head"><p>Type of Data</p></th>
+<th class="head"><p>Assumptions</p></th>
+<th class="head"><p>Key
+Characteristics</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>PPCA</strong></p></td>
+<td><p>Continuous</p></td>
+<td><p>Gaussian noise</p></td>
+<td><p>Linear,
+probabilistic,
+Gaussian latent
+variables</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Gaussian
+Matrix
+Factorization</strong></p></td>
+<td><p>Continuous</p></td>
+<td><p>Gaussian noise</p></td>
+<td><p>Latent factor
+model with
+Gaussian noise</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Poisson
+Matrix
+Factorization</strong></p></td>
+<td><p>Count</p></td>
+<td><p>Poisson
+distribution</p></td>
+<td><p>Non-negative
+factors,
+suitable for
+count data</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="summary">
+<span id="gaussian-matrix-factorization-1"></span><h2><span class="section-number">2.10.4.14. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PPCA:</strong> Extends PCA into a probabilistic framework and captures
+linear relationships with Gaussian noise.</p></li>
+<li><p><strong>Gaussian Matrix Factorization:</strong> Decomposes a data matrix into
+latent factors assuming Gaussian-distributed errors. It is commonly
+used in recommendation systems.</p></li>
+<li><p><strong>Poisson Matrix Factorization:</strong> Is designed for count data and
+decomposes the data matrix into non-negative latent factors using a
+Poisson distribution.</p></li>
+</ul>
+<p>Each method is suited to different types of data and underlying
+assumptions.</p>
+</section>
+<section id="id7">
+<h2><span class="section-number">2.10.4.15. </span>Gaussian Matrix Factorization<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<p>Gaussian Matrix Factorization is a commonly used technique for
+collaborative filtering, particularly in recommendation systems. The
+goal is to factorize a matrix, usually containing user-item ratings,
+into two lower-dimensional matrices representing latent factors for
+users and items.</p>
+<p>The model assumes that the observed entries are noisy observations from
+a Gaussian distribution.</p>
+</section>
+<section id="model-formulation">
+<h2><span class="section-number">2.10.4.16. </span>Model Formulation<a class="headerlink" href="#model-formulation" title="Permalink to this heading">¶</a></h2>
+<p>Given an observed data matrix:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-3">
+<span class="eqno">(2.10.232)<a class="headerlink" href="#equation-chapter-pca-factor-3" title="Permalink to this equation">¶</a></span>\[R \in \mathbb{R}^{n \times m}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span> is the number of users.</p></li>
+<li><p><span class="math notranslate nohighlight">\(m\)</span> is the number of items.</p></li>
+</ul>
+<p>The goal is to approximate <span class="math notranslate nohighlight">\(R\)</span> using two lower-dimensional
+matrices:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-4">
+<span class="eqno">(2.10.233)<a class="headerlink" href="#equation-chapter-pca-factor-4" title="Permalink to this equation">¶</a></span>\[R \approx UV^T\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(U \in \mathbb{R}^{n \times k}\)</span> is the user latent factor
+matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(V \in \mathbb{R}^{m \times k}\)</span> is the item latent factor
+matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> is the number of latent factors.</p></li>
+</ul>
+<p>The entries of <span class="math notranslate nohighlight">\(R\)</span> are assumed to be Gaussian-distributed around
+<span class="math notranslate nohighlight">\(UV^T\)</span>.</p>
+</section>
+<section id="objective-function">
+<h2><span class="section-number">2.10.4.17. </span>Objective Function<a class="headerlink" href="#objective-function" title="Permalink to this heading">¶</a></h2>
+<p>The objective is to minimize the squared difference between observed and
+predicted entries while using regularization to prevent overfitting:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-5">
+<span class="eqno">(2.10.234)<a class="headerlink" href="#equation-chapter-pca-factor-5" title="Permalink to this equation">¶</a></span>\[\min_{U,V}
+\sum_{(i,j)\in\mathcal{O}}
+(R_{ij}-U_iV_j^T)^2
++
+\lambda
+\left(
+\|U\|_F^2+\|V\|_F^2
+\right)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{O}\)</span> is the set of observed entries.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span> is the regularization parameter.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\|U\|_F^2\)</span> and <span class="math notranslate nohighlight">\(\|V\|_F^2\)</span> are Frobenius norms.</p></li>
+</ul>
+</section>
+<section id="solving-using-alternating-least-squares">
+<h2><span class="section-number">2.10.4.18. </span>Solving Using Alternating Least Squares<a class="headerlink" href="#solving-using-alternating-least-squares" title="Permalink to this heading">¶</a></h2>
+<p>Alternating Least Squares (ALS) is an iterative optimization technique
+in which one matrix is fixed while the other is optimized.</p>
+</section>
+<section id="step-1-initialize">
+<h2><span class="section-number">2.10.4.19. </span>Step 1: Initialize<a class="headerlink" href="#step-1-initialize" title="Permalink to this heading">¶</a></h2>
+<p>Initialize <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> with random values or another
+suitable initialization strategy.</p>
+</section>
+<section id="step-2-optimize-u-given-v">
+<h2><span class="section-number">2.10.4.20. </span>Step 2: Optimize <span class="math notranslate nohighlight">\(U\)</span> Given <span class="math notranslate nohighlight">\(V\)</span><a class="headerlink" href="#step-2-optimize-u-given-v" title="Permalink to this heading">¶</a></h2>
+<p>For each user <span class="math notranslate nohighlight">\(i\)</span>, solve:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-6">
+<span class="eqno">(2.10.235)<a class="headerlink" href="#equation-chapter-pca-factor-6" title="Permalink to this equation">¶</a></span>\[U_i =
+\left(
+\sum_{j\in\mathcal{O}_i}
+V_jV_j^T
++
+\lambda I
+\right)^{-1}
+\left(
+\sum_{j\in\mathcal{O}_i}
+R_{ij}V_j
+\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{O}_i\)</span> is the set of items rated by user <span class="math notranslate nohighlight">\(i\)</span>.</p>
+</section>
+<section id="step-3-optimize-v-given-u">
+<h2><span class="section-number">2.10.4.21. </span>Step 3: Optimize <span class="math notranslate nohighlight">\(V\)</span> Given <span class="math notranslate nohighlight">\(U\)</span><a class="headerlink" href="#step-3-optimize-v-given-u" title="Permalink to this heading">¶</a></h2>
+<p>For each item <span class="math notranslate nohighlight">\(j\)</span>, solve:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-7">
+<span class="eqno">(2.10.236)<a class="headerlink" href="#equation-chapter-pca-factor-7" title="Permalink to this equation">¶</a></span>\[V_j =
+\left(
+\sum_{i\in\mathcal{O}_j}
+U_iU_i^T
++
+\lambda I
+\right)^{-1}
+\left(
+\sum_{i\in\mathcal{O}_j}
+R_{ij}U_i
+\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{O}_j\)</span> is the set of users who rated item
+<span class="math notranslate nohighlight">\(j\)</span>.</p>
+</section>
+<section id="step-4-iterate">
+<h2><span class="section-number">2.10.4.22. </span>Step 4: Iterate<a class="headerlink" href="#step-4-iterate" title="Permalink to this heading">¶</a></h2>
+<p>Repeat the updates of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> until convergence.</p>
+<p>A common convergence criterion is that the change in the objective
+function, <span class="math notranslate nohighlight">\(U\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> becomes smaller than a predefined
+threshold.</p>
+</section>
+<section id="gaussian-matrix-factorization-in-a-probabilistic-context">
+<h2><span class="section-number">2.10.4.23. </span>Gaussian Matrix Factorization in a Probabilistic Context<a class="headerlink" href="#gaussian-matrix-factorization-in-a-probabilistic-context" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="probabilistic-model">
+<h2><span class="section-number">2.10.4.24. </span>Probabilistic Model<a class="headerlink" href="#probabilistic-model" title="Permalink to this heading">¶</a></h2>
+<p>In probabilistic Gaussian Matrix Factorization, the observed matrix
+<span class="math notranslate nohighlight">\(R\)</span> is assumed to be generated by a probabilistic process
+involving latent variables for users and items.</p>
+</section>
+<section id="model-assumptions">
+<h2><span class="section-number">2.10.4.25. </span>Model Assumptions<a class="headerlink" href="#model-assumptions" title="Permalink to this heading">¶</a></h2>
+<section id="latent-factors">
+<h3><span class="section-number">2.10.4.25.1. </span>1. Latent Factors<a class="headerlink" href="#latent-factors" title="Permalink to this heading">¶</a></h3>
+<p>Each user <span class="math notranslate nohighlight">\(i\)</span> is associated with a latent vector:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-8">
+<span class="eqno">(2.10.237)<a class="headerlink" href="#equation-chapter-pca-factor-8" title="Permalink to this equation">¶</a></span>\[\mathbf{u}_i \in \mathbb{R}^k\]</div>
+<p>Each item <span class="math notranslate nohighlight">\(j\)</span> is associated with a latent vector:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-9">
+<span class="eqno">(2.10.238)<a class="headerlink" href="#equation-chapter-pca-factor-9" title="Permalink to this equation">¶</a></span>\[\mathbf{v}_j \in \mathbb{R}^k\]</div>
+</section>
+<section id="observed-ratings">
+<h3><span class="section-number">2.10.4.25.2. </span>2. Observed Ratings<a class="headerlink" href="#observed-ratings" title="Permalink to this heading">¶</a></h3>
+<p>The observed rating <span class="math notranslate nohighlight">\(R_{ij}\)</span> is modeled as:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-10">
+<span class="eqno">(2.10.239)<a class="headerlink" href="#equation-chapter-pca-factor-10" title="Permalink to this equation">¶</a></span>\[R_{ij}
+\sim
+\mathcal{N}
+\left(
+\mathbf{u}_i^T\mathbf{v}_j,
+\sigma^2
+\right)\]</div>
+</section>
+<section id="priors-on-latent-factors">
+<h3><span class="section-number">2.10.4.25.3. </span>3. Priors on Latent Factors<a class="headerlink" href="#priors-on-latent-factors" title="Permalink to this heading">¶</a></h3>
+<p>The latent factors are assigned Gaussian priors:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-11">
+<span class="eqno">(2.10.240)<a class="headerlink" href="#equation-chapter-pca-factor-11" title="Permalink to this equation">¶</a></span>\[\mathbf{u}_i
+\sim
+\mathcal{N}
+\left(
+\mathbf{0},
+\lambda_u^{-1}I
+\right)\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-12">
+<span class="eqno">(2.10.241)<a class="headerlink" href="#equation-chapter-pca-factor-12" title="Permalink to this equation">¶</a></span>\[\mathbf{v}_j
+\sim
+\mathcal{N}
+\left(
+\mathbf{0},
+\lambda_v^{-1}I
+\right)\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\lambda_u\)</span> and <span class="math notranslate nohighlight">\(\lambda_v\)</span> are precision parameters,
+which are the inverse of variance.</p>
+</section>
+</section>
+<section id="probabilistic-formulation">
+<h2><span class="section-number">2.10.4.26. </span>Probabilistic Formulation<a class="headerlink" href="#probabilistic-formulation" title="Permalink to this heading">¶</a></h2>
+<p>The likelihood of the observed data is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-13">
+<span class="eqno">(2.10.242)<a class="headerlink" href="#equation-chapter-pca-factor-13" title="Permalink to this equation">¶</a></span>\[p(R\mid U,V,\sigma^2)
+=
+\prod_{(i,j)\in\mathcal{O}}
+\mathcal{N}
+\left(
+R_{ij}
+\mid
+\mathbf{u}_i^T\mathbf{v}_j,
+\sigma^2
+\right)\]</div>
+<p>The prior distributions are:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-14">
+<span class="eqno">(2.10.243)<a class="headerlink" href="#equation-chapter-pca-factor-14" title="Permalink to this equation">¶</a></span>\[p(U\mid\lambda_u)
+=
+\prod_{i=1}^{n}
+\mathcal{N}
+\left(
+\mathbf{u}_i
+\mid
+\mathbf{0},
+\lambda_u^{-1}I
+\right)\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-15">
+<span class="eqno">(2.10.244)<a class="headerlink" href="#equation-chapter-pca-factor-15" title="Permalink to this equation">¶</a></span>\[p(V\mid\lambda_v)
+=
+\prod_{j=1}^{m}
+\mathcal{N}
+\left(
+\mathbf{v}_j
+\mid
+\mathbf{0},
+\lambda_v^{-1}I
+\right)\]</div>
+</section>
+<section id="posterior-distribution">
+<h2><span class="section-number">2.10.4.27. </span>Posterior Distribution<a class="headerlink" href="#posterior-distribution" title="Permalink to this heading">¶</a></h2>
+<p>The posterior distribution is proportional to the product of the
+likelihood and the priors:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-16">
+<span class="eqno">(2.10.245)<a class="headerlink" href="#equation-chapter-pca-factor-16" title="Permalink to this equation">¶</a></span>\[p(U,V\mid R,\sigma^2,\lambda_u,\lambda_v)
+\propto
+p(R\mid U,V,\sigma^2)
+p(U\mid\lambda_u)
+p(V\mid\lambda_v)\]</div>
+</section>
+<section id="maximizing-the-posterior">
+<h2><span class="section-number">2.10.4.28. </span>Maximizing the Posterior<a class="headerlink" href="#maximizing-the-posterior" title="Permalink to this heading">¶</a></h2>
+<p>Maximizing the posterior is equivalent to minimizing the negative
+log-posterior:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-17">
+<span class="eqno">(2.10.246)<a class="headerlink" href="#equation-chapter-pca-factor-17" title="Permalink to this equation">¶</a></span>\[\mathcal{L}
+=
+\sum_{(i,j)\in\mathcal{O}}
+\frac{
+(R_{ij}-\mathbf{u}_i^T\mathbf{v}_j)^2
+}{
+2\sigma^2
+}
++
+\frac{\lambda_u}{2}
+\sum_{i=1}^{n}
+\|\mathbf{u}_i\|^2
++
+\frac{\lambda_v}{2}
+\sum_{j=1}^{m}
+\|\mathbf{v}_j\|^2\]</div>
+<p>The update for <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-18">
+<span class="eqno">(2.10.247)<a class="headerlink" href="#equation-chapter-pca-factor-18" title="Permalink to this equation">¶</a></span>\[\mathbf{u}_i
+=
+\left(
+\sum_{j\in\mathcal{O}_i}
+\mathbf{v}_j\mathbf{v}_j^T
++
+\lambda_u\sigma^2I
+\right)^{-1}
+\left(
+\sum_{j\in\mathcal{O}_i}
+R_{ij}\mathbf{v}_j
+\right)\]</div>
+<p>Similarly, the update for <span class="math notranslate nohighlight">\(\mathbf{v}_j\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-19">
+<span class="eqno">(2.10.248)<a class="headerlink" href="#equation-chapter-pca-factor-19" title="Permalink to this equation">¶</a></span>\[\mathbf{v}_j
+=
+\left(
+\sum_{i\in\mathcal{O}_j}
+\mathbf{u}_i\mathbf{u}_i^T
++
+\lambda_v\sigma^2I
+\right)^{-1}
+\left(
+\sum_{i\in\mathcal{O}_j}
+R_{ij}\mathbf{u}_i
+\right)\]</div>
+</section>
+<section id="log-likelihood">
+<h2><span class="section-number">2.10.4.29. </span>Log-Likelihood<a class="headerlink" href="#log-likelihood" title="Permalink to this heading">¶</a></h2>
+<p>Taking the logarithm of the likelihood:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-20">
+<span class="eqno">(2.10.249)<a class="headerlink" href="#equation-chapter-pca-factor-20" title="Permalink to this equation">¶</a></span>\[\log p(R\mid U,V,\sigma^2)
+=
+-\frac{1}{2\sigma^2}
+\sum_{(i,j)\in\mathcal{O}}
+(R_{ij}-\mathbf{u}_i^T\mathbf{v}_j)^2
+-
+\frac{|\mathcal{O}|}{2}
+\log(2\pi\sigma^2)\]</div>
+</section>
+<section id="priors">
+<h2><span class="section-number">2.10.4.30. </span>Priors<a class="headerlink" href="#priors" title="Permalink to this heading">¶</a></h2>
+<p>The priors on the latent factors are:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-21">
+<span class="eqno">(2.10.250)<a class="headerlink" href="#equation-chapter-pca-factor-21" title="Permalink to this equation">¶</a></span>\[p(\mathbf{u}_i)
+=
+\mathcal{N}
+\left(
+\mathbf{u}_i
+\mid
+\mathbf{0},
+\lambda_u^{-1}I
+\right)\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-22">
+<span class="eqno">(2.10.251)<a class="headerlink" href="#equation-chapter-pca-factor-22" title="Permalink to this equation">¶</a></span>\[p(\mathbf{v}_j)
+=
+\mathcal{N}
+\left(
+\mathbf{v}_j
+\mid
+\mathbf{0},
+\lambda_v^{-1}I
+\right)\]</div>
+<p>Taking the logarithm:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-23">
+<span class="eqno">(2.10.252)<a class="headerlink" href="#equation-chapter-pca-factor-23" title="Permalink to this equation">¶</a></span>\[\log p(\mathbf{u}_i)
+=
+-\frac{\lambda_u}{2}
+\|\mathbf{u}_i\|^2
+-
+\frac{k}{2}
+\log(2\pi\lambda_u^{-1})\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-24">
+<span class="eqno">(2.10.253)<a class="headerlink" href="#equation-chapter-pca-factor-24" title="Permalink to this equation">¶</a></span>\[\log p(\mathbf{v}_j)
+=
+-\frac{\lambda_v}{2}
+\|\mathbf{v}_j\|^2
+-
+\frac{k}{2}
+\log(2\pi\lambda_v^{-1})\]</div>
+</section>
+<section id="posterior">
+<h2><span class="section-number">2.10.4.31. </span>Posterior<a class="headerlink" href="#posterior" title="Permalink to this heading">¶</a></h2>
+<p>The log posterior is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-25">
+<span class="eqno">(2.10.254)<a class="headerlink" href="#equation-chapter-pca-factor-25" title="Permalink to this equation">¶</a></span>\[\log p(U,V\mid R,\sigma^2,\lambda_u,\lambda_v)
+=
+\log p(R\mid U,V,\sigma^2)
++
+\sum_i\log p(\mathbf{u}_i)
++
+\sum_j\log p(\mathbf{v}_j)\]</div>
+</section>
+<section id="maximum-a-posteriori-estimation">
+<h2><span class="section-number">2.10.4.32. </span>Maximum A Posteriori Estimation<a class="headerlink" href="#maximum-a-posteriori-estimation" title="Permalink to this heading">¶</a></h2>
+<p>The MAP objective is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-26">
+<span class="eqno">(2.10.255)<a class="headerlink" href="#equation-chapter-pca-factor-26" title="Permalink to this equation">¶</a></span>\[\mathcal{L}
+=
+\frac{1}{2\sigma^2}
+\sum_{(i,j)\in\mathcal{O}}
+(R_{ij}-\mathbf{u}_i^T\mathbf{v}_j)^2
++
+\frac{\lambda_u}{2}
+\sum_{i=1}^{n}
+\|\mathbf{u}_i\|^2
++
+\frac{\lambda_v}{2}
+\sum_{j=1}^{m}
+\|\mathbf{v}_j\|^2\]</div>
+<p>Taking the partial derivative with respect to <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-27">
+<span class="eqno">(2.10.256)<a class="headerlink" href="#equation-chapter-pca-factor-27" title="Permalink to this equation">¶</a></span>\[\frac{\partial\mathcal{L}}
+{\partial\mathbf{u}_i}
+=
+-\frac{1}{\sigma^2}
+\sum_{j\in\mathcal{O}_i}
+(R_{ij}-\mathbf{u}_i^T\mathbf{v}_j)\mathbf{v}_j
++
+\lambda_u\mathbf{u}_i\]</div>
+<p>Setting the derivative to zero:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-28">
+<span class="eqno">(2.10.257)<a class="headerlink" href="#equation-chapter-pca-factor-28" title="Permalink to this equation">¶</a></span>\[\sum_{j\in\mathcal{O}_i}
+(R_{ij}-\mathbf{u}_i^T\mathbf{v}_j)
+\mathbf{v}_j
+=
+\sigma^2\lambda_u\mathbf{u}_i\]</div>
+<p>Rearranging:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-29">
+<span class="eqno">(2.10.258)<a class="headerlink" href="#equation-chapter-pca-factor-29" title="Permalink to this equation">¶</a></span>\[\sum_{j\in\mathcal{O}_i}
+R_{ij}\mathbf{v}_j
+=
+\left(
+\sum_{j\in\mathcal{O}_i}
+\mathbf{v}_j\mathbf{v}_j^T
++
+\sigma^2\lambda_uI
+\right)
+\mathbf{u}_i\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-30">
+<span class="eqno">(2.10.259)<a class="headerlink" href="#equation-chapter-pca-factor-30" title="Permalink to this equation">¶</a></span>\[\boxed{
+\mathbf{u}_i
+=
+\left(
+\sum_{j\in\mathcal{O}_i}
+\mathbf{v}_j\mathbf{v}_j^T
++
+\sigma^2\lambda_uI
+\right)^{-1}
+\left(
+\sum_{j\in\mathcal{O}_i}
+R_{ij}\mathbf{v}_j
+\right)
+}\]</div>
+<p>This is the MAP update equation for <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>.</p>
+</section>
+<section id="non-negativity-in-gaussian-matrix-factorization">
+<h2><span class="section-number">2.10.4.33. </span>Non-Negativity in Gaussian Matrix Factorization<a class="headerlink" href="#non-negativity-in-gaussian-matrix-factorization" title="Permalink to this heading">¶</a></h2>
+<p>Non-negativity is not normally enforced in Gaussian Matrix
+Factorization. GMF does not inherently require latent factors to be
+non-negative.</p>
+<p>However, non-negativity may be useful when latent factors need to be
+interpretable or when the application requires positive components.</p>
+<p>One common alternative is <strong>Non-Negative Matrix Factorization (NMF)</strong>,
+which explicitly constrains the latent factors to be non-negative.</p>
+<p>Another option is to enforce non-negativity directly during optimization
+using projected gradient descent.</p>
+</section>
+<section id="projected-gradient-descent">
+<span id="poisson-matrix-factorization-1"></span><h2><span class="section-number">2.10.4.34. </span>Projected Gradient Descent<a class="headerlink" href="#projected-gradient-descent" title="Permalink to this heading">¶</a></h2>
+<p>After a gradient update, project each element onto the non-negative
+domain.</p>
+<p>For <span class="math notranslate nohighlight">\(U\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-31">
+<span class="eqno">(2.10.260)<a class="headerlink" href="#equation-chapter-pca-factor-31" title="Permalink to this equation">¶</a></span>\[\mathbf{u}_i
+\leftarrow
+\mathbf{u}_i
+-
+\eta
+\frac{\partial\mathcal{L}}
+{\partial\mathbf{u}_i}\]</div>
+<p>Then:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-32">
+<span class="eqno">(2.10.261)<a class="headerlink" href="#equation-chapter-pca-factor-32" title="Permalink to this equation">¶</a></span>\[\mathbf{u}_i
+\leftarrow
+\max(\mathbf{u}_i,0)\]</div>
+<p>Similarly, for <span class="math notranslate nohighlight">\(V\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-33">
+<span class="eqno">(2.10.262)<a class="headerlink" href="#equation-chapter-pca-factor-33" title="Permalink to this equation">¶</a></span>\[\mathbf{v}_j
+\leftarrow
+\mathbf{v}_j
+-
+\eta
+\frac{\partial\mathcal{L}}
+{\partial\mathbf{v}_j}\]</div>
+<p>Then:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-34">
+<span class="eqno">(2.10.263)<a class="headerlink" href="#equation-chapter-pca-factor-34" title="Permalink to this equation">¶</a></span>\[\mathbf{v}_j
+\leftarrow
+\max(\mathbf{v}_j,0)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\eta\)</span> is the learning rate.</p>
+</section>
+<section id="probabilistic-model-1">
+<span id="id8"></span><h2><span class="section-number">2.10.4.35. </span>Poisson Matrix Factorization<a class="headerlink" href="#probabilistic-model-1" title="Permalink to this heading">¶</a></h2>
+<p>Poisson Matrix Factorization (PMF) is used for decomposing count data
+into latent factors. The observed entries are assumed to follow a
+Poisson distribution, and the latent factors are non-negative.</p>
+</section>
+<section id="objective-function-1">
+<span id="id9"></span><h2><span class="section-number">2.10.4.36. </span>Probabilistic Model<a class="headerlink" href="#objective-function-1" title="Permalink to this heading">¶</a></h2>
+<p>Given an observed count matrix <span class="math notranslate nohighlight">\(R\)</span>, we approximate it using:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-35">
+<span class="eqno">(2.10.264)<a class="headerlink" href="#equation-chapter-pca-factor-35" title="Permalink to this equation">¶</a></span>\[R \approx UV^T\]</div>
+<p>The model assumes:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-36">
+<span class="eqno">(2.10.265)<a class="headerlink" href="#equation-chapter-pca-factor-36" title="Permalink to this equation">¶</a></span>\[R_{ij}
+\sim
+\operatorname{Poisson}
+\left(
+(UV^T)_{ij}
+\right)\]</div>
+<p>The latent factors satisfy:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-37">
+<span class="eqno">(2.10.266)<a class="headerlink" href="#equation-chapter-pca-factor-37" title="Permalink to this equation">¶</a></span>\[\mathbf{u}_i \geq 0\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-38">
+<span class="eqno">(2.10.267)<a class="headerlink" href="#equation-chapter-pca-factor-38" title="Permalink to this equation">¶</a></span>\[\mathbf{v}_j \geq 0\]</div>
+</section>
+<section id="id10">
+<h2><span class="section-number">2.10.4.37. </span>Objective Function<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h2>
+<p>The Poisson log-likelihood is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-39">
+<span class="eqno">(2.10.268)<a class="headerlink" href="#equation-chapter-pca-factor-39" title="Permalink to this equation">¶</a></span>\[\log p(R\mid U,V)
+=
+\sum_{(i,j)\in\mathcal{O}}
+\left[
+R_{ij}
+\log((UV^T)_{ij})
+-
+(UV^T)_{ij}
+\right]
+-
+\sum_{(i,j)\in\mathcal{O}}
+\log(R_{ij}!)\]</div>
+</section>
+<section id="multiplicative-updates">
+<h2><span class="section-number">2.10.4.38. </span>Multiplicative Updates<a class="headerlink" href="#multiplicative-updates" title="Permalink to this heading">¶</a></h2>
+<p>For fixed <span class="math notranslate nohighlight">\(V\)</span>, the update for <span class="math notranslate nohighlight">\(U\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-40">
+<span class="eqno">(2.10.269)<a class="headerlink" href="#equation-chapter-pca-factor-40" title="Permalink to this equation">¶</a></span>\[U_{ik}
+\leftarrow
+U_{ik}
+\frac{
+\sum_j
+R_{ij}
+\frac{V_{jk}}{(UV^T)_{ij}}
+}{
+\sum_j V_{jk}
+}\]</div>
+<p>For fixed <span class="math notranslate nohighlight">\(U\)</span>, the update for <span class="math notranslate nohighlight">\(V\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-41">
+<span class="eqno">(2.10.270)<a class="headerlink" href="#equation-chapter-pca-factor-41" title="Permalink to this equation">¶</a></span>\[V_{jk}
+\leftarrow
+V_{jk}
+\frac{
+\sum_i
+R_{ij}
+\frac{U_{ik}}{(UV^T)_{ij}}
+}{
+\sum_i U_{ik}
+}\]</div>
+<p>These multiplicative updates preserve non-negativity provided that
+<span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span> are initialized with non-negative values.</p>
+</section>
+<section id="derivation-of-the-poisson-matrix-factorization-update">
+<span id="probabilistic-model-3"></span><span id="log-likelihood-1"></span><span id="probabilistic-model-2"></span><h2><span class="section-number">2.10.4.39. </span>Derivation of the Poisson Matrix Factorization Update<a class="headerlink" href="#derivation-of-the-poisson-matrix-factorization-update" title="Permalink to this heading">¶</a></h2>
+<section id="id11">
+<h3><span class="section-number">2.10.4.39.1. </span>Probabilistic Model<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h3>
+<p>The observed counts are modeled as:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-42">
+<span class="eqno">(2.10.271)<a class="headerlink" href="#equation-chapter-pca-factor-42" title="Permalink to this equation">¶</a></span>\[R_{ij}
+\sim
+\operatorname{Poisson}
+(\lambda_{ij})\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-43">
+<span class="eqno">(2.10.272)<a class="headerlink" href="#equation-chapter-pca-factor-43" title="Permalink to this equation">¶</a></span>\[\lambda_{ij}
+=
+\mathbf{u}_i^T\mathbf{v}_j\]</div>
+</section>
+<section id="id12">
+<h3><span class="section-number">2.10.4.39.2. </span>Log-Likelihood<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
+<p>The likelihood is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-44">
+<span class="eqno">(2.10.273)<a class="headerlink" href="#equation-chapter-pca-factor-44" title="Permalink to this equation">¶</a></span>\[p(R\mid U,V)
+=
+\prod_{(i,j)\in\mathcal{O}}
+\operatorname{Poisson}
+(R_{ij}\mid\mathbf{u}_i^T\mathbf{v}_j)\]</div>
+<p>The Poisson probability mass function is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-45">
+<span class="eqno">(2.10.274)<a class="headerlink" href="#equation-chapter-pca-factor-45" title="Permalink to this equation">¶</a></span>\[\operatorname{Poisson}(R_{ij}\mid\lambda_{ij})
+=
+\frac{
+\lambda_{ij}^{R_{ij}}
+e^{-\lambda_{ij}}
+}{
+R_{ij}!
+}\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-46">
+<span class="eqno">(2.10.275)<a class="headerlink" href="#equation-chapter-pca-factor-46" title="Permalink to this equation">¶</a></span>\[\log p(R\mid U,V)
+=
+\sum_{(i,j)\in\mathcal{O}}
+\left[
+R_{ij}
+\log(\mathbf{u}_i^T\mathbf{v}_j)
+-
+\mathbf{u}_i^T\mathbf{v}_j
+-
+\log(R_{ij}!)
+\right]\]</div>
+</section>
+<section id="gradient-with-respect-to-mathbf-u-i">
+<h3><span class="section-number">2.10.4.39.3. </span>Gradient with Respect to <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span><a class="headerlink" href="#gradient-with-respect-to-mathbf-u-i" title="Permalink to this heading">¶</a></h3>
+<p>The factorial term is constant with respect to <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span>, so
+it can be ignored during differentiation.</p>
+<p>We obtain:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-47">
+<span class="eqno">(2.10.276)<a class="headerlink" href="#equation-chapter-pca-factor-47" title="Permalink to this equation">¶</a></span>\[\frac{
+\partial\log p(R\mid U,V)
+}{
+\partial\mathbf{u}_i
+}
+=
+\sum_{j\in\mathcal{O}_i}
+\left[
+R_{ij}
+\frac{\mathbf{v}_j}
+{\mathbf{u}_i^T\mathbf{v}_j}
+-
+\mathbf{v}_j
+\right]\]</div>
+<p>or equivalently:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-48">
+<span class="eqno">(2.10.277)<a class="headerlink" href="#equation-chapter-pca-factor-48" title="Permalink to this equation">¶</a></span>\[\frac{
+\partial\log p(R\mid U,V)
+}{
+\partial\mathbf{u}_i
+}
+=
+\sum_{j\in\mathcal{O}_i}
+\left[
+\frac{R_{ij}\mathbf{v}_j}
+{\mathbf{u}_i^T\mathbf{v}_j}
+-
+\mathbf{v}_j
+\right]\]</div>
+</section>
+<section id="multiplicative-update">
+<h3><span class="section-number">2.10.4.39.4. </span>Multiplicative Update<a class="headerlink" href="#multiplicative-update" title="Permalink to this heading">¶</a></h3>
+<p>Setting the gradient to zero gives:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-49">
+<span class="eqno">(2.10.278)<a class="headerlink" href="#equation-chapter-pca-factor-49" title="Permalink to this equation">¶</a></span>\[\sum_{j\in\mathcal{O}_i}
+\frac{R_{ij}\mathbf{v}_j}
+{\mathbf{u}_i^T\mathbf{v}_j}
+=
+\sum_{j\in\mathcal{O}_i}
+\mathbf{v}_j\]</div>
+<p>The multiplicative update is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-50">
+<span class="eqno">(2.10.279)<a class="headerlink" href="#equation-chapter-pca-factor-50" title="Permalink to this equation">¶</a></span>\[\boxed{
+\mathbf{u}_i
+\leftarrow
+\mathbf{u}_i
+\circ
+\frac{
+\sum_{j\in\mathcal{O}_i}
+R_{ij}
+\frac{\mathbf{v}_j}
+{\mathbf{u}_i^T\mathbf{v}_j}
+}{
+\sum_{j\in\mathcal{O}_i}
+\mathbf{v}_j
+}
+}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\circ\)</span> denotes element-wise multiplication.</p>
+</section>
+<section id="poisson-matrix-factorization-with-gamma-priors">
+<h3><span class="section-number">2.10.4.39.5. </span>Poisson Matrix Factorization with Gamma Priors<a class="headerlink" href="#poisson-matrix-factorization-with-gamma-priors" title="Permalink to this heading">¶</a></h3>
+<p>Gamma priors are commonly used for non-negative latent factors and can
+encourage sparsity.</p>
+</section>
+</section>
+<section id="id13">
+<h2><span class="section-number">2.10.4.40. </span>Probabilistic Model<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h2>
+<p>The observed counts are:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-51">
+<span class="eqno">(2.10.280)<a class="headerlink" href="#equation-chapter-pca-factor-51" title="Permalink to this equation">¶</a></span>\[R_{ij}
+\sim
+\operatorname{Poisson}
+(\mathbf{u}_i^T\mathbf{v}_j)\]</div>
+<p>The latent factors have Gamma priors:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-52">
+<span class="eqno">(2.10.281)<a class="headerlink" href="#equation-chapter-pca-factor-52" title="Permalink to this equation">¶</a></span>\[u_{ik}
+\sim
+\operatorname{Gamma}
+(\alpha_u,\beta_u)\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-53">
+<span class="eqno">(2.10.282)<a class="headerlink" href="#equation-chapter-pca-factor-53" title="Permalink to this equation">¶</a></span>\[v_{jk}
+\sim
+\operatorname{Gamma}
+(\alpha_v,\beta_v)\]</div>
+<p>The Gamma density is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-54">
+<span class="eqno">(2.10.283)<a class="headerlink" href="#equation-chapter-pca-factor-54" title="Permalink to this equation">¶</a></span>\[\operatorname{Gamma}(x\mid\alpha,\beta)
+=
+\frac{
+\beta^\alpha
+x^{\alpha-1}
+e^{-\beta x}
+}{
+\Gamma(\alpha)
+}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is the shape parameter and <span class="math notranslate nohighlight">\(\beta\)</span> is the
+rate parameter.</p>
+</section>
+<section id="joint-log-likelihood">
+<h2><span class="section-number">2.10.4.41. </span>Joint Log-Likelihood<a class="headerlink" href="#joint-log-likelihood" title="Permalink to this heading">¶</a></h2>
+<p>Ignoring constants independent of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-55">
+<span class="eqno">(2.10.284)<a class="headerlink" href="#equation-chapter-pca-factor-55" title="Permalink to this equation">¶</a></span>\[\log p(R,U,V)
+=
+\sum_{(i,j)\in\mathcal{O}}
+\left[
+R_{ij}
+\log(\mathbf{u}_i^T\mathbf{v}_j)
+-
+\mathbf{u}_i^T\mathbf{v}_j
+\right]\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-56">
+<span class="eqno">(2.10.285)<a class="headerlink" href="#equation-chapter-pca-factor-56" title="Permalink to this equation">¶</a></span>\[+
+\sum_{i,k}
+\left[
+(\alpha_u-1)\log u_{ik}
+-
+\beta_u u_{ik}
+\right]\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-57">
+<span class="eqno">(2.10.286)<a class="headerlink" href="#equation-chapter-pca-factor-57" title="Permalink to this equation">¶</a></span>\[+
+\sum_{j,k}
+\left[
+(\alpha_v-1)\log v_{jk}
+-
+\beta_v v_{jk}
+\right]\]</div>
+</section>
+<section id="gradient-with-respect-to-u-ik">
+<h2><span class="section-number">2.10.4.42. </span>Gradient with Respect to <span class="math notranslate nohighlight">\(u_{ik}\)</span><a class="headerlink" href="#gradient-with-respect-to-u-ik" title="Permalink to this heading">¶</a></h2>
+<p>The derivative is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-58">
+<span class="eqno">(2.10.287)<a class="headerlink" href="#equation-chapter-pca-factor-58" title="Permalink to this equation">¶</a></span>\[\frac{
+\partial\log p(R,U,V)
+}{
+\partial u_{ik}
+}
+=
+\sum_{j\in\mathcal{O}_i}
+\left[
+R_{ij}
+\frac{v_{jk}}
+{\mathbf{u}_i^T\mathbf{v}_j}
+-
+v_{jk}
+\right]
++
+\frac{\alpha_u-1}{u_{ik}}
+-
+\beta_u\]</div>
+<p>Similarly, for <span class="math notranslate nohighlight">\(v_{jk}\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-59">
+<span class="eqno">(2.10.288)<a class="headerlink" href="#equation-chapter-pca-factor-59" title="Permalink to this equation">¶</a></span>\[\frac{
+\partial\log p(R,U,V)
+}{
+\partial v_{jk}
+}
+=
+\sum_{i\in\mathcal{O}_j}
+\left[
+R_{ij}
+\frac{u_{ik}}
+{\mathbf{u}_i^T\mathbf{v}_j}
+-
+u_{ik}
+\right]
++
+\frac{\alpha_v-1}{v_{jk}}
+-
+\beta_v\]</div>
+</section>
+<section id="multiplicative-updates-with-gamma-priors">
+<h2><span class="section-number">2.10.4.43. </span>Multiplicative Updates with Gamma Priors<a class="headerlink" href="#multiplicative-updates-with-gamma-priors" title="Permalink to this heading">¶</a></h2>
+<p>A commonly used multiplicative update form for <span class="math notranslate nohighlight">\(U\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-60">
+<span class="eqno">(2.10.289)<a class="headerlink" href="#equation-chapter-pca-factor-60" title="Permalink to this equation">¶</a></span>\[u_{ik}
+\leftarrow
+u_{ik}
+\frac{
+\displaystyle
+\sum_{j\in\mathcal{O}_i}
+R_{ij}
+\frac{v_{jk}}
+{\mathbf{u}_i^T\mathbf{v}_j}
++
+\alpha_u-1
+}{
+\displaystyle
+\sum_{j\in\mathcal{O}_i}
+v_{jk}
++
+\beta_u
+}\]</div>
+<p>Similarly, for <span class="math notranslate nohighlight">\(V\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-61">
+<span class="eqno">(2.10.290)<a class="headerlink" href="#equation-chapter-pca-factor-61" title="Permalink to this equation">¶</a></span>\[v_{jk}
+\leftarrow
+v_{jk}
+\frac{
+\displaystyle
+\sum_{i\in\mathcal{O}_j}
+R_{ij}
+\frac{u_{ik}}
+{\mathbf{u}_i^T\mathbf{v}_j}
++
+\alpha_v-1
+}{
+\displaystyle
+\sum_{i\in\mathcal{O}_j}
+u_{ik}
++
+\beta_v
+}\]</div>
+<p>These updates preserve non-negativity when initialized with positive
+values.</p>
+<blockquote>
+<div><p><strong>Note:</strong> The exact multiplicative-update form depends on the
+optimization derivation and parameterization of the Gamma prior. The
+equations above correspond to a common gradient-based construction. A
+fully Bayesian treatment instead uses variational inference or Gibbs
+sampling.</p>
+</div></blockquote>
+</section>
+<section id="poisson-matrix-factorization-with-gamma-priors-and-elbo">
+<h2><span class="section-number">2.10.4.44. </span>Poisson Matrix Factorization with Gamma Priors and ELBO<a class="headerlink" href="#poisson-matrix-factorization-with-gamma-priors-and-elbo" title="Permalink to this heading">¶</a></h2>
+<p>A more principled Bayesian approach to Poisson Matrix Factorization with
+Gamma priors uses variational inference.</p>
+</section>
+<section id="variational-inference-with-auxiliary-variables">
+<h2><span class="section-number">2.10.4.45. </span>Variational Inference with Auxiliary Variables<a class="headerlink" href="#variational-inference-with-auxiliary-variables" title="Permalink to this heading">¶</a></h2>
+<p>Variational inference approximates the true posterior with a simpler
+distribution that can be optimized efficiently.</p>
+<p>The model is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-62">
+<span class="eqno">(2.10.291)<a class="headerlink" href="#equation-chapter-pca-factor-62" title="Permalink to this equation">¶</a></span>\[R_{ij}
+\sim
+\operatorname{Poisson}
+(\mathbf{u}_i^T\mathbf{v}_j)\]</div>
+<p>with priors:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-63">
+<span class="eqno">(2.10.292)<a class="headerlink" href="#equation-chapter-pca-factor-63" title="Permalink to this equation">¶</a></span>\[u_{ik}
+\sim
+\operatorname{Gamma}
+(\alpha_u,\beta_u)\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-64">
+<span class="eqno">(2.10.293)<a class="headerlink" href="#equation-chapter-pca-factor-64" title="Permalink to this equation">¶</a></span>\[v_{jk}
+\sim
+\operatorname{Gamma}
+(\alpha_v,\beta_v)\]</div>
+</section>
+<section id="variational-distribution">
+<h2><span class="section-number">2.10.4.46. </span>Variational Distribution<a class="headerlink" href="#variational-distribution" title="Permalink to this heading">¶</a></h2>
+<p>We use a mean-field approximation:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-65">
+<span class="eqno">(2.10.294)<a class="headerlink" href="#equation-chapter-pca-factor-65" title="Permalink to this equation">¶</a></span>\[q(U,V)
+=
+\prod_{i,k}
+q(u_{ik})
+\prod_{j,k}
+q(v_{jk})\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-66">
+<span class="eqno">(2.10.295)<a class="headerlink" href="#equation-chapter-pca-factor-66" title="Permalink to this equation">¶</a></span>\[q(u_{ik})
+=
+\operatorname{Gamma}
+(
+\tilde{\alpha}_{u_{ik}},
+\tilde{\beta}_{u_{ik}}
+)\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-67">
+<span class="eqno">(2.10.296)<a class="headerlink" href="#equation-chapter-pca-factor-67" title="Permalink to this equation">¶</a></span>\[q(v_{jk})
+=
+\operatorname{Gamma}
+(
+\tilde{\alpha}_{v_{jk}},
+\tilde{\beta}_{v_{jk}}
+)\]</div>
+<p>The variational parameters are:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\tilde{\alpha}\)</span>: variational shape parameter.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tilde{\beta}\)</span>: variational rate parameter.</p></li>
+</ul>
+</section>
+<section id="evidence-lower-bound">
+<h2><span class="section-number">2.10.4.47. </span>Evidence Lower Bound<a class="headerlink" href="#evidence-lower-bound" title="Permalink to this heading">¶</a></h2>
+<p>The Evidence Lower Bound (ELBO) is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-68">
+<span class="eqno">(2.10.297)<a class="headerlink" href="#equation-chapter-pca-factor-68" title="Permalink to this equation">¶</a></span>\[\operatorname{ELBO}
+=
+\mathbb{E}_q
+[
+\log p(R,U,V)
+]
+-
+\mathbb{E}_q
+[
+\log q(U,V)
+]\]</div>
+<p>Maximizing the ELBO makes the variational approximation closer to the
+true posterior.</p>
+</section>
+<section id="expected-log-likelihood">
+<h2><span class="section-number">2.10.4.48. </span>Expected Log-Likelihood<a class="headerlink" href="#expected-log-likelihood" title="Permalink to this heading">¶</a></h2>
+<p>The expected log-likelihood is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-69">
+<span class="eqno">(2.10.298)<a class="headerlink" href="#equation-chapter-pca-factor-69" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q
+[
+\log p(R\mid U,V)
+]
+=
+\sum_{(i,j)\in\mathcal{O}}
+\mathbb{E}_q
+\left[
+R_{ij}
+\log(\mathbf{u}_i^T\mathbf{v}_j)
+-
+\mathbf{u}_i^T\mathbf{v}_j
+\right]
++
+\text{const}\]</div>
+<p>The expectation of the rate parameter is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-70">
+<span class="eqno">(2.10.299)<a class="headerlink" href="#equation-chapter-pca-factor-70" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q
+[
+\mathbf{u}_i^T\mathbf{v}_j
+]
+=
+\sum_k
+\mathbb{E}_q[u_{ik}]
+\mathbb{E}_q[v_{jk}]\]</div>
+<p>For a Gamma random variable:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-71">
+<span class="eqno">(2.10.300)<a class="headerlink" href="#equation-chapter-pca-factor-71" title="Permalink to this equation">¶</a></span>\[\mathbb{E}[u_{ik}]
+=
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-72">
+<span class="eqno">(2.10.301)<a class="headerlink" href="#equation-chapter-pca-factor-72" title="Permalink to this equation">¶</a></span>\[\mathbb{E}[v_{jk}]
+=
+\frac{
+\tilde{\alpha}_{v_{jk}}
+}{
+\tilde{\beta}_{v_{jk}}
+}\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-73">
+<span class="eqno">(2.10.302)<a class="headerlink" href="#equation-chapter-pca-factor-73" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q
+[
+\mathbf{u}_i^T\mathbf{v}_j
+]
+=
+\sum_k
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}
+\frac{
+\tilde{\alpha}_{v_{jk}}
+}{
+\tilde{\beta}_{v_{jk}}
+}\]</div>
+</section>
+<section id="prior-term">
+<h2><span class="section-number">2.10.4.49. </span>Prior Term<a class="headerlink" href="#prior-term" title="Permalink to this heading">¶</a></h2>
+<p>For <span class="math notranslate nohighlight">\(U\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-74">
+<span class="eqno">(2.10.303)<a class="headerlink" href="#equation-chapter-pca-factor-74" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[\log p(U)]
+=
+\sum_{i,k}
+\left[
+(\alpha_u-1)
+\mathbb{E}_q[\log u_{ik}]
+-
+\beta_u
+\mathbb{E}_q[u_{ik}]
+\right]
++
+\text{const}\]</div>
+<p>For a Gamma distribution:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-75">
+<span class="eqno">(2.10.304)<a class="headerlink" href="#equation-chapter-pca-factor-75" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[\log u_{ik}]
+=
+\psi(
+\tilde{\alpha}_{u_{ik}}
+)
+-
+\log
+\tilde{\beta}_{u_{ik}}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-76">
+<span class="eqno">(2.10.305)<a class="headerlink" href="#equation-chapter-pca-factor-76" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[u_{ik}]
+=
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-77">
+<span class="eqno">(2.10.306)<a class="headerlink" href="#equation-chapter-pca-factor-77" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[\log p(U)]
+=
+\sum_{i,k}
+\left[
+(\alpha_u-1)
+\left(
+\psi(\tilde{\alpha}_{u_{ik}})
+-
+\log\tilde{\beta}_{u_{ik}}
+\right)
+-
+\beta_u
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}
+\right]
++
+\text{const}\]</div>
+<p>A corresponding expression applies to <span class="math notranslate nohighlight">\(V\)</span>.</p>
+</section>
+<section id="entropy-term">
+<h2><span class="section-number">2.10.4.50. </span>Entropy Term<a class="headerlink" href="#entropy-term" title="Permalink to this heading">¶</a></h2>
+<p>The entropy contribution can be written through:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-78">
+<span class="eqno">(2.10.307)<a class="headerlink" href="#equation-chapter-pca-factor-78" title="Permalink to this equation">¶</a></span>\[-\mathbb{E}_q[\log q(U)]\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-79">
+<span class="eqno">(2.10.308)<a class="headerlink" href="#equation-chapter-pca-factor-79" title="Permalink to this equation">¶</a></span>\[-\mathbb{E}_q[\log q(V)]\]</div>
+<p>For the Gamma variational distribution:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-80">
+<span class="eqno">(2.10.309)<a class="headerlink" href="#equation-chapter-pca-factor-80" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[\log u_{ik}]
+=
+\psi(
+\tilde{\alpha}_{u_{ik}}
+)
+-
+\log
+\tilde{\beta}_{u_{ik}}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-81">
+<span class="eqno">(2.10.310)<a class="headerlink" href="#equation-chapter-pca-factor-81" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[u_{ik}]
+=
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}\]</div>
+<p>These quantities are used to evaluate the ELBO.</p>
+</section>
+<section id="variational-updates">
+<h2><span class="section-number">2.10.4.51. </span>Variational Updates<a class="headerlink" href="#variational-updates" title="Permalink to this heading">¶</a></h2>
+<p>The variational parameters are updated iteratively.</p>
+<p>A useful quantity for the expected contribution of component <span class="math notranslate nohighlight">\(k\)</span>
+to observation <span class="math notranslate nohighlight">\((i,j)\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-82">
+<span class="eqno">(2.10.311)<a class="headerlink" href="#equation-chapter-pca-factor-82" title="Permalink to this equation">¶</a></span>\[\phi_{ijk}
+=
+\frac{
+\mathbb{E}_q[u_{ik}]
+\mathbb{E}_q[v_{jk}]
+}{
+\sum_{\ell}
+\mathbb{E}_q[u_{i\ell}]
+\mathbb{E}_q[v_{j\ell}]
+}\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-83">
+<span class="eqno">(2.10.312)<a class="headerlink" href="#equation-chapter-pca-factor-83" title="Permalink to this equation">¶</a></span>\[\sum_k \phi_{ijk}=1\]</div>
+<p>The expected number of observations assigned to component <span class="math notranslate nohighlight">\(k\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-84">
+<span class="eqno">(2.10.313)<a class="headerlink" href="#equation-chapter-pca-factor-84" title="Permalink to this equation">¶</a></span>\[\hat{R}_{ijk}
+=
+R_{ij}\phi_{ijk}\]</div>
+</section>
+<section id="update-for-u-ik">
+<h2><span class="section-number">2.10.4.52. </span>Update for <span class="math notranslate nohighlight">\(u_{ik}\)</span><a class="headerlink" href="#update-for-u-ik" title="Permalink to this heading">¶</a></h2>
+<p>The variational shape parameter becomes:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-85">
+<span class="eqno">(2.10.314)<a class="headerlink" href="#equation-chapter-pca-factor-85" title="Permalink to this equation">¶</a></span>\[\tilde{\alpha}_{u_{ik}}
+=
+\alpha_u
++
+\sum_{j\in\mathcal{O}_i}
+\hat{R}_{ijk}\]</div>
+<p>The variational rate parameter becomes:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-86">
+<span class="eqno">(2.10.315)<a class="headerlink" href="#equation-chapter-pca-factor-86" title="Permalink to this equation">¶</a></span>\[\tilde{\beta}_{u_{ik}}
+=
+\beta_u
++
+\sum_{j\in\mathcal{O}_i}
+\mathbb{E}_q[v_{jk}]\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-87">
+<span class="eqno">(2.10.316)<a class="headerlink" href="#equation-chapter-pca-factor-87" title="Permalink to this equation">¶</a></span>\[q(u_{ik})
+=
+\operatorname{Gamma}
+(
+\tilde{\alpha}_{u_{ik}},
+\tilde{\beta}_{u_{ik}}
+)\]</div>
+<p>with posterior mean:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-88">
+<span class="eqno">(2.10.317)<a class="headerlink" href="#equation-chapter-pca-factor-88" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[u_{ik}]
+=
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}\]</div>
+</section>
+<section id="update-for-v-jk">
+<h2><span class="section-number">2.10.4.53. </span>Update for <span class="math notranslate nohighlight">\(v_{jk}\)</span><a class="headerlink" href="#update-for-v-jk" title="Permalink to this heading">¶</a></h2>
+<p>Similarly:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-89">
+<span class="eqno">(2.10.318)<a class="headerlink" href="#equation-chapter-pca-factor-89" title="Permalink to this equation">¶</a></span>\[\tilde{\alpha}_{v_{jk}}
+=
+\alpha_v
++
+\sum_{i\in\mathcal{O}_j}
+\hat{R}_{ijk}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-90">
+<span class="eqno">(2.10.319)<a class="headerlink" href="#equation-chapter-pca-factor-90" title="Permalink to this equation">¶</a></span>\[\tilde{\beta}_{v_{jk}}
+=
+\beta_v
++
+\sum_{i\in\mathcal{O}_j}
+\mathbb{E}_q[u_{ik}]\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-91">
+<span class="eqno">(2.10.320)<a class="headerlink" href="#equation-chapter-pca-factor-91" title="Permalink to this equation">¶</a></span>\[q(v_{jk})
+=
+\operatorname{Gamma}
+(
+\tilde{\alpha}_{v_{jk}},
+\tilde{\beta}_{v_{jk}}
+)\]</div>
+<p>with posterior mean:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-92">
+<span class="eqno">(2.10.321)<a class="headerlink" href="#equation-chapter-pca-factor-92" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[v_{jk}]
+=
+\frac{
+\tilde{\alpha}_{v_{jk}}
+}{
+\tilde{\beta}_{v_{jk}}
+}\]</div>
+</section>
+<section id="solving-for-the-variational-parameters">
+<h2><span class="section-number">2.10.4.54. </span>Solving for the Variational Parameters<a class="headerlink" href="#solving-for-the-variational-parameters" title="Permalink to this heading">¶</a></h2>
+<p>For <span class="math notranslate nohighlight">\(u_{ik}\)</span>, the variational distribution is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-93">
+<span class="eqno">(2.10.322)<a class="headerlink" href="#equation-chapter-pca-factor-93" title="Permalink to this equation">¶</a></span>\[q(u_{ik})
+=
+\operatorname{Gamma}
+(
+\tilde{\alpha}_{u_{ik}},
+\tilde{\beta}_{u_{ik}}
+)\]</div>
+<p>The expected value is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-94">
+<span class="eqno">(2.10.323)<a class="headerlink" href="#equation-chapter-pca-factor-94" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[u_{ik}]
+=
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}\]</div>
+<p>and the expected logarithm is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-95">
+<span class="eqno">(2.10.324)<a class="headerlink" href="#equation-chapter-pca-factor-95" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[\log u_{ik}]
+=
+\psi(
+\tilde{\alpha}_{u_{ik}}
+)
+-
+\log
+\tilde{\beta}_{u_{ik}}\]</div>
+<p>The corresponding expressions for <span class="math notranslate nohighlight">\(v_{jk}\)</span> are:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-96">
+<span class="eqno">(2.10.325)<a class="headerlink" href="#equation-chapter-pca-factor-96" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[v_{jk}]
+=
+\frac{
+\tilde{\alpha}_{v_{jk}}
+}{
+\tilde{\beta}_{v_{jk}}
+}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-97">
+<span class="eqno">(2.10.326)<a class="headerlink" href="#equation-chapter-pca-factor-97" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[\log v_{jk}]
+=
+\psi(
+\tilde{\alpha}_{v_{jk}}
+)
+-
+\log
+\tilde{\beta}_{v_{jk}}\]</div>
+</section>
+<section id="expected-rate">
+<h2><span class="section-number">2.10.4.55. </span>Expected Rate<a class="headerlink" href="#expected-rate" title="Permalink to this heading">¶</a></h2>
+<p>The expected Poisson rate is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-98">
+<span class="eqno">(2.10.327)<a class="headerlink" href="#equation-chapter-pca-factor-98" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[\lambda_{ij}]
+=
+\sum_k
+\mathbb{E}_q[u_{ik}]
+\mathbb{E}_q[v_{jk}]\]</div>
+<p>or:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-99">
+<span class="eqno">(2.10.328)<a class="headerlink" href="#equation-chapter-pca-factor-99" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_q[\lambda_{ij}]
+=
+\sum_k
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}
+\frac{
+\tilde{\alpha}_{v_{jk}}
+}{
+\tilde{\beta}_{v_{jk}}
+}\]</div>
+<p>This expected rate is used when updating the auxiliary responsibility
+variables <span class="math notranslate nohighlight">\(\phi_{ijk}\)</span>.</p>
+</section>
+<section id="complete-variational-inference-algorithm">
+<span id="step-1-initialize-1"></span><h2><span class="section-number">2.10.4.56. </span>Complete Variational Inference Algorithm<a class="headerlink" href="#complete-variational-inference-algorithm" title="Permalink to this heading">¶</a></h2>
+<p>The overall algorithm can be summarized as follows.</p>
+</section>
+<section id="id14">
+<h2><span class="section-number">2.10.4.57. </span>Step 1: Initialize<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h2>
+<p>Initialize positive variational parameters:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-100">
+<span class="eqno">(2.10.329)<a class="headerlink" href="#equation-chapter-pca-factor-100" title="Permalink to this equation">¶</a></span>\[\tilde{\alpha}_{u_{ik}},
+\tilde{\beta}_{u_{ik}},
+\tilde{\alpha}_{v_{jk}},
+\tilde{\beta}_{v_{jk}}\]</div>
+</section>
+<section id="step-2-compute-expected-latent-factors">
+<h2><span class="section-number">2.10.4.58. </span>Step 2: Compute Expected Latent Factors<a class="headerlink" href="#step-2-compute-expected-latent-factors" title="Permalink to this heading">¶</a></h2>
+<p>Compute:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-101">
+<span class="eqno">(2.10.330)<a class="headerlink" href="#equation-chapter-pca-factor-101" title="Permalink to this equation">¶</a></span>\[\mathbb{E}[u_{ik}]
+=
+\frac{
+\tilde{\alpha}_{u_{ik}}
+}{
+\tilde{\beta}_{u_{ik}}
+}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-102">
+<span class="eqno">(2.10.331)<a class="headerlink" href="#equation-chapter-pca-factor-102" title="Permalink to this equation">¶</a></span>\[\mathbb{E}[v_{jk}]
+=
+\frac{
+\tilde{\alpha}_{v_{jk}}
+}{
+\tilde{\beta}_{v_{jk}}
+}\]</div>
+</section>
+<section id="step-3-compute-responsibilities">
+<h2><span class="section-number">2.10.4.59. </span>Step 3: Compute Responsibilities<a class="headerlink" href="#step-3-compute-responsibilities" title="Permalink to this heading">¶</a></h2>
+<p>For each observed entry:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-103">
+<span class="eqno">(2.10.332)<a class="headerlink" href="#equation-chapter-pca-factor-103" title="Permalink to this equation">¶</a></span>\[\phi_{ijk}
+=
+\frac{
+\mathbb{E}[u_{ik}]
+\mathbb{E}[v_{jk}]
+}{
+\sum_{\ell}
+\mathbb{E}[u_{i\ell}]
+\mathbb{E}[v_{j\ell}]
+}\]</div>
+</section>
+<section id="step-4-compute-expected-counts">
+<h2><span class="section-number">2.10.4.60. </span>Step 4: Compute Expected Counts<a class="headerlink" href="#step-4-compute-expected-counts" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-104">
+<span class="eqno">(2.10.333)<a class="headerlink" href="#equation-chapter-pca-factor-104" title="Permalink to this equation">¶</a></span>\[\hat{R}_{ijk}
+=
+R_{ij}\phi_{ijk}\]</div>
+</section>
+<section id="step-5-update-u">
+<h2><span class="section-number">2.10.4.61. </span>Step 5: Update <span class="math notranslate nohighlight">\(U\)</span><a class="headerlink" href="#step-5-update-u" title="Permalink to this heading">¶</a></h2>
+<p>Update:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-105">
+<span class="eqno">(2.10.334)<a class="headerlink" href="#equation-chapter-pca-factor-105" title="Permalink to this equation">¶</a></span>\[\tilde{\alpha}_{u_{ik}}
+=
+\alpha_u
++
+\sum_{j\in\mathcal{O}_i}
+\hat{R}_{ijk}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-106">
+<span class="eqno">(2.10.335)<a class="headerlink" href="#equation-chapter-pca-factor-106" title="Permalink to this equation">¶</a></span>\[\tilde{\beta}_{u_{ik}}
+=
+\beta_u
++
+\sum_{j\in\mathcal{O}_i}
+\mathbb{E}[v_{jk}]\]</div>
+</section>
+<section id="step-6-update-v">
+<h2><span class="section-number">2.10.4.62. </span>Step 6: Update <span class="math notranslate nohighlight">\(V\)</span><a class="headerlink" href="#step-6-update-v" title="Permalink to this heading">¶</a></h2>
+<p>Update:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-107">
+<span class="eqno">(2.10.336)<a class="headerlink" href="#equation-chapter-pca-factor-107" title="Permalink to this equation">¶</a></span>\[\tilde{\alpha}_{v_{jk}}
+=
+\alpha_v
++
+\sum_{i\in\mathcal{O}_j}
+\hat{R}_{ijk}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-108">
+<span class="eqno">(2.10.337)<a class="headerlink" href="#equation-chapter-pca-factor-108" title="Permalink to this equation">¶</a></span>\[\tilde{\beta}_{v_{jk}}
+=
+\beta_v
++
+\sum_{i\in\mathcal{O}_j}
+\mathbb{E}[u_{ik}]\]</div>
+</section>
+<section id="step-7-repeat">
+<span id="summary-1"></span><h2><span class="section-number">2.10.4.63. </span>Step 7: Repeat<a class="headerlink" href="#step-7-repeat" title="Permalink to this heading">¶</a></h2>
+<p>Repeat Steps 2–6 until the ELBO or another convergence criterion
+stabilizes.</p>
+</section>
+<section id="id15">
+<h2><span class="section-number">2.10.4.64. </span>Summary<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h2>
+<p>The major factorization methods discussed in this chapter differ
+primarily in their assumptions about the observed data.</p>
+<ul class="simple">
+<li><p><strong>PPCA</strong> uses a probabilistic model with Gaussian noise and linear
+latent variables.</p></li>
+<li><p><strong>Gaussian Matrix Factorization</strong> models continuous observations
+using Gaussian noise and latent user/item factors.</p></li>
+<li><p><strong>Poisson Matrix Factorization</strong> models count observations using
+Poisson distributions and non-negative latent factors.</p></li>
+<li><p><strong>Gamma Priors</strong> provide a natural Bayesian prior for non-negative
+latent factors.</p></li>
+<li><p><strong>Variational Inference</strong> approximates the posterior using a
+tractable family of distributions.</p></li>
+<li><p><strong>The ELBO</strong> provides the objective that is optimized during
+variational inference.</p></li>
+<li><p><strong>Auxiliary variables</strong> allow the Poisson likelihood to be handled
+using simpler conditional updates.</p></li>
+<li><p><strong>Gamma variational distributions</strong> provide closed-form updates for
+the variational shape and rate parameters.</p></li>
+</ul>
+<p>The key distinction is the observation model:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-109">
+<span class="eqno">(2.10.338)<a class="headerlink" href="#equation-chapter-pca-factor-109" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{Continuous data}
+\rightarrow
+\text{Gaussian models}
+}\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-110">
+<span class="eqno">(2.10.339)<a class="headerlink" href="#equation-chapter-pca-factor-110" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{Count data}
+\rightarrow
+\text{Poisson models}
+}\]</div>
+<p>For Bayesian Poisson Matrix Factorization:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-factor-111">
+<span class="eqno">(2.10.340)<a class="headerlink" href="#equation-chapter-pca-factor-111" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{Poisson likelihood}
++
+\text{Gamma priors}
++
+\text{Variational inference}
+\rightarrow
+\text{Gamma posterior approximations}
+}\]</div>
+<p>This framework provides a flexible approach for modeling sparse count
+data while maintaining non-negative and interpretable latent
+representations.</p>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">2.10.4. PCA vs. Factor Analysis</a><ul>
+<li><a class="reference internal" href="#probabilistic-principal-component-analysis-ppca">2.10.4.1. Probabilistic Principal Component Analysis (PPCA)</a></li>
+<li><a class="reference internal" href="#overview">2.10.4.2. Overview</a></li>
+<li><a class="reference internal" href="#model">2.10.4.3. Model</a></li>
+<li><a class="reference internal" href="#characteristics">2.10.4.4. Characteristics</a></li>
+<li><a class="reference internal" href="#gaussian-matrix-factorization">2.10.4.5. Gaussian Matrix Factorization</a></li>
+<li><a class="reference internal" href="#model-1">2.10.4.6. Overview</a></li>
+<li><a class="reference internal" href="#characteristics-1">2.10.4.7. Model</a></li>
+<li><a class="reference internal" href="#id3">2.10.4.8. Characteristics</a></li>
+<li><a class="reference internal" href="#poisson-matrix-factorization">2.10.4.9. Poisson Matrix Factorization</a></li>
+<li><a class="reference internal" href="#model-2">2.10.4.10. Overview</a></li>
+<li><a class="reference internal" href="#characteristics-2">2.10.4.11. Model</a></li>
+<li><a class="reference internal" href="#id6">2.10.4.12. Characteristics</a></li>
+<li><a class="reference internal" href="#comparison-of-factor-analysis-methods">2.10.4.13. Comparison of Factor Analysis Methods</a></li>
+<li><a class="reference internal" href="#summary">2.10.4.14. Summary</a></li>
+<li><a class="reference internal" href="#id7">2.10.4.15. Gaussian Matrix Factorization</a></li>
+<li><a class="reference internal" href="#model-formulation">2.10.4.16. Model Formulation</a></li>
+<li><a class="reference internal" href="#objective-function">2.10.4.17. Objective Function</a></li>
+<li><a class="reference internal" href="#solving-using-alternating-least-squares">2.10.4.18. Solving Using Alternating Least Squares</a></li>
+<li><a class="reference internal" href="#step-1-initialize">2.10.4.19. Step 1: Initialize</a></li>
+<li><a class="reference internal" href="#step-2-optimize-u-given-v">2.10.4.20. Step 2: Optimize <span class="math notranslate nohighlight">\(U\)</span> Given <span class="math notranslate nohighlight">\(V\)</span></a></li>
+<li><a class="reference internal" href="#step-3-optimize-v-given-u">2.10.4.21. Step 3: Optimize <span class="math notranslate nohighlight">\(V\)</span> Given <span class="math notranslate nohighlight">\(U\)</span></a></li>
+<li><a class="reference internal" href="#step-4-iterate">2.10.4.22. Step 4: Iterate</a></li>
+<li><a class="reference internal" href="#gaussian-matrix-factorization-in-a-probabilistic-context">2.10.4.23. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li><a class="reference internal" href="#probabilistic-model">2.10.4.24. Probabilistic Model</a></li>
+<li><a class="reference internal" href="#model-assumptions">2.10.4.25. Model Assumptions</a><ul>
+<li><a class="reference internal" href="#latent-factors">2.10.4.25.1. 1. Latent Factors</a></li>
+<li><a class="reference internal" href="#observed-ratings">2.10.4.25.2. 2. Observed Ratings</a></li>
+<li><a class="reference internal" href="#priors-on-latent-factors">2.10.4.25.3. 3. Priors on Latent Factors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#probabilistic-formulation">2.10.4.26. Probabilistic Formulation</a></li>
+<li><a class="reference internal" href="#posterior-distribution">2.10.4.27. Posterior Distribution</a></li>
+<li><a class="reference internal" href="#maximizing-the-posterior">2.10.4.28. Maximizing the Posterior</a></li>
+<li><a class="reference internal" href="#log-likelihood">2.10.4.29. Log-Likelihood</a></li>
+<li><a class="reference internal" href="#priors">2.10.4.30. Priors</a></li>
+<li><a class="reference internal" href="#posterior">2.10.4.31. Posterior</a></li>
+<li><a class="reference internal" href="#maximum-a-posteriori-estimation">2.10.4.32. Maximum A Posteriori Estimation</a></li>
+<li><a class="reference internal" href="#non-negativity-in-gaussian-matrix-factorization">2.10.4.33. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li><a class="reference internal" href="#projected-gradient-descent">2.10.4.34. Projected Gradient Descent</a></li>
+<li><a class="reference internal" href="#probabilistic-model-1">2.10.4.35. Poisson Matrix Factorization</a></li>
+<li><a class="reference internal" href="#objective-function-1">2.10.4.36. Probabilistic Model</a></li>
+<li><a class="reference internal" href="#id10">2.10.4.37. Objective Function</a></li>
+<li><a class="reference internal" href="#multiplicative-updates">2.10.4.38. Multiplicative Updates</a></li>
+<li><a class="reference internal" href="#derivation-of-the-poisson-matrix-factorization-update">2.10.4.39. Derivation of the Poisson Matrix Factorization Update</a><ul>
+<li><a class="reference internal" href="#id11">2.10.4.39.1. Probabilistic Model</a></li>
+<li><a class="reference internal" href="#id12">2.10.4.39.2. Log-Likelihood</a></li>
+<li><a class="reference internal" href="#gradient-with-respect-to-mathbf-u-i">2.10.4.39.3. Gradient with Respect to <span class="math notranslate nohighlight">\(\mathbf{u}_i\)</span></a></li>
+<li><a class="reference internal" href="#multiplicative-update">2.10.4.39.4. Multiplicative Update</a></li>
+<li><a class="reference internal" href="#poisson-matrix-factorization-with-gamma-priors">2.10.4.39.5. Poisson Matrix Factorization with Gamma Priors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id13">2.10.4.40. Probabilistic Model</a></li>
+<li><a class="reference internal" href="#joint-log-likelihood">2.10.4.41. Joint Log-Likelihood</a></li>
+<li><a class="reference internal" href="#gradient-with-respect-to-u-ik">2.10.4.42. Gradient with Respect to <span class="math notranslate nohighlight">\(u_{ik}\)</span></a></li>
+<li><a class="reference internal" href="#multiplicative-updates-with-gamma-priors">2.10.4.43. Multiplicative Updates with Gamma Priors</a></li>
+<li><a class="reference internal" href="#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.10.4.44. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li><a class="reference internal" href="#variational-inference-with-auxiliary-variables">2.10.4.45. Variational Inference with Auxiliary Variables</a></li>
+<li><a class="reference internal" href="#variational-distribution">2.10.4.46. Variational Distribution</a></li>
+<li><a class="reference internal" href="#evidence-lower-bound">2.10.4.47. Evidence Lower Bound</a></li>
+<li><a class="reference internal" href="#expected-log-likelihood">2.10.4.48. Expected Log-Likelihood</a></li>
+<li><a class="reference internal" href="#prior-term">2.10.4.49. Prior Term</a></li>
+<li><a class="reference internal" href="#entropy-term">2.10.4.50. Entropy Term</a></li>
+<li><a class="reference internal" href="#variational-updates">2.10.4.51. Variational Updates</a></li>
+<li><a class="reference internal" href="#update-for-u-ik">2.10.4.52. Update for <span class="math notranslate nohighlight">\(u_{ik}\)</span></a></li>
+<li><a class="reference internal" href="#update-for-v-jk">2.10.4.53. Update for <span class="math notranslate nohighlight">\(v_{jk}\)</span></a></li>
+<li><a class="reference internal" href="#solving-for-the-variational-parameters">2.10.4.54. Solving for the Variational Parameters</a></li>
+<li><a class="reference internal" href="#expected-rate">2.10.4.55. Expected Rate</a></li>
+<li><a class="reference internal" href="#complete-variational-inference-algorithm">2.10.4.56. Complete Variational Inference Algorithm</a></li>
+<li><a class="reference internal" href="#id14">2.10.4.57. Step 1: Initialize</a></li>
+<li><a class="reference internal" href="#step-2-compute-expected-latent-factors">2.10.4.58. Step 2: Compute Expected Latent Factors</a></li>
+<li><a class="reference internal" href="#step-3-compute-responsibilities">2.10.4.59. Step 3: Compute Responsibilities</a></li>
+<li><a class="reference internal" href="#step-4-compute-expected-counts">2.10.4.60. Step 4: Compute Expected Counts</a></li>
+<li><a class="reference internal" href="#step-5-update-u">2.10.4.61. Step 5: Update <span class="math notranslate nohighlight">\(U\)</span></a></li>
+<li><a class="reference internal" href="#step-6-update-v">2.10.4.62. Step 6: Update <span class="math notranslate nohighlight">\(V\)</span></a></li>
+<li><a class="reference internal" href="#step-7-repeat">2.10.4.63. Step 7: Repeat</a></li>
+<li><a class="reference internal" href="#id15">2.10.4.64. Summary</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="autoencoder.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>2.10.3. PCA vs. Autoencoder</div>
+         </div>
+     </a>
+     <a id="button-next" href="../chapter_lda/index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>3. Probabilistic Matrix Factorization</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

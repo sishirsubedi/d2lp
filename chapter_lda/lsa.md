@@ -1,0 +1,74 @@
+# LSA
+:label:`chap_lsa`
+
+Latent Semantic Analysis (LSA) is a technique in natural language processing and information retrieval that aims to uncover the underlying semantic structure of a collection of texts. The key idea behind LSA is to transform the original high-dimensional space of terms into a lower-dimensional space, capturing the essential patterns and relationships among terms and documents. Here's a breakdown of the main concepts and steps involved in LSA:
+
+### **Document-Term Matrix**
+LSA starts by constructing a matrix where each row represents a document, and each column represents a term (word). The entries in the matrix typically contain the frequency of each term in each document. This matrix is often called the document-term matrix.
+
+### **Term Weighting**
+The raw frequencies in the document-term matrix can be adjusted using weighting schemes like Term Frequency-Inverse Document Frequency (TF-IDF), which helps to reduce the impact of commonly occurring terms that may not carry significant semantic meaning.
+
+**Term Frequency-Inverse Document Frequency (TF-IDF)** is a statistical measure used to evaluate the importance of a word in a document relative to a collection of documents (corpus). It combines two key metrics: Term Frequency (TF) and Inverse Document Frequency (IDF). Here's a breakdown of each component and how they work together:
+
+### **Term Frequency (TF)**
+Term Frequency refers to how often a term appears in a specific document. The basic idea is that the more frequently a term appears in a document, the more important it might be. However, this importance is normalized by the length of the document to avoid bias towards longer documents. The term frequency for a term $t$ in a document $d$ can be calculated as:
+
+$$
+\text{TF}(t, d) = \frac{\text{Number of times } t \text{ appears in } d}{\text{Total number of terms in } d}
+$$
+
+### **Inverse Document Frequency (IDF)**
+Inverse Document Frequency measures how common or rare a term is across the entire corpus. The idea is to give more weight to terms that are unique or less common across all documents, as these terms can be more significant for identifying the content of a document. The IDF of a term $t$ is calculated as:
+
+$$
+\text{IDF}(t) = \log \left(\frac{\text{Total number of documents}}{\text{Number of documents containing } t}\right)
+$$
+
+The log function helps to scale down the effect of large numbers, and a small constant is sometimes added to the denominator to avoid division by zero.
+
+### **TF-IDF Calculation**
+The TF-IDF score is the product of TF and IDF:
+
+$$
+\text{TF-IDF}(t, d) = \text{TF}(t, d) \times \text{IDF}(t)
+$$
+
+This score provides a weight that reflects the importance of a term within a specific document and across the corpus. Higher TF-IDF scores indicate greater importance.
+
+### **Applications**
+- **Information Retrieval**: TF-IDF is widely used in search engines to rank documents by relevance to a query.
+- **Text Mining**: It helps in identifying key words and phrases in documents for tasks like topic modeling.
+- **Document Clustering and Classification**: It can serve as a feature representation for documents in various machine learning models.
+
+### **Benefits and Limitations**
+- **Benefits**: TF-IDF is simple to implement and can highlight important words in documents, making it a useful tool for various machine learning models.
+- **Limitations**: It doesn't capture the semantics of words (i.e., it doesn't understand synonyms) and may not perform well with small datasets.
+
+TF-IDF remains a fundamental technique in natural language processing and information retrieval due to its simplicity and effectiveness.
+
+### **Singular Value Decomposition (SVD)**
+LSA applies Singular Value Decomposition to the weighted document-term matrix. SVD decomposes the matrix into three other matrices:
+
+   - **U**: A matrix representing the relationship between documents and concepts.
+   - **Σ**: A diagonal matrix containing singular values, which represent the importance of each concept.
+   - **$V^T$**: A matrix representing the relationship between terms and concepts.
+
+The dimensionality reduction is achieved by keeping only the top *k* singular values and their corresponding vectors in U and V^T, where *k* is much smaller than the original number of terms or documents.
+
+### **Latent Semantic Space**
+The reduced matrices $U$ and $V^T$ provide a representation of documents and terms in a lower-dimensional latent semantic space. In this space, similar documents and terms are closer to each other, even if they don't share many common terms in the original space. This latent space captures the underlying semantic relationships between terms and documents.
+
+### **Applications**
+LSA can be used for various tasks, including:
+
+   - **Information Retrieval**: By representing both queries and documents in the latent semantic space, LSA can improve the matching between user queries and relevant documents.
+   - **Document Clustering**: Grouping documents with similar topics.
+   - **Synonym Detection**: Identifying terms that are semantically similar.
+
+LSA is valuable because it can identify patterns and relationships that aren't immediately obvious from the raw data, especially in cases where synonyms or polysemy (words with multiple meanings) are involved. However, LSA also has limitations, such as its assumption of linear relationships and its inability to model more complex linguistic structures.
+
+**Linearity : TF-IDF operates under the assumption that the importance of terms can be linearly combined to determine the importance of a document. In other words, it assumes that the significance of a document can be understood by simply adding up the importance scores (TF-IDF scores) of its individual terms. This linear combination does not consider potential interactions or relationships between terms.**
+
+**Independence: It treats each word independently rather than capturing their combined meaning.**
+

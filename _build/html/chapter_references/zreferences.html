@@ -28,7 +28,7 @@
     <link rel="shortcut icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="1. Introduction" href="../chapter_introduction/index.html" /> 
+    <link rel="prev" title="3.8.4. LDA ETM" href="../chapter_lda/lda_etm.html" /> 
   </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
@@ -89,6 +89,96 @@ Show Source
             <nav class="mdl-navigation">
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_pca/index.html">2. Principal Component Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/laplacian.html">2.4.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/laplacian.html#laplacian-eigenmaps-explanation">2.4.2. Laplacian Eigenmaps Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html">2.4.3. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#from-x-to-z">2.4.4. From <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-unifying-view-of-dimensionality-reduction">2.4.5. A Unifying View of Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca">2.4.6. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-and-the-gram-matrix">2.4.7. PCA and the Gram Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap">2.4.8. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap-global-vs-local">2.4.9. Isomap: Global vs. Local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#laplacian-eigenmaps">2.4.10. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-1-construct-the-neighborhood-graph">2.4.11. Step 1: Construct the Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-2-construct-the-weight-matrix">2.4.12. Step 2: Construct the Weight Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#intuition-behind-the-heat-kernel">2.4.13. Intuition Behind the Heat Kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-3-degree-matrix">2.4.14. Step 3: Degree Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-4-graph-laplacian">2.4.15. Step 4: Graph Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-5-solve-the-eigenvalue-problem">2.4.16. Step 5: Solve the Eigenvalue Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-does-laplacian-eigenmaps-use-small-eigenvalues">2.4.17. Why Does Laplacian Eigenmaps Use Small Eigenvalues?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-vs-laplacian-eigenmaps">2.4.18. PCA vs. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-laplacian-eigenmaps-objective">2.4.19. The Laplacian Eigenmaps Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne">2.4.20. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#high-dimensional-similarities-in-t-sne">2.4.21. High-Dimensional Similarities in t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#perplexity">2.4.22. Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#intuition-for-perplexity">2.4.23. Intuition for Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#symmetric-high-dimensional-probabilities">2.4.24. Symmetric High-Dimensional Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#low-dimensional-similarities">2.4.25. Low-Dimensional Similarities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-objective">2.4.26. t-SNE Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-optimization">2.4.27. t-SNE Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-t-sne-gradient">2.4.28. The t-SNE Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#early-exaggeration">2.4.29. Early Exaggeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap">2.4.30. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-neighborhood-graph">2.4.31. UMAP Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#low-dimensional-umap-similarity">2.4.32. Low-Dimensional UMAP Similarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-cross-entropy-objective">2.4.33. UMAP Cross-Entropy Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#attraction-and-repulsion-in-umap">2.4.34. Attraction and Repulsion in UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-isomap-laplacian-eigenmaps-t-sne-and-umap">2.4.35. PCA, Isomap, Laplacian Eigenmaps, t-SNE, and UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-eigenvalue-perspective">2.4.36. The Eigenvalue Perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#local-vs-global-structure">2.4.37. Local vs. Global Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap-strong-global-geometry">2.4.38. Isomap: Strong Global Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#laplacian-eigenmaps-local-structure">2.4.39. Laplacian Eigenmaps: Local Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-strong-local-neighborhood-preservation">2.4.40. t-SNE: Strong Local Neighborhood Preservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-local-structure-with-broader-layout-information">2.4.41. UMAP: Local Structure with Broader Layout Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-better-global-vs-local-summary">2.4.42. A Better Global-vs-Local Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-does-k-nn-create-local-structure">2.4.43. Why Does k-NN Create Local Structure?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#similarity-vs-distance">2.4.44. Similarity vs. Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-the-exponential-kernel-works">2.4.45. Why the Exponential Kernel Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-different-methods-need-different-similarity-definitions">2.4.46. Why Different Methods Need Different Similarity Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#one-n-times-n-matrix-different-meanings">2.4.47. One <span class="math notranslate nohighlight">\(N\times N\)</span> Matrix, Different Meanings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-unified-view">2.4.48. A Unified View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-useful-mental-model">2.4.49. A Useful Mental Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#comparison-of-the-five-methods">2.4.50. Comparison of the Five Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#important-corrections-to-remember">2.4.51. Important Corrections to Remember</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#final-summary">2.4.52. Final Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html">2.4.53. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#autoencoder">2.4.54. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#id3">2.4.55. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#important-connection-linear-autoencoder-and-pca">2.4.56. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#non-linear-autoencoder">2.4.57. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#latent-space-geometry">2.4.58. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.4.59. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#comparison-table">2.4.60. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.4.61. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.4.62. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#the-bigger-picture">2.4.63. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#why-use-an-autoencoder">2.4.64. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#important-limitation-of-autoencoders">2.4.65. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-vs-autoencoder-core-intuition">2.4.66. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#d-latent-space-example">2.4.67. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#summary">2.4.68. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html">2.4.69. PCA vs. Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#id7">2.4.70. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.4.71. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#non-negativity-in-gaussian-matrix-factorization">2.4.72. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#probabilistic-model-1">2.4.73. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#derivation-of-the-poisson-matrix-factorization-update">2.4.74. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#poisson-matrix-factorization-with-gamma-priors">2.4.75. Poisson Matrix Factorization with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.4.76. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#variational-updates">2.4.77. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#solving-for-the-variational-parameters">2.4.78. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#complete-variational-inference-algorithm">2.4.79. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#id14">2.4.80. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. LDA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.8.1. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda.html">3.8.2. LDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.8.3. ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.8.4. LDA ETM</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">References</a></li>
@@ -120,6 +210,96 @@ Show Source
             <nav class="mdl-navigation">
                 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_pca/index.html">2. Principal Component Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/laplacian.html">2.4.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/laplacian.html#laplacian-eigenmaps-explanation">2.4.2. Laplacian Eigenmaps Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html">2.4.3. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#from-x-to-z">2.4.4. From <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-unifying-view-of-dimensionality-reduction">2.4.5. A Unifying View of Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca">2.4.6. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-and-the-gram-matrix">2.4.7. PCA and the Gram Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap">2.4.8. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap-global-vs-local">2.4.9. Isomap: Global vs. Local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#laplacian-eigenmaps">2.4.10. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-1-construct-the-neighborhood-graph">2.4.11. Step 1: Construct the Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-2-construct-the-weight-matrix">2.4.12. Step 2: Construct the Weight Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#intuition-behind-the-heat-kernel">2.4.13. Intuition Behind the Heat Kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-3-degree-matrix">2.4.14. Step 3: Degree Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-4-graph-laplacian">2.4.15. Step 4: Graph Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-5-solve-the-eigenvalue-problem">2.4.16. Step 5: Solve the Eigenvalue Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-does-laplacian-eigenmaps-use-small-eigenvalues">2.4.17. Why Does Laplacian Eigenmaps Use Small Eigenvalues?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-vs-laplacian-eigenmaps">2.4.18. PCA vs. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-laplacian-eigenmaps-objective">2.4.19. The Laplacian Eigenmaps Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne">2.4.20. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#high-dimensional-similarities-in-t-sne">2.4.21. High-Dimensional Similarities in t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#perplexity">2.4.22. Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#intuition-for-perplexity">2.4.23. Intuition for Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#symmetric-high-dimensional-probabilities">2.4.24. Symmetric High-Dimensional Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#low-dimensional-similarities">2.4.25. Low-Dimensional Similarities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-objective">2.4.26. t-SNE Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-optimization">2.4.27. t-SNE Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-t-sne-gradient">2.4.28. The t-SNE Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#early-exaggeration">2.4.29. Early Exaggeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap">2.4.30. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-neighborhood-graph">2.4.31. UMAP Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#low-dimensional-umap-similarity">2.4.32. Low-Dimensional UMAP Similarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-cross-entropy-objective">2.4.33. UMAP Cross-Entropy Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#attraction-and-repulsion-in-umap">2.4.34. Attraction and Repulsion in UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-isomap-laplacian-eigenmaps-t-sne-and-umap">2.4.35. PCA, Isomap, Laplacian Eigenmaps, t-SNE, and UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-eigenvalue-perspective">2.4.36. The Eigenvalue Perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#local-vs-global-structure">2.4.37. Local vs. Global Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap-strong-global-geometry">2.4.38. Isomap: Strong Global Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#laplacian-eigenmaps-local-structure">2.4.39. Laplacian Eigenmaps: Local Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-strong-local-neighborhood-preservation">2.4.40. t-SNE: Strong Local Neighborhood Preservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-local-structure-with-broader-layout-information">2.4.41. UMAP: Local Structure with Broader Layout Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-better-global-vs-local-summary">2.4.42. A Better Global-vs-Local Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-does-k-nn-create-local-structure">2.4.43. Why Does k-NN Create Local Structure?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#similarity-vs-distance">2.4.44. Similarity vs. Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-the-exponential-kernel-works">2.4.45. Why the Exponential Kernel Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-different-methods-need-different-similarity-definitions">2.4.46. Why Different Methods Need Different Similarity Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#one-n-times-n-matrix-different-meanings">2.4.47. One <span class="math notranslate nohighlight">\(N\times N\)</span> Matrix, Different Meanings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-unified-view">2.4.48. A Unified View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-useful-mental-model">2.4.49. A Useful Mental Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#comparison-of-the-five-methods">2.4.50. Comparison of the Five Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#important-corrections-to-remember">2.4.51. Important Corrections to Remember</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#final-summary">2.4.52. Final Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html">2.4.53. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#autoencoder">2.4.54. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#id3">2.4.55. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#important-connection-linear-autoencoder-and-pca">2.4.56. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#non-linear-autoencoder">2.4.57. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#latent-space-geometry">2.4.58. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.4.59. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#comparison-table">2.4.60. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.4.61. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.4.62. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#the-bigger-picture">2.4.63. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#why-use-an-autoencoder">2.4.64. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#important-limitation-of-autoencoders">2.4.65. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-vs-autoencoder-core-intuition">2.4.66. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#d-latent-space-example">2.4.67. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#summary">2.4.68. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html">2.4.69. PCA vs. Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#id7">2.4.70. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.4.71. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#non-negativity-in-gaussian-matrix-factorization">2.4.72. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#probabilistic-model-1">2.4.73. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#derivation-of-the-poisson-matrix-factorization-update">2.4.74. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#poisson-matrix-factorization-with-gamma-priors">2.4.75. Poisson Matrix Factorization with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.4.76. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#variational-updates">2.4.77. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#solving-for-the-variational-parameters">2.4.78. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#complete-variational-inference-algorithm">2.4.79. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#id14">2.4.80. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. LDA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.8.1. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda.html">3.8.2. LDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.8.3. ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.8.4. LDA ETM</a></li>
+</ul>
+</li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">References</a></li>
@@ -374,11 +554,11 @@ Show Source
 
       <div class="clearer"></div>
     </div><div class="pagenation">
-     <a id="button-prev" href="../chapter_introduction/index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+     <a id="button-prev" href="../chapter_lda/lda_etm.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
          <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
          <div class="pagenation-text">
             <span class="pagenation-direction">Previous</span>
-            <div>1. Introduction</div>
+            <div>3.8.4. LDA ETM</div>
          </div>
      </a>
   </div>

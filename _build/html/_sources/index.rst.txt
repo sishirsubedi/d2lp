@@ -12,6 +12,8 @@ Dive into Deep Learning :math:`[ \text{Modified by Sishir Subedi, PhD} ]`
    :numbered:
 
    chapter_introduction/index
+   chapter_pca/index
+   chapter_lda/index
 
 .. toctree::
    :maxdepth: 1

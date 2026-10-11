@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>2. Principal Component Analysis &#8212; Dive into Deep Learning Personalized 1.0.3 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.10.1. Laplacian" href="laplacian.html" />
+    <link rel="prev" title="1. Introduction" href="../chapter_introduction/index.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link is-active"><span class="section-number">2. </span>Principal Component Analysis</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_pca/index.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Principal Component Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html">2.10.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html">2.10.2. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html">2.10.4. PCA vs. Factor Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. Probabilistic Matrix Factorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lsa.html">3.1. LSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.2. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_1.html">3.3. LDA 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_2.html">3.4. LDA 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.5. LDA VI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.6. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Principal Component Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html">2.10.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html">2.10.2. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html">2.10.4. PCA vs. Factor Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. Probabilistic Matrix Factorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lsa.html">3.1. LSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.2. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_1.html">3.3. LDA 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_2.html">3.4. LDA 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.5. LDA VI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.6. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="principal-component-analysis">
+<span id="chap-pca"></span><h1><span class="section-number">2. </span>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this heading">¶</a></h1>
+<p>We can understand Principal Component Analysis (PCA) using Singular
+Value Decomposition (SVD) and relationships between the matrices and the
+properties of matrix multiplication.</p>
+<p>Given the SVD of matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-0">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-chapter-pca-index-0" title="Permalink to this equation">¶</a></span>\[X = U \Sigma V^T\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X\)</span> is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix.</p></li>
+<li><p><span class="math notranslate nohighlight">\(U\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> orthogonal matrix (columns are
+left singular vectors).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(m \times n\)</span> diagonal matrix with
+non-negative real numbers on the diagonal (singular values).</p></li>
+<li><p><span class="math notranslate nohighlight">\(V\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> orthogonal matrix (columns are
+right singular vectors).</p></li>
+<li><p><span class="math notranslate nohighlight">\(V^T\)</span> is the transpose of <span class="math notranslate nohighlight">\(V\)</span>.</p></li>
+</ul>
+<section id="relationship-among-x-u-and-v">
+<h2><span class="section-number">2.1. </span>Relationship among X,U,and V<a class="headerlink" href="#relationship-among-x-u-and-v" title="Permalink to this heading">¶</a></h2>
+<p>We can start with simple cross-product matrices. Here, we can have two
+views - one sample x sample or feature x feature:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-1">
+<span class="eqno">(2.1.1)<a class="headerlink" href="#equation-chapter-pca-index-1" title="Permalink to this equation">¶</a></span>\[XX^T = U \Sigma V^T (V \Sigma^T U^T) = U \Sigma \Sigma^T U^T\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-2">
+<span class="eqno">(2.1.2)<a class="headerlink" href="#equation-chapter-pca-index-2" title="Permalink to this equation">¶</a></span>\[X^T X = V \Sigma^T U^T (U \Sigma V^T) = V \Sigma^T \Sigma V^T\]</div>
+<p>From the above, we can write:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-3">
+<span class="eqno">(2.1.3)<a class="headerlink" href="#equation-chapter-pca-index-3" title="Permalink to this equation">¶</a></span>\[XX^T U = U \Sigma \Sigma^T\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-4">
+<span class="eqno">(2.1.4)<a class="headerlink" href="#equation-chapter-pca-index-4" title="Permalink to this equation">¶</a></span>\[X^T X V = V \Sigma^T \Sigma\]</div>
+<p>Given <span class="math notranslate nohighlight">\(XX^T U = U \Sigma \Sigma^T\)</span>, we can rearrange this
+equation:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-5">
+<span class="eqno">(2.1.5)<a class="headerlink" href="#equation-chapter-pca-index-5" title="Permalink to this equation">¶</a></span>\[XX^T U = U \Sigma \Sigma^T\]</div>
+<p>Multiplying both sides by <span class="math notranslate nohighlight">\(U^T\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-6">
+<span class="eqno">(2.1.6)<a class="headerlink" href="#equation-chapter-pca-index-6" title="Permalink to this equation">¶</a></span>\[U^T XX^T U = \Sigma \Sigma^T\]</div>
+<p>Thus:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-7">
+<span class="eqno">(2.1.7)<a class="headerlink" href="#equation-chapter-pca-index-7" title="Permalink to this equation">¶</a></span>\[U^T X = \Sigma V^T\]</div>
+<p>Taking the transpose:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-8">
+<span class="eqno">(2.1.8)<a class="headerlink" href="#equation-chapter-pca-index-8" title="Permalink to this equation">¶</a></span>\[X^T U = V \Sigma^T\]</div>
+<p>Now, multiplying both sides by <span class="math notranslate nohighlight">\(\left(\Sigma^T\right)^{-1}\)</span> from
+the right:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-9">
+<span class="eqno">(2.1.9)<a class="headerlink" href="#equation-chapter-pca-index-9" title="Permalink to this equation">¶</a></span>\[X^T U \left(\Sigma^T\right)^{-1} = V\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-10">
+<span class="eqno">(2.1.10)<a class="headerlink" href="#equation-chapter-pca-index-10" title="Permalink to this equation">¶</a></span>\[V = X^T U \left(\Sigma^T\right)^{-1}\]</div>
+<p>Similarly, given <span class="math notranslate nohighlight">\(X^T X V = V \Sigma^T \Sigma\)</span>, we can rearrange
+this equation:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-11">
+<span class="eqno">(2.1.11)<a class="headerlink" href="#equation-chapter-pca-index-11" title="Permalink to this equation">¶</a></span>\[X^T X V = V \Sigma^T \Sigma\]</div>
+<p>Multiplying both sides by <span class="math notranslate nohighlight">\(V^T\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-12">
+<span class="eqno">(2.1.12)<a class="headerlink" href="#equation-chapter-pca-index-12" title="Permalink to this equation">¶</a></span>\[V^T X^T X V = \Sigma^T \Sigma\]</div>
+<p>Thus:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-13">
+<span class="eqno">(2.1.13)<a class="headerlink" href="#equation-chapter-pca-index-13" title="Permalink to this equation">¶</a></span>\[X V = U \Sigma\]</div>
+<p>Now, multiplying both sides by <span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span> from the right:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-14">
+<span class="eqno">(2.1.14)<a class="headerlink" href="#equation-chapter-pca-index-14" title="Permalink to this equation">¶</a></span>\[X V \Sigma^{-1} = U\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-15">
+<span class="eqno">(2.1.15)<a class="headerlink" href="#equation-chapter-pca-index-15" title="Permalink to this equation">¶</a></span>\[U = X V \Sigma^{-1}\]</div>
+<p>In summary, we have derived the following relationships:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-16">
+<span class="eqno">(2.1.16)<a class="headerlink" href="#equation-chapter-pca-index-16" title="Permalink to this equation">¶</a></span>\[V = X^T U \left(\Sigma^T\right)^{-1}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-17">
+<span class="eqno">(2.1.17)<a class="headerlink" href="#equation-chapter-pca-index-17" title="Permalink to this equation">¶</a></span>\[U = X V \Sigma^{-1}\]</div>
+<p>These equations show how the right singular vectors (<span class="math notranslate nohighlight">\(V\)</span>) can be
+expressed in terms of the left singular vectors (<span class="math notranslate nohighlight">\(U\)</span>) and vice
+versa, using the original matrix <span class="math notranslate nohighlight">\(X\)</span> and the diagonal matrix of
+singular values (<span class="math notranslate nohighlight">\(\Sigma\)</span>).</p>
+<p><strong>DUALITY OF PCA</strong> Both U and V can be learned from other components.</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-18">
+<span class="eqno">(2.1.18)<a class="headerlink" href="#equation-chapter-pca-index-18" title="Permalink to this equation">¶</a></span>\[X = U \Sigma V^T\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-19">
+<span class="eqno">(2.1.19)<a class="headerlink" href="#equation-chapter-pca-index-19" title="Permalink to this equation">¶</a></span>\[V = X^T U \left(\Sigma^T\right)^{-1}\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-20">
+<span class="eqno">(2.1.20)<a class="headerlink" href="#equation-chapter-pca-index-20" title="Permalink to this equation">¶</a></span>\[U = X V \Sigma^{-1}\]</div>
+</section>
+<section id="interpretation">
+<h2><span class="section-number">2.2. </span>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Projection to Latent Space</strong>: When we project the original data
+<span class="math notranslate nohighlight">\(X\)</span> onto the latent space defined by <span class="math notranslate nohighlight">\(V\)</span>, we are
+essentially expressing <span class="math notranslate nohighlight">\(X\)</span> in terms of its principal directions
+(eigenvectors of <span class="math notranslate nohighlight">\(X^T X\)</span>). This is the projection <span class="math notranslate nohighlight">\(X V\)</span>.</p></li>
+<li><p><strong>Normalization</strong>: The matrix <span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span> normalizes this
+projection. The resulting product <span class="math notranslate nohighlight">\(X V \Sigma^{-1}\)</span> gives us
+the matrix <span class="math notranslate nohighlight">\(U\)</span>, which contains the left singular vectors of
+<span class="math notranslate nohighlight">\(X\)</span>, or equivalently, the eigenvectors of <span class="math notranslate nohighlight">\(XX^T\)</span>.</p></li>
+</ul>
+<p>The equation <span class="math notranslate nohighlight">\(U = X V \Sigma^{-1}\)</span> encapsulates the idea that the
+left singular vectors (eigenvectors of <span class="math notranslate nohighlight">\(XX^T\)</span>) can be expressed as
+a normalized projection of the original data <span class="math notranslate nohighlight">\(X\)</span> onto the right
+singular vectors (eigenvectors of <span class="math notranslate nohighlight">\(X^T X\)</span>). This provides a bridge
+between the data space and the latent space, showing how the singular
+vectors and the original data matrix are interconnected through the SVD.</p>
+</section>
+<section id="singular-values-vs-eigenvalues">
+<h2><span class="section-number">2.3. </span>Singular Values vs Eigenvalues<a class="headerlink" href="#singular-values-vs-eigenvalues" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><div class="line-block">
+<div class="line"><strong>Singular Values (:math:`sigma_i`)</strong>: Obtained from the <strong>SVD</strong>
+of data matrix <span class="math notranslate nohighlight">\(X\)</span>: <span class="math notranslate nohighlight">\(X = U \Sigma V^T\)</span>. Represents the
+<strong>scale/stretching</strong> of <span class="math notranslate nohighlight">\(X\)</span> along principal directions.</div>
+<div class="line"><em>Intuition:</em> Lengths of axes when a unit sphere is transformed by
+<span class="math notranslate nohighlight">\(X\)</span>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><strong>Eigenvalues (:math:`lambda_i`)</strong>: Obtained from the
+<strong>eigendecomposition</strong> of cross-product matrix <span class="math notranslate nohighlight">\(X^T X\)</span>:
+<span class="math notranslate nohighlight">\(X^T X = V \Lambda V^T\)</span>. Represents the <strong>squared scale</strong> of
+data along principal components.</div>
+<div class="line"><em>Intuition:</em> Squared lengths of the transformed axes (spread of
+data).</div>
+</div>
+</li>
+</ul>
+</section>
+<section id="relationship">
+<h2><span class="section-number">2.4. </span>Relationship<a class="headerlink" href="#relationship" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-21">
+<span class="eqno">(2.4.1)<a class="headerlink" href="#equation-chapter-pca-index-21" title="Permalink to this equation">¶</a></span>\[\lambda_i = \sigma_i^2\]</div>
+<p>Eigenvalues of <span class="math notranslate nohighlight">\(X^T X\)</span> are the <strong>squares</strong> of singular values.</p>
+<p>For a centered data matrix <span class="math notranslate nohighlight">\(X\)</span>, if the covariance matrix is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-22">
+<span class="eqno">(2.4.2)<a class="headerlink" href="#equation-chapter-pca-index-22" title="Permalink to this equation">¶</a></span>\[C = \frac{1}{m-1}X^T X,\]</div>
+<p>then its eigenvalues are</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-23">
+<span class="eqno">(2.4.3)<a class="headerlink" href="#equation-chapter-pca-index-23" title="Permalink to this equation">¶</a></span>\[\lambda_i = \frac{\sigma_i^2}{m-1}.\]</div>
+<p>Thus, the eigenvalues of <span class="math notranslate nohighlight">\(X^T X\)</span> are proportional to the variance
+of the data along the principal components.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Quantity</p></th>
+<th class="head"><p>From matrix</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>Units</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Singular value</p></td>
+<td><p><span class="math notranslate nohighlight">\(X\)</span> (SVD)</p></td>
+<td><p>Sca
+le/stretching</p></td>
+<td><p>Linear
+scale</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eigenvalue</p></td>
+<td><p><span class="math notranslate nohighlight">\(X^T X\)</span></p></td>
+<td><p>Squared scale</p></td>
+<td><p>Squared
+linear
+scale</p></td>
+</tr>
+<tr class="row-even"><td><p>Covariance
+eigenvalue</p></td>
+<td><p>:math
+:<cite>frac{1}{m-1}X^T X</cite></p></td>
+<td><p>Variance
+(spread)</p></td>
+<td><p>Squared
+feature
+units</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="eigenvector-is-a-direction-in-feature-space">
+<h2><span class="section-number">2.5. </span>Eigenvector is a direction in feature space<a class="headerlink" href="#eigenvector-is-a-direction-in-feature-space" title="Permalink to this heading">¶</a></h2>
+<p>In the case where the <strong>data matrix</strong> is <span class="math notranslate nohighlight">\(X\)</span> and the
+<strong>cross-product matrix</strong> is <span class="math notranslate nohighlight">\(A = X^T X\)</span>, the <strong>eigenvector
+:math:`v`</strong> in the equation <span class="math notranslate nohighlight">\(A v = \lambda v\)</span> is a <strong>direction in
+feature space</strong>, not a column of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><strong>Interpretation as a Feature Combination: Each element in an
+eigenvector corresponds to the contribution of each original feature in
+that particular direction. Therefore, you can think of an eigenvector as
+a “recipe” for combining features in a specific proportion, representing
+a dominant pattern in the data.</strong></p>
+</section>
+<section id="lets-break-this-down">
+<h2><span class="section-number">2.6. </span>Let’s break this down:<a class="headerlink" href="#lets-break-this-down" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Cross-Product Matrix :math:`A = X^T X`</strong>:</p>
+<ul class="simple">
+<li><p>Here, <span class="math notranslate nohighlight">\(X\)</span> is your data matrix with dimensions
+<span class="math notranslate nohighlight">\(m \times n\)</span> (where <span class="math notranslate nohighlight">\(m\)</span> is the number of samples and
+<span class="math notranslate nohighlight">\(n\)</span> is the number of features).</p></li>
+<li><p>The matrix <span class="math notranslate nohighlight">\(A = X^T X\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> matrix,
+representing the inner products between features (it’s the <strong>Gram
+matrix</strong> of <span class="math notranslate nohighlight">\(X\)</span>).</p></li>
+</ul>
+</li>
+<li><p><strong>Eigenvectors of :math:`A`</strong>:</p>
+<ul class="simple">
+<li><p>The matrix <span class="math notranslate nohighlight">\(A\)</span> is symmetric and positive semi-definite, so
+it has real, non-negative eigenvalues and corresponding
+eigenvectors.</p></li>
+<li><p>The eigenvectors <span class="math notranslate nohighlight">\(v\)</span> of <span class="math notranslate nohighlight">\(A\)</span> satisfy the equation
+<span class="math notranslate nohighlight">\(A v = \lambda v\)</span>, where <span class="math notranslate nohighlight">\(\lambda\)</span> is the eigenvalue
+corresponding to <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Direction in Feature Space</strong>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(v\)</span> is an eigenvector of the matrix <span class="math notranslate nohighlight">\(A = X^T X\)</span>. Since
+<span class="math notranslate nohighlight">\(A\)</span> is the product of <span class="math notranslate nohighlight">\(X^T\)</span> and <span class="math notranslate nohighlight">\(X\)</span>, the
+eigenvector <span class="math notranslate nohighlight">\(v\)</span> lies in the <strong>feature space</strong>, meaning it is
+a direction in the space spanned by the features.</p></li>
+<li><p>The eigenvectors of <span class="math notranslate nohighlight">\(A\)</span> represent directions in the feature
+space, where the elements of <span class="math notranslate nohighlight">\(v\)</span> give the coefficients for
+combining the original features. Thus, <span class="math notranslate nohighlight">\(v\)</span> indicates a
+direction that corresponds to some combination of the original
+features in <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="key-point">
+<h2><span class="section-number">2.7. </span>Key Point:<a class="headerlink" href="#key-point" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Eigenvectors of :math:`A = X^T X`</strong> are <strong>directions in the
+original feature space</strong>. Each element of the eigenvector gives the
+coefficient of the corresponding feature.</p></li>
+</ul>
+<section id="why-not-columns-of-a">
+<h3><span class="section-number">2.7.1. </span>Why Not Columns of <span class="math notranslate nohighlight">\(A\)</span>?<a class="headerlink" href="#why-not-columns-of-a" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is the <strong>cross-product matrix</strong> of <span class="math notranslate nohighlight">\(X\)</span>, and its
+columns represent relationships between features, not the original
+data features themselves. The eigenvectors <span class="math notranslate nohighlight">\(v\)</span> are calculated
+from the relationships between the features, so they describe
+directions in the feature space of <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
+<li><p>The eigenvector <span class="math notranslate nohighlight">\(v\)</span> of <span class="math notranslate nohighlight">\(A = X^T X\)</span> represents a direction
+in the original feature space, with each component corresponding to
+one of the original features.</p></li>
+</ul>
+</section>
+</section>
+<section id="row-space-vs-column-space">
+<h2><span class="section-number">2.8. </span>ROW space vs COLUMN space<a class="headerlink" href="#row-space-vs-column-space" title="Permalink to this heading">¶</a></h2>
+<p>The main idea is eigen vectors in feature space i.e. Vs are unit length
+and <span class="math notranslate nohighlight">\(X\)</span> transforms these vectors to another coordinate system
+where eigen vectors are sample space i.e. Us and here vectors are scaled
+by sigma.</p>
+<p>The right singular vectors <span class="math notranslate nohighlight">\(V\)</span> correspond to directions in the
+<strong>row space of :math:`X`</strong>, which is a subspace of the feature space.
+The left singular vectors <span class="math notranslate nohighlight">\(U\)</span> correspond to directions in the
+<strong>column space of :math:`X`</strong>, which is a subspace of the sample space.</p>
+</section>
+<section id="understanding-svd-column-space-vs-row-space-and-the-role-of-singular-values">
+<h2><span class="section-number">2.9. </span>Understanding SVD: Column Space vs. Row Space, and the Role of Singular Values<a class="headerlink" href="#understanding-svd-column-space-vs-row-space-and-the-role-of-singular-values" title="Permalink to this heading">¶</a></h2>
+<p>In the Singular Value Decomposition (SVD), a data matrix
+<span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times p}\)</span> is factorized as:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-24">
+<span class="eqno">(2.9.1)<a class="headerlink" href="#equation-chapter-pca-index-24" title="Permalink to this equation">¶</a></span>\[X = U \Sigma V^T\]</div>
+<p>where: - <span class="math notranslate nohighlight">\(U \in \mathbb{R}^{n \times n}\)</span> contains the <strong>left
+singular vectors</strong>, which form an orthonormal basis for the <strong>column
+space</strong> (sample space) of <span class="math notranslate nohighlight">\(X\)</span>, -
+<span class="math notranslate nohighlight">\(V \in \mathbb{R}^{p \times p}\)</span> contains the <strong>right singular
+vectors</strong>, which form an orthonormal basis for the <strong>row space</strong>
+(feature space) of <span class="math notranslate nohighlight">\(X\)</span>, - <span class="math notranslate nohighlight">\(\Sigma\)</span> is a diagonal matrix with
+<strong>singular values</strong> <span class="math notranslate nohighlight">\(\sigma_i\)</span>, indicating the strength/scale
+along each singular direction.</p>
+<p>The <strong>row space</strong> of <span class="math notranslate nohighlight">\(X\)</span> is related to the <strong>eigenvectors of
+:math:`X^T X`</strong> and spans directions in the <strong>feature space</strong>. The
+<strong>column space</strong> of <span class="math notranslate nohighlight">\(X\)</span> corresponds to the <strong>eigenvectors of
+:math:`X X^T`</strong> and spans directions in the <strong>sample space</strong>. Although
+these spaces live in different dimensions, they are intimately connected
+through the SVD — they share the same rank, and their bases are linked
+via singular values.</p>
+<p>A key insight is that each right singular vector <span class="math notranslate nohighlight">\(v_i\)</span> (from the
+feature space) is a <strong>unit vector</strong>, and when it is transformed by
+<span class="math notranslate nohighlight">\(X\)</span>, the result is a vector <span class="math notranslate nohighlight">\(\sigma_i u_i\)</span> in the sample
+space. That is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-index-25">
+<span class="eqno">(2.9.2)<a class="headerlink" href="#equation-chapter-pca-index-25" title="Permalink to this equation">¶</a></span>\[X v_i = \sigma_i u_i\]</div>
+<p>So, while both <span class="math notranslate nohighlight">\(v_i\)</span> and <span class="math notranslate nohighlight">\(u_i\)</span> are unit vectors in their
+respective spaces, the transformation from feature to sample space
+scales the magnitude by the singular value <span class="math notranslate nohighlight">\(\sigma_i\)</span>. This shows
+that singular values encode how much scale/energy is present in each
+direction. For centered data, <span class="math notranslate nohighlight">\(\sigma_i^2\)</span> is proportional to the
+variance of the data along that direction. The mapping preserves
+directionality but stretches the magnitude, effectively turning unit
+spheres in feature space into ellipsoids in sample space.</p>
+<p>In this way, SVD provides a geometrically meaningful link between the
+structure of data in feature space and how it manifests in sample space.</p>
+</section>
+<section id="main-idea">
+<h2><span class="section-number">2.10. </span>Main Idea<a class="headerlink" href="#main-idea" title="Permalink to this heading">¶</a></h2>
+<p>In SVD, the “core” directions live in feature space. Singular values
+determine how important those directions are. Applying the data matrix
+<span class="math notranslate nohighlight">\(X\)</span> to each feature-space direction <span class="math notranslate nohighlight">\(v\)</span> gives you the
+corresponding sample-space direction <span class="math notranslate nohighlight">\(u\)</span>, scaled by how much
+scale/energy is present along <span class="math notranslate nohighlight">\(v\)</span>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="laplacian.html">2.10.1. Laplacian</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#step-by-step-isomap-implementation">2.10.1.1. Step-by-Step Isomap Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#step-1-construct-the-neighborhood-graph">2.10.1.2. Step 1: Construct the Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#step-2-compute-geodesic-distances">2.10.1.3. Step 2: Compute Geodesic Distances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#step-3-apply-classical-mds-i-e-eigenvectors-of-the-centered-gram-matrix">2.10.1.4. Step 3: Apply Classical MDS i.e. eigenvectors of the centered Gram matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#centering-the-data-in-mds">2.10.1.5. Centering the Data in MDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#double-centering-formula">2.10.1.6. Double Centering Formula</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#centering-vs-standardizing">2.10.1.7. Centering vs. Standardizing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#why-use-centering-in-mds">2.10.1.8. Why Use Centering in MDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#isomap-comparison-with-pca-principal-component-analysis">2.10.1.9. ISOMAP comparison with PCA (Principal Component Analysis)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#similarity-matrix-gram-matrix-in-pca">2.10.1.10. Similarity Matrix / Gram Matrix in PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#isomap-isometric-mapping">2.10.1.11. Isomap (Isometric Mapping)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#comparison">2.10.1.12. Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#summary">2.10.1.13. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#isomap-comparison-with-laplacian-eigenmaps">2.10.1.14. ISOMAP comparison with Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#id1">2.10.1.15. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#laplacian-eigenmaps-explanation">2.10.1.16. Laplacian Eigenmaps Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#step-by-step-implementation">2.10.1.17. Step-by-Step Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#objective">2.10.1.18. Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#steps-of-the-algorithm">2.10.1.19. Steps of the Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#synthesis-largest-vs-smallest-eigenvalues">2.10.1.20. Synthesis: Largest vs. Smallest Eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#similarity-gram-matrix-in-laplacian-eigenmaps">2.10.1.21. Similarity/Gram Matrix in Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html#objective-function-derivation">2.10.1.22. Objective Function Derivation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="twodim.html">2.10.2. Two-Dimensional Latent Space</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#the-general-idea">2.10.2.1. The General Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#from-x-to-z">2.10.2.2. From <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#a-unifying-view-of-dimensionality-reduction">2.10.2.3. A Unifying View of Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#pca">2.10.2.4. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#main-idea">2.10.2.5. Main Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#why-the-largest-eigenvalues">2.10.2.6. Why the Largest Eigenvalues?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#pca-and-the-gram-matrix">2.10.2.7. PCA and the Gram Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#isomap">2.10.2.8. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#step-1-construct-a-neighborhood-graph">2.10.2.9. Step 1: Construct a Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#step-2-compute-geodesic-distances">2.10.2.10. Step 2: Compute Geodesic Distances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#step-3-apply-classical-mds">2.10.2.11. Step 3: Apply Classical MDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#isomap-global-vs-local">2.10.2.12. Isomap: Global vs. Local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#laplacian-eigenmaps">2.10.2.13. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#step-1-construct-the-neighborhood-graph">2.10.2.14. Step 1: Construct the Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#step-2-construct-the-weight-matrix">2.10.2.15. Step 2: Construct the Weight Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#intuition-behind-the-heat-kernel">2.10.2.16. Intuition Behind the Heat Kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#step-3-degree-matrix">2.10.2.17. Step 3: Degree Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#step-4-graph-laplacian">2.10.2.18. Step 4: Graph Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#step-5-solve-the-eigenvalue-problem">2.10.2.19. Step 5: Solve the Eigenvalue Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#why-does-laplacian-eigenmaps-use-small-eigenvalues">2.10.2.20. Why Does Laplacian Eigenmaps Use Small Eigenvalues?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#pca-vs-laplacian-eigenmaps">2.10.2.21. PCA vs. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#laplacian-eigenmaps-1">2.10.2.22. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#id2">2.10.2.23. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#the-laplacian-eigenmaps-objective">2.10.2.24. The Laplacian Eigenmaps Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#t-sne">2.10.2.25. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#high-dimensional-similarities-in-t-sne">2.10.2.26. High-Dimensional Similarities in t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#perplexity">2.10.2.27. Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#intuition-for-perplexity">2.10.2.28. Intuition for Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#symmetric-high-dimensional-probabilities">2.10.2.29. Symmetric High-Dimensional Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#low-dimensional-similarities">2.10.2.30. Low-Dimensional Similarities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#t-sne-objective">2.10.2.31. t-SNE Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#t-sne-optimization">2.10.2.32. t-SNE Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#the-t-sne-gradient">2.10.2.33. The t-SNE Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#early-exaggeration">2.10.2.34. Early Exaggeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#umap">2.10.2.35. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#umap-neighborhood-graph">2.10.2.36. UMAP Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#low-dimensional-umap-similarity">2.10.2.37. Low-Dimensional UMAP Similarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#umap-cross-entropy-objective">2.10.2.38. UMAP Cross-Entropy Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#attraction-and-repulsion-in-umap">2.10.2.39. Attraction and Repulsion in UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#attraction">2.10.2.40. Attraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#repulsion">2.10.2.41. Repulsion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#pca-isomap-laplacian-eigenmaps-t-sne-and-umap">2.10.2.42. PCA, Isomap, Laplacian Eigenmaps, t-SNE, and UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#the-eigenvalue-perspective">2.10.2.43. The Eigenvalue Perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#isomap-1">2.10.2.44. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#laplacian-eigenmaps-2">2.10.2.45. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#t-sne-1">2.10.2.46. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#umap-1">2.10.2.47. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#id7">2.10.2.48. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#local-vs-global-structure">2.10.2.49. Local vs. Global Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#isomap-strong-global-geometry">2.10.2.50. Isomap: Strong Global Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#laplacian-eigenmaps-local-structure">2.10.2.51. Laplacian Eigenmaps: Local Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#t-sne-strong-local-neighborhood-preservation">2.10.2.52. t-SNE: Strong Local Neighborhood Preservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#umap-local-structure-with-broader-layout-information">2.10.2.53. UMAP: Local Structure with Broader Layout Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#a-better-global-vs-local-summary">2.10.2.54. A Better Global-vs-Local Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#why-does-k-nn-create-local-structure">2.10.2.55. Why Does k-NN Create Local Structure?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#similarity-vs-distance">2.10.2.56. Similarity vs. Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#why-the-exponential-kernel-works">2.10.2.57. Why the Exponential Kernel Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#why-different-methods-need-different-similarity-definitions">2.10.2.58. Why Different Methods Need Different Similarity Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#isomap-2">2.10.2.59. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#laplacian-eigenmaps-3">2.10.2.60. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#t-sne-2">2.10.2.61. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#umap-2">2.10.2.62. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#id12">2.10.2.63. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#one-n-times-n-matrix-different-meanings">2.10.2.64. One <span class="math notranslate nohighlight">\(N\times N\)</span> Matrix, Different Meanings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#a-unified-view">2.10.2.65. A Unified View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#isomap-3">2.10.2.66. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#laplacian-eigenmaps-4">2.10.2.67. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#t-sne-3">2.10.2.68. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#umap-3">2.10.2.69. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#id17">2.10.2.70. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#a-useful-mental-model">2.10.2.71. A Useful Mental Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#comparison-of-the-five-methods">2.10.2.72. Comparison of the Five Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#important-corrections-to-remember">2.10.2.73. Important Corrections to Remember</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#correction-1-isomap-does-not-simply-use-the-smallest-eigenvalues">2.10.2.74. Correction 1: Isomap does not simply use the smallest eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#correction-2-laplacian-eigenmaps-uses-the-smallest-non-zero-eigenvalues">2.10.2.75. Correction 2: Laplacian Eigenmaps uses the smallest non-zero eigenvalues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#correction-3-t-sne-minimizes-kl-p-q">2.10.2.76. Correction 3: t-SNE minimizes <span class="math notranslate nohighlight">\(KL(P\|Q)\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#correction-4-umap-is-not-simply-laplacian-eigenmaps-with-a-different-kernel">2.10.2.77. Correction 4: UMAP is not simply “Laplacian Eigenmaps with a different kernel”</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#correction-5-umap-does-not-guarantee-global-distance-preservation">2.10.2.78. Correction 5: UMAP does not guarantee global distance preservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html#final-summary">2.10.2.79. Final Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#overview">2.10.3.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#principal-component-analysis-pca">2.10.3.2. Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id1">2.10.3.3. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#how-pca-works">2.10.3.4. How PCA Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#step-1-center-the-data">2.10.3.5. Step 1: Center the Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#step-2-compute-the-covariance-matrix">2.10.3.6. Step 2: Compute the Covariance Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#step-3-eigenvalue-decomposition">2.10.3.7. Step 3: Eigenvalue Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#step-4-select-the-top-components">2.10.3.8. Step 4: Select the Top Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-latent-space">2.10.3.9. PCA Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#linear">2.10.3.10. 1. Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#orthogonal-components">2.10.3.11. 2. Orthogonal Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#ordered-by-variance">2.10.3.12. 3. Ordered by Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#global-linear-structure">2.10.3.13. 4. Global Linear Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-as-reconstruction">2.10.3.14. PCA as Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#autoencoder">2.10.3.15. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id2">2.10.3.16. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#encoder">2.10.3.17. Encoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#latent-space">2.10.3.18. Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#decoder">2.10.3.19. Decoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#training-objective">2.10.3.20. Training Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id3">2.10.3.21. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#linear-vs-non-linear">2.10.3.22. Linear vs. Non-Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca">2.10.3.23. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id4">2.10.3.24. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-connection-linear-autoencoder-and-pca">2.10.3.25. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#non-linear-autoencoder">2.10.3.26. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#latent-space-geometry">2.10.3.27. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#autoencoder-2">2.10.3.28. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id6">2.10.3.29. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.10.3.30. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#autoencoder-3">2.10.3.31. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id8">2.10.3.32. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#comparison-table">2.10.3.33. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.10.3.34. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.10.3.35. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id9">2.10.3.36. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#isomap">2.10.3.37. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#laplacian-eigenmaps">2.10.3.38. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#t-sne">2.10.3.39. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#umap">2.10.3.40. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id10">2.10.3.41. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#the-bigger-picture">2.10.3.42. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#why-use-an-autoencoder">2.10.3.43. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-limitation-of-autoencoders">2.10.3.44. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-core-intuition">2.10.3.45. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-asks">2.10.3.46. PCA asks:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#autoencoder-asks">2.10.3.47. Autoencoder asks:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#d-latent-space-example">2.10.3.48. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#summary">2.10.3.49. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="factor.html">2.10.4. PCA vs. Factor Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#probabilistic-principal-component-analysis-ppca">2.10.4.1. Probabilistic Principal Component Analysis (PPCA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#overview">2.10.4.2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#model">2.10.4.3. Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#characteristics">2.10.4.4. Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#gaussian-matrix-factorization">2.10.4.5. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#model-1">2.10.4.6. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#characteristics-1">2.10.4.7. Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id3">2.10.4.8. Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization">2.10.4.9. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#model-2">2.10.4.10. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#characteristics-2">2.10.4.11. Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id6">2.10.4.12. Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#comparison-of-factor-analysis-methods">2.10.4.13. Comparison of Factor Analysis Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#summary">2.10.4.14. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id7">2.10.4.15. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#model-formulation">2.10.4.16. Model Formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#objective-function">2.10.4.17. Objective Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#solving-using-alternating-least-squares">2.10.4.18. Solving Using Alternating Least Squares</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-1-initialize">2.10.4.19. Step 1: Initialize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-2-optimize-u-given-v">2.10.4.20. Step 2: Optimize <span class="math notranslate nohighlight">\(U\)</span> Given <span class="math notranslate nohighlight">\(V\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-3-optimize-v-given-u">2.10.4.21. Step 3: Optimize <span class="math notranslate nohighlight">\(V\)</span> Given <span class="math notranslate nohighlight">\(U\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-4-iterate">2.10.4.22. Step 4: Iterate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.10.4.23. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#probabilistic-model">2.10.4.24. Probabilistic Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#model-assumptions">2.10.4.25. Model Assumptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#probabilistic-formulation">2.10.4.26. Probabilistic Formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#posterior-distribution">2.10.4.27. Posterior Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#maximizing-the-posterior">2.10.4.28. Maximizing the Posterior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#log-likelihood">2.10.4.29. Log-Likelihood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#priors">2.10.4.30. Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#posterior">2.10.4.31. Posterior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#maximum-a-posteriori-estimation">2.10.4.32. Maximum A Posteriori Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#non-negativity-in-gaussian-matrix-factorization">2.10.4.33. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#projected-gradient-descent">2.10.4.34. Projected Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#probabilistic-model-1">2.10.4.35. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#objective-function-1">2.10.4.36. Probabilistic Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id10">2.10.4.37. Objective Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#multiplicative-updates">2.10.4.38. Multiplicative Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#derivation-of-the-poisson-matrix-factorization-update">2.10.4.39. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id13">2.10.4.40. Probabilistic Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#joint-log-likelihood">2.10.4.41. Joint Log-Likelihood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#gradient-with-respect-to-u-ik">2.10.4.42. Gradient with Respect to <span class="math notranslate nohighlight">\(u_{ik}\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#multiplicative-updates-with-gamma-priors">2.10.4.43. Multiplicative Updates with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.10.4.44. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#variational-inference-with-auxiliary-variables">2.10.4.45. Variational Inference with Auxiliary Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#variational-distribution">2.10.4.46. Variational Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#evidence-lower-bound">2.10.4.47. Evidence Lower Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#expected-log-likelihood">2.10.4.48. Expected Log-Likelihood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#prior-term">2.10.4.49. Prior Term</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#entropy-term">2.10.4.50. Entropy Term</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#variational-updates">2.10.4.51. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#update-for-u-ik">2.10.4.52. Update for <span class="math notranslate nohighlight">\(u_{ik}\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#update-for-v-jk">2.10.4.53. Update for <span class="math notranslate nohighlight">\(v_{jk}\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#solving-for-the-variational-parameters">2.10.4.54. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#expected-rate">2.10.4.55. Expected Rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#complete-variational-inference-algorithm">2.10.4.56. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id14">2.10.4.57. Step 1: Initialize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-2-compute-expected-latent-factors">2.10.4.58. Step 2: Compute Expected Latent Factors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-3-compute-responsibilities">2.10.4.59. Step 3: Compute Responsibilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-4-compute-expected-counts">2.10.4.60. Step 4: Compute Expected Counts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-5-update-u">2.10.4.61. Step 5: Update <span class="math notranslate nohighlight">\(U\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-6-update-v">2.10.4.62. Step 6: Update <span class="math notranslate nohighlight">\(V\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#step-7-repeat">2.10.4.63. Step 7: Repeat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id15">2.10.4.64. Summary</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">2. Principal Component Analysis</a><ul>
+<li><a class="reference internal" href="#relationship-among-x-u-and-v">2.1. Relationship among X,U,and V</a></li>
+<li><a class="reference internal" href="#interpretation">2.2. Interpretation</a></li>
+<li><a class="reference internal" href="#singular-values-vs-eigenvalues">2.3. Singular Values vs Eigenvalues</a></li>
+<li><a class="reference internal" href="#relationship">2.4. Relationship</a></li>
+<li><a class="reference internal" href="#eigenvector-is-a-direction-in-feature-space">2.5. Eigenvector is a direction in feature space</a></li>
+<li><a class="reference internal" href="#lets-break-this-down">2.6. Let’s break this down:</a></li>
+<li><a class="reference internal" href="#key-point">2.7. Key Point:</a><ul>
+<li><a class="reference internal" href="#why-not-columns-of-a">2.7.1. Why Not Columns of <span class="math notranslate nohighlight">\(A\)</span>?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#row-space-vs-column-space">2.8. ROW space vs COLUMN space</a></li>
+<li><a class="reference internal" href="#understanding-svd-column-space-vs-row-space-and-the-role-of-singular-values">2.9. Understanding SVD: Column Space vs. Row Space, and the Role of Singular Values</a></li>
+<li><a class="reference internal" href="#main-idea">2.10. Main Idea</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="../chapter_introduction/index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>1. Introduction</div>
+         </div>
+     </a>
+     <a id="button-next" href="laplacian.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>2.10.1. Laplacian</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

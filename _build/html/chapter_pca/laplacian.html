@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>2.10.1. Laplacian &#8212; Dive into Deep Learning Personalized 1.0.3 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.10.2. Two-Dimensional Latent Space" href="twodim.html" />
+    <link rel="prev" title="2. Principal Component Analysis" href="index.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">2. </span>Principal Component Analysis</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2.10.1. </span>Laplacian</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_pca/laplacian.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Principal Component Analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.10.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html">2.10.2. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#autoencoder">2.10.4. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id3">2.10.5. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-connection-linear-autoencoder-and-pca">2.10.6. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#non-linear-autoencoder">2.10.7. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#latent-space-geometry">2.10.8. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.10.9. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#comparison-table">2.10.10. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.10.11. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.10.12. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#the-bigger-picture">2.10.13. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#why-use-an-autoencoder">2.10.14. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-limitation-of-autoencoders">2.10.15. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-core-intuition">2.10.16. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#d-latent-space-example">2.10.17. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#summary">2.10.18. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html">2.10.19. PCA vs. Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id7">2.10.20. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.10.21. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#non-negativity-in-gaussian-matrix-factorization">2.10.22. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#probabilistic-model-1">2.10.23. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#derivation-of-the-poisson-matrix-factorization-update">2.10.24. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors">2.10.25. Poisson Matrix Factorization with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.10.26. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#variational-updates">2.10.27. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#solving-for-the-variational-parameters">2.10.28. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#complete-variational-inference-algorithm">2.10.29. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id14">2.10.30. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. Probabilistic Matrix Factorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lsa.html">3.1. LSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.2. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_1.html">3.3. LDA 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_2.html">3.4. LDA 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.5. LDA VI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.6. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Principal Component Analysis</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.10.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twodim.html">2.10.2. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#autoencoder">2.10.4. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id3">2.10.5. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-connection-linear-autoencoder-and-pca">2.10.6. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#non-linear-autoencoder">2.10.7. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#latent-space-geometry">2.10.8. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.10.9. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#comparison-table">2.10.10. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.10.11. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.10.12. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#the-bigger-picture">2.10.13. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#why-use-an-autoencoder">2.10.14. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-limitation-of-autoencoders">2.10.15. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-core-intuition">2.10.16. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#d-latent-space-example">2.10.17. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#summary">2.10.18. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html">2.10.19. PCA vs. Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id7">2.10.20. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.10.21. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#non-negativity-in-gaussian-matrix-factorization">2.10.22. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#probabilistic-model-1">2.10.23. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#derivation-of-the-poisson-matrix-factorization-update">2.10.24. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors">2.10.25. Poisson Matrix Factorization with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.10.26. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#variational-updates">2.10.27. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#solving-for-the-variational-parameters">2.10.28. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#complete-variational-inference-algorithm">2.10.29. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id14">2.10.30. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. Probabilistic Matrix Factorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lsa.html">3.1. LSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.2. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_1.html">3.3. LDA 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_2.html">3.4. LDA 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.5. LDA VI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.6. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="laplacian">
+<span id="sec-laplacian"></span><h1><span class="section-number">2.10.1. </span>Laplacian<a class="headerlink" href="#laplacian" title="Permalink to this heading">¶</a><div class="d2l-tabs" style="float:right"><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-pytorch-colab/blob/master/chapter_pca/laplacian.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-pytorch-colab/blob/master/chapter_pca/laplacian.ipynb'); return false;"> <button style="float:right", id="Colab_[pytorch]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [pytorch] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[pytorch]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-en-colab/blob/master/chapter_pca/laplacian.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-en-colab/blob/master/chapter_pca/laplacian.ipynb'); return false;"> <button style="float:right", id="Colab_[mxnet]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [mxnet] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[mxnet]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-jax-colab/blob/master/chapter_pca/laplacian.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-jax-colab/blob/master/chapter_pca/laplacian.ipynb'); return false;"> <button style="float:right", id="Colab_[jax]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [jax] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[jax]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-tensorflow-colab/blob/master/chapter_pca/laplacian.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-tensorflow-colab/blob/master/chapter_pca/laplacian.ipynb'); return false;"> <button style="float:right", id="Colab_[tensorflow]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [tensorflow] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[tensorflow]"> Open the notebook in Colab</div></div></div></h1>
+<section id="step-by-step-isomap-implementation">
+<h2><span class="section-number">2.10.1.1. </span>Step-by-Step Isomap Implementation<a class="headerlink" href="#step-by-step-isomap-implementation" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="step-1-construct-the-neighborhood-graph">
+<h2><span class="section-number">2.10.1.2. </span>Step 1: Construct the Neighborhood Graph<a class="headerlink" href="#step-1-construct-the-neighborhood-graph" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Compute the pairwise distances between data points.</p></li>
+<li><p>Identify the k-nearest neighbors for each point.</p></li>
+<li><p>Construct the graph with nodes representing data points and edges
+representing distances to the k-nearest neighbors.</p></li>
+</ul>
+</section>
+<section id="step-2-compute-geodesic-distances">
+<h2><span class="section-number">2.10.1.3. </span>Step 2: Compute Geodesic Distances<a class="headerlink" href="#step-2-compute-geodesic-distances" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Use the shortest path algorithm (e.g., Floyd-Warshall) to compute the
+shortest paths between all pairs of points.</p></li>
+</ul>
+</section>
+<section id="step-3-apply-classical-mds-i-e-eigenvectors-of-the-centered-gram-matrix">
+<h2><span class="section-number">2.10.1.4. </span>Step 3: Apply Classical MDS i.e. eigenvectors of the centered Gram matrix<a class="headerlink" href="#step-3-apply-classical-mds-i-e-eigenvectors-of-the-centered-gram-matrix" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Center the geodesic distance matrix.</p></li>
+<li><p>Compute the eigenvalues and eigenvectors of the centered Gram matrix.</p></li>
+<li><p>Select the top eigenvectors corresponding to the largest positive
+eigenvalues to get the lower-dimensional embedding.</p></li>
+</ul>
+</section>
+<section id="centering-the-data-in-mds">
+<h2><span class="section-number">2.10.1.5. </span>Centering the Data in MDS<a class="headerlink" href="#centering-the-data-in-mds" title="Permalink to this heading">¶</a></h2>
+<p>In the context of MDS, we start with a distance matrix <span class="math notranslate nohighlight">\(D\)</span>
+containing the pairwise distances between points. We aim to convert this
+distance matrix into an inner product matrix <span class="math notranslate nohighlight">\(K\)</span> (also known as
+the Gram matrix), which is centered. This process involves double
+centering, which is achieved using the centering matrix <span class="math notranslate nohighlight">\(H\)</span>.</p>
+<p>The centering matrix <span class="math notranslate nohighlight">\(H\)</span> is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-0">
+<span class="eqno">(2.10.1)<a class="headerlink" href="#equation-chapter-pca-laplacian-0" title="Permalink to this equation">¶</a></span>\[H = I - \frac{1}{n} \mathbf{1}\mathbf{1}^T\]</div>
+<p>where <span class="math notranslate nohighlight">\(I\)</span> is the <span class="math notranslate nohighlight">\(n \times n\)</span> identity matrix,
+<span class="math notranslate nohighlight">\(\mathbf{1}\)</span> is an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector of ones, and
+<span class="math notranslate nohighlight">\(n\)</span> is the number of data points.</p>
+</section>
+<section id="double-centering-formula">
+<h2><span class="section-number">2.10.1.6. </span>Double Centering Formula<a class="headerlink" href="#double-centering-formula" title="Permalink to this heading">¶</a></h2>
+<p>Given the distance matrix <span class="math notranslate nohighlight">\(D\)</span>, the goal is to obtain the centered
+inner product matrix <span class="math notranslate nohighlight">\(K\)</span> using the formula:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-1">
+<span class="eqno">(2.10.2)<a class="headerlink" href="#equation-chapter-pca-laplacian-1" title="Permalink to this equation">¶</a></span>\[K = -\frac{1}{2} H D^2 H\]</div>
+<p>where <span class="math notranslate nohighlight">\(D^2\)</span> is the element-wise squared distance matrix.</p>
+<p>The centering matrix <span class="math notranslate nohighlight">\(H\)</span> ensures that the mean of each row and
+each column of the resulting Gram matrix is zero. This is necessary for
+recovering the coordinates in classical MDS.</p>
+</section>
+<section id="centering-vs-standardizing">
+<h2><span class="section-number">2.10.1.7. </span>Centering vs. Standardizing<a class="headerlink" href="#centering-vs-standardizing" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p><strong>Centering</strong>: Centering involves subtracting the mean of each column
+from the data. In matrix form, for a data matrix <span class="math notranslate nohighlight">\(X\)</span>, centering
+can be expressed as:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-2">
+<span class="eqno">(2.10.3)<a class="headerlink" href="#equation-chapter-pca-laplacian-2" title="Permalink to this equation">¶</a></span>\[X_{\text{centered}} = HX\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-3">
+<span class="eqno">(2.10.4)<a class="headerlink" href="#equation-chapter-pca-laplacian-3" title="Permalink to this equation">¶</a></span>\[H = I - \frac{1}{n}\mathbf{1}\mathbf{1}^T.\]</div>
+</li>
+<li><p><strong>Standardizing</strong>: Standardizing involves subtracting the mean and
+dividing by the standard deviation of each column. This transforms
+the data to have zero mean and unit variance:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-4">
+<span class="eqno">(2.10.5)<a class="headerlink" href="#equation-chapter-pca-laplacian-4" title="Permalink to this equation">¶</a></span>\[X_{\text{standardized}} = \frac{X - \text{mean}(X)}{\text{std}(X)}\]</div>
+</li>
+</ul>
+</section>
+<section id="why-use-centering-in-mds">
+<h2><span class="section-number">2.10.1.8. </span>Why Use Centering in MDS<a class="headerlink" href="#why-use-centering-in-mds" title="Permalink to this heading">¶</a></h2>
+<p>In MDS, we are concerned with distances and the resulting geometry of
+the data. Double centering converts the squared distance matrix into a
+centered Gram matrix. This is essential for recovering the coordinates
+in lower-dimensional space.</p>
+<p>Standardizing is not part of classical MDS because it changes the scale
+of the original features and therefore changes the distances.</p>
+<p>When using dimension reduction techniques like PCA (Principal Component
+Analysis) and Isomap, both methods involve the use of similarity or Gram
+matrices, but they do so in different ways and for different purposes.
+Here’s a comparison:</p>
+</section>
+<section id="isomap-comparison-with-pca-principal-component-analysis">
+<h2><span class="section-number">2.10.1.9. </span>ISOMAP comparison with PCA (Principal Component Analysis)<a class="headerlink" href="#isomap-comparison-with-pca-principal-component-analysis" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="similarity-matrix-gram-matrix-in-pca">
+<h2><span class="section-number">2.10.1.10. </span>Similarity Matrix / Gram Matrix in PCA<a class="headerlink" href="#similarity-matrix-gram-matrix-in-pca" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Formation</strong>:</p>
+<ul class="simple">
+<li><p>The data matrix <span class="math notranslate nohighlight">\(X\)</span> is centered by subtracting the mean of
+each feature.</p></li>
+<li><p>The covariance matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> is then calculated as
+<span class="math notranslate nohighlight">\(\Sigma = \frac{1}{n-1} X^T X\)</span>.</p></li>
+<li><p>Alternatively, the Gram matrix <span class="math notranslate nohighlight">\(K\)</span> can be used, which is
+given by <span class="math notranslate nohighlight">\(K = X X^T\)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Purpose</strong>:</p>
+<ul class="simple">
+<li><p>The covariance matrix captures the linear relationships between
+features.</p></li>
+<li><p>Eigenvalue decomposition of the covariance matrix is performed to
+find the principal components, which are the eigenvectors
+corresponding to the largest eigenvalues.</p></li>
+</ul>
+</li>
+<li><p><strong>Interpretation</strong>:</p>
+<ul class="simple">
+<li><p>The Gram matrix in PCA reflects the inner products of the centered
+data points.</p></li>
+<li><p>It provides information about the variance and linear structure of
+the data.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="isomap-isometric-mapping">
+<h2><span class="section-number">2.10.1.11. </span>Isomap (Isometric Mapping)<a class="headerlink" href="#isomap-isometric-mapping" title="Permalink to this heading">¶</a></h2>
+<section id="similarity-matrix-gram-matrix-in-isomap">
+<h3><span class="section-number">2.10.1.11.1. </span>Similarity Matrix / Gram Matrix in Isomap<a class="headerlink" href="#similarity-matrix-gram-matrix-in-isomap" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Formation</strong>:</p>
+<ul class="simple">
+<li><p>Compute the pairwise Euclidean distances between all data points.</p></li>
+<li><p>Construct a neighborhood graph where each data point is connected
+to its k-nearest neighbors.</p></li>
+<li><p>Use the shortest path algorithm (e.g., Floyd-Warshall) to compute
+the geodesic distances between all pairs of points on this graph.</p></li>
+<li><p>Form the geodesic distance matrix <span class="math notranslate nohighlight">\(D\)</span>.</p></li>
+<li><p>Double-center the squared geodesic distance matrix to obtain the
+Gram matrix <span class="math notranslate nohighlight">\(K = -\frac{1}{2} H D^2 H\)</span>, where <span class="math notranslate nohighlight">\(H\)</span> is
+the centering matrix defined as
+<span class="math notranslate nohighlight">\(H = I - \frac{1}{n} \mathbf{1} \mathbf{1}^T\)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong>Purpose</strong>:</p>
+<ul class="simple">
+<li><p>The Gram matrix in Isomap captures the intrinsic geometric
+relationships of the data manifold.</p></li>
+<li><p>Eigenvalue decomposition of this Gram matrix is used to embed the
+data in a lower-dimensional space while preserving the geodesic
+distances.</p></li>
+</ul>
+</li>
+<li><p><strong>Interpretation</strong>:</p>
+<ul class="simple">
+<li><p>The Gram matrix in Isomap reflects the intrinsic geometry of the
+data, focusing on preserving the manifold structure.</p></li>
+<li><p>It provides a measure of similarity based on geodesic distances,
+rather than direct Euclidean distances.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="comparison">
+<h2><span class="section-number">2.10.1.12. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Linear vs. Non-linear</strong>:</p>
+<ul>
+<li><p><strong>PCA</strong>: Assumes that the data can be well-approximated by a
+linear subspace and captures directions of maximum variance.</p></li>
+<li><p><strong>Isomap</strong>: Captures non-linear relationships by preserving
+geodesic distances on a manifold.</p></li>
+</ul>
+</li>
+<li><p><strong>Type of Similarity</strong>:</p>
+<ul>
+<li><p><strong>PCA</strong>: Similarity is based on covariance or inner products in
+the feature space.</p></li>
+<li><p><strong>Isomap</strong>: Similarity is based on geodesic distances, which
+reflect the shortest paths on the manifold.</p></li>
+</ul>
+</li>
+<li><p><strong>Data Structure</strong>:</p>
+<ul>
+<li><p><strong>PCA</strong>: Suitable for data that can be well-represented in a
+linear subspace.</p></li>
+<li><p><strong>Isomap</strong>: Suitable for data with complex, non-linear manifold
+structures.</p></li>
+</ul>
+</li>
+<li><p><strong>Matrix Computation</strong>:</p>
+<ul>
+<li><p><strong>PCA</strong>: Computes the covariance matrix or Gram matrix directly
+from the centered data matrix.</p></li>
+<li><p><strong>Isomap</strong>: Computes a geodesic distance matrix from a
+neighborhood graph and then converts it into a Gram matrix using
+double-centering.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="summary">
+<h2><span class="section-number">2.10.1.13. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">¶</a></h2>
+<p>Both PCA and Isomap use Gram matrices, but PCA’s matrix is based on
+direct pairwise inner products (or covariance), focusing on linear
+relationships and variance. In contrast, Isomap’s matrix is derived from
+geodesic distances, emphasizing non-linear relationships and the
+manifold’s intrinsic geometry. These differences make PCA more suitable
+for data that is well-approximated by a linear subspace, while Isomap is
+useful for capturing and preserving the structure of non-linear
+manifolds.</p>
+<p>Isomap and Laplacian Eigenmaps are both non-linear dimension reduction
+techniques that preserve the intrinsic geometry of the data, but they do
+so in different ways. Here is a detailed comparison and contrast between
+the two methods:</p>
+</section>
+<section id="isomap-comparison-with-laplacian-eigenmaps">
+<span id="summary-1"></span><h2><span class="section-number">2.10.1.14. </span>ISOMAP comparison with Laplacian Eigenmaps<a class="headerlink" href="#isomap-comparison-with-laplacian-eigenmaps" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Objective</strong>:</p>
+<ul class="simple">
+<li><p><strong>Isomap</strong>: Focuses on preserving global structure by
+approximating geodesic distances.</p></li>
+<li><p><strong>Laplacian Eigenmaps</strong>: Focuses on preserving local structure by
+maintaining local neighborhood relationships.</p></li>
+</ul>
+</li>
+<li><p><strong>Methodology</strong>:</p>
+<ul class="simple">
+<li><p><strong>Isomap</strong>: Utilizes geodesic distances and classical MDS.</p></li>
+<li><p><strong>Laplacian Eigenmaps</strong>: Utilizes the graph Laplacian and
+eigenvalue decomposition.</p></li>
+</ul>
+</li>
+<li><p><strong>Distance Metric</strong>:</p>
+<ul class="simple">
+<li><p><strong>Isomap</strong>: Geodesic distances on the manifold.</p></li>
+<li><p><strong>Laplacian Eigenmaps</strong>: Local neighborhood similarities
+represented by the graph weights and graph Laplacian.</p></li>
+</ul>
+</li>
+<li><p><strong>Computational Complexity</strong>:</p>
+<ul class="simple">
+<li><p><strong>Isomap</strong>: Higher computational complexity due to shortest path
+calculations.</p></li>
+<li><p><strong>Laplacian Eigenmaps</strong>: Generally more computationally efficient
+for sparse neighborhood graphs, since it focuses on local
+structure and the graph Laplacian.</p></li>
+</ul>
+</li>
+<li><p><strong>Strengths</strong>:</p>
+<ul class="simple">
+<li><p><strong>Isomap</strong>: Better at capturing global manifold structure when
+geodesic distances are estimated accurately.</p></li>
+<li><p><strong>Laplacian Eigenmaps</strong>: Better at preserving local neighborhood
+structure.</p></li>
+</ul>
+</li>
+<li><p><strong>Weaknesses</strong>:</p>
+<ul class="simple">
+<li><p><strong>Isomap</strong>: Sensitive to the choice of neighborhood size and the
+accuracy of the estimated geodesic distances.</p></li>
+<li><p><strong>Laplacian Eigenmaps</strong>: May not preserve global distances or the
+global manifold structure as effectively as Isomap.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="id1">
+<h2><span class="section-number">2.10.1.15. </span>Summary<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Isomap</strong> is preferable when the goal is to capture and preserve the
+global structure of a complex, non-linear manifold. It uses geodesic
+distances followed by classical MDS.</p></li>
+<li><p><strong>Laplacian Eigenmaps</strong> are more suitable when the focus is on
+preserving local relationships. They construct a neighborhood graph
+and find an embedding that keeps nearby points close together.</p></li>
+</ul>
+<p>Both methods have their unique strengths and are chosen based on the
+specific requirements of the data and the analysis objectives.</p>
+</section>
+<section id="laplacian-eigenmaps-explanation">
+<h2><span class="section-number">2.10.1.16. </span>Laplacian Eigenmaps Explanation<a class="headerlink" href="#laplacian-eigenmaps-explanation" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="step-by-step-implementation">
+<h2><span class="section-number">2.10.1.17. </span>Step-by-Step Implementation<a class="headerlink" href="#step-by-step-implementation" title="Permalink to this heading">¶</a></h2>
+<p>Laplacian Eigenmaps is a popular technique for non-linear dimensionality
+reduction that focuses on preserving local geometric relationships
+between data points. Here is a detailed explanation of the Laplacian
+Eigenmaps algorithm:</p>
+</section>
+<section id="objective">
+<h2><span class="section-number">2.10.1.18. </span>Objective<a class="headerlink" href="#objective" title="Permalink to this heading">¶</a></h2>
+<p>The main objective of Laplacian Eigenmaps is to preserve the local
+neighborhood structure of the data when projecting it to a
+lower-dimensional space. It does this by constructing a graph where the
+nodes represent data points and the edges represent the similarities
+between the points. The method then uses the properties of the graph to
+find a low-dimensional embedding.</p>
+</section>
+<section id="steps-of-the-algorithm">
+<h2><span class="section-number">2.10.1.19. </span>Steps of the Algorithm<a class="headerlink" href="#steps-of-the-algorithm" title="Permalink to this heading">¶</a></h2>
+<section id="construct-the-neighborhood-graph">
+<h3><span class="section-number">2.10.1.19.1. </span>1. Construct the Neighborhood Graph<a class="headerlink" href="#construct-the-neighborhood-graph" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Input</strong>: Data matrix <span class="math notranslate nohighlight">\(X\)</span> with <span class="math notranslate nohighlight">\(n\)</span> data points and
+<span class="math notranslate nohighlight">\(m\)</span> features.</p></li>
+<li><p><strong>Neighborhood Definition</strong>: Determine the neighbors for each data
+point using either <strong>k-nearest neighbors</strong> (each point is connected
+to its <span class="math notranslate nohighlight">\(k\)</span> nearest neighbors) or <strong>:math:`epsilon`-ball</strong>
+(each point is connected to all points within a distance
+<span class="math notranslate nohighlight">\(\epsilon\)</span>).</p></li>
+<li><p><strong>Weight Matrix :math:`W`</strong>: Define a weight matrix <span class="math notranslate nohighlight">\(W\)</span> where
+<span class="math notranslate nohighlight">\(W_{ij}\)</span> represents the weight (similarity) between points
+<span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>. Common choices include:</p>
+<ul class="simple">
+<li><p><strong>Binary weights</strong>: <span class="math notranslate nohighlight">\(W_{ij} = 1\)</span> if <span class="math notranslate nohighlight">\(j\)</span> is a neighbor
+of <span class="math notranslate nohighlight">\(i\)</span>, otherwise <span class="math notranslate nohighlight">\(W_{ij} = 0\)</span>. <em>(Note: Unlike PCA and
+Isomap where pairwise values for all points are calculated, here
+only k-neighbor pairwise values are calculated).</em></p></li>
+<li><p><strong>Heat kernel weights</strong>:
+<span class="math notranslate nohighlight">\(W_{ij} = \exp\left(-\frac{\Vert{}x_i - x_j\Vert{}^2}{2\sigma^2}\right)\)</span>
+where <span class="math notranslate nohighlight">\(\sigma\)</span> controls the width of the Gaussian kernel.</p></li>
+</ul>
+</li>
+</ol>
+<p>In the context of the heat kernel used in Laplacian Eigenmaps, the
+weight <span class="math notranslate nohighlight">\(w_{ij}\)</span> is calculated as:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-5">
+<span class="eqno">(2.10.6)<a class="headerlink" href="#equation-chapter-pca-laplacian-5" title="Permalink to this equation">¶</a></span>\[w_{ij} = \exp\left(-\frac{\Vert{}x_i - x_j\Vert{}^2}{2\sigma^2}\right)\]</div>
+<p>Here is how the weights behave in terms of distance:</p>
+<ol class="arabic simple">
+<li><p><strong>Small Distance (:math:`Vert{}x_i - x_jVert{}` is small):</strong> When
+the distance between <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span> is very small,
+<span class="math notranslate nohighlight">\(w_{ij} \approx \exp(0) = 1\)</span>. This indicates that the points
+are very similar or close.</p></li>
+<li><p><strong>Large Distance (:math:`Vert{}x_i - x_jVert{}` is large):</strong> When
+the distance between <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span> is large,
+<span class="math notranslate nohighlight">\(w_{ij}\)</span> approaches zero. Therefore, distant points have very
+small weights.</p></li>
+</ol>
+</section>
+<section id="compute-the-graph-laplacian">
+<h3><span class="section-number">2.10.1.19.2. </span>2. Compute the Graph Laplacian<a class="headerlink" href="#compute-the-graph-laplacian" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Degree Matrix :math:`D`</strong>: Construct the degree matrix <span class="math notranslate nohighlight">\(D\)</span>,
+which is a diagonal matrix where <span class="math notranslate nohighlight">\(D_{ii} = \sum_j W_{ij}\)</span>.</p></li>
+<li><p><strong>Laplacian Matrix :math:`L`</strong>: Compute the unnormalized Laplacian
+matrix <span class="math notranslate nohighlight">\(L\)</span> as <span class="math notranslate nohighlight">\(L = D - W\)</span>. Alternatively, the normalized
+Laplacian matrices are
+<span class="math notranslate nohighlight">\(L_{\text{sym}} = I - D^{-\frac{1}{2}} W D^{-\frac{1}{2}}\)</span> or
+<span class="math notranslate nohighlight">\(L_{\text{rw}} = I - D^{-1} W\)</span>.</p></li>
+</ol>
+</section>
+<section id="solve-the-eigenvalue-problem">
+<h3><span class="section-number">2.10.1.19.3. </span>3. Solve the Eigenvalue Problem<a class="headerlink" href="#solve-the-eigenvalue-problem" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Eigenvalue Decomposition</strong>: Solve the generalized eigenvalue
+problem <span class="math notranslate nohighlight">\(L y = \lambda D y\)</span>.</p></li>
+<li><p><strong>Select Eigenvectors</strong>: Choose the eigenvectors corresponding to the
+smallest non-zero eigenvalues. The smallest eigenvalue
+<span class="math notranslate nohighlight">\(\lambda_0 = 0\)</span> corresponds to the trivial solution and is
+ignored. The next <span class="math notranslate nohighlight">\(d\)</span> smallest eigenvalues provide the
+coordinates of the lower-dimensional embedding.</p></li>
+</ol>
+</section>
+<section id="output-the-embedding">
+<h3><span class="section-number">2.10.1.19.4. </span>4. Output the Embedding<a class="headerlink" href="#output-the-embedding" title="Permalink to this heading">¶</a></h3>
+<p>The lower-dimensional representation of the data is given by the matrix
+<span class="math notranslate nohighlight">\(Y = [y_1, y_2, \ldots, y_d]\)</span> formed from the selected
+eigenvectors.</p>
+</section>
+</section>
+<section id="synthesis-largest-vs-smallest-eigenvalues">
+<h2><span class="section-number">2.10.1.20. </span>Synthesis: Largest vs. Smallest Eigenvalues<a class="headerlink" href="#synthesis-largest-vs-smallest-eigenvalues" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PCA</strong>: High eigenvalues indicate directions of significant variance
+(important structure).</p></li>
+<li><p><strong>ISOMAP</strong>: The largest positive eigenvalues of the centered Gram
+matrix correspond to the principal embedding directions. Small or
+negative eigenvalues may indicate that the estimated geodesic
+distances do not correspond exactly to a Euclidean geometry.</p></li>
+<li><p><strong>Laplacian Eigenmaps</strong>: Small eigenvalues correspond to smooth
+variations over the graph and therefore preserve local neighborhood
+structure, while large eigenvalues correspond to higher-frequency
+variations across the graph.</p></li>
+</ul>
+</section>
+<section id="similarity-gram-matrix-in-laplacian-eigenmaps">
+<h2><span class="section-number">2.10.1.21. </span>Similarity/Gram Matrix in Laplacian Eigenmaps<a class="headerlink" href="#similarity-gram-matrix-in-laplacian-eigenmaps" title="Permalink to this heading">¶</a></h2>
+<p>In Laplacian Eigenmaps, the weight matrix <span class="math notranslate nohighlight">\(W\)</span> plays a role
+analogous to the similarity matrix, and the graph Laplacian <span class="math notranslate nohighlight">\(L\)</span> is
+derived from <span class="math notranslate nohighlight">\(W\)</span>. This contrasts with Isomap, which first
+calculates geodesic distances and then uses these to form a Gram matrix.</p>
+</section>
+<section id="objective-function-derivation">
+<h2><span class="section-number">2.10.1.22. </span>Objective Function Derivation<a class="headerlink" href="#objective-function-derivation" title="Permalink to this heading">¶</a></h2>
+<p>The original objective function in Laplacian Eigenmaps is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-6">
+<span class="eqno">(2.10.7)<a class="headerlink" href="#equation-chapter-pca-laplacian-6" title="Permalink to this equation">¶</a></span>\[\sum_{i,j} W_{ij} \Vert{} \mathbf{z}_i - \mathbf{z}_j \Vert{}^2\]</div>
+<p>Expanding the squared Euclidean distance:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-7">
+<span class="eqno">(2.10.8)<a class="headerlink" href="#equation-chapter-pca-laplacian-7" title="Permalink to this equation">¶</a></span>\[\Vert{} \mathbf{z}_i - \mathbf{z}_j \Vert{}^2 = \mathbf{z}_i^T \mathbf{z}_i + \mathbf{z}_j^T \mathbf{z}_j - 2 \mathbf{z}_i^T \mathbf{z}_j\]</div>
+<p>Summing over all pairs <span class="math notranslate nohighlight">\((i,j)\)</span> and combining terms using the
+degree matrix <span class="math notranslate nohighlight">\(D_{ii} = \sum_j W_{ij}\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-8">
+<span class="eqno">(2.10.9)<a class="headerlink" href="#equation-chapter-pca-laplacian-8" title="Permalink to this equation">¶</a></span>\[\sum_{i,j} W_{ij} \Vert{} \mathbf{z}_i - \mathbf{z}_j \Vert{}^2 = 2 \left( \sum_i D_{ii} \mathbf{z}_i^T \mathbf{z}_i - \sum_{i,j} W_{ij} \mathbf{z}_i^T \mathbf{z}_j \right)\]</div>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-9">
+<span class="eqno">(2.10.10)<a class="headerlink" href="#equation-chapter-pca-laplacian-9" title="Permalink to this equation">¶</a></span>\[= 2 \operatorname{tr}(Z^T L Z)\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z\)</span> is the matrix whose rows are the embedded points
+<span class="math notranslate nohighlight">\(\mathbf{z}_i^T\)</span>.</p>
+<p>By minimizing <span class="math notranslate nohighlight">\(\operatorname{tr}(Z^T L Z)\)</span> subject to the
+normalization constraint</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-10">
+<span class="eqno">(2.10.11)<a class="headerlink" href="#equation-chapter-pca-laplacian-10" title="Permalink to this equation">¶</a></span>\[Z^T D Z = I,\]</div>
+<p>we obtain the generalized eigenvalue problem</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-laplacian-11">
+<span class="eqno">(2.10.12)<a class="headerlink" href="#equation-chapter-pca-laplacian-11" title="Permalink to this equation">¶</a></span>\[L y = \lambda D y.\]</div>
+<p>The eigenvectors corresponding to the smallest non-zero eigenvalues
+provide the low-dimensional embedding.</p>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">2.10.1. Laplacian</a><ul>
+<li><a class="reference internal" href="#step-by-step-isomap-implementation">2.10.1.1. Step-by-Step Isomap Implementation</a></li>
+<li><a class="reference internal" href="#step-1-construct-the-neighborhood-graph">2.10.1.2. Step 1: Construct the Neighborhood Graph</a></li>
+<li><a class="reference internal" href="#step-2-compute-geodesic-distances">2.10.1.3. Step 2: Compute Geodesic Distances</a></li>
+<li><a class="reference internal" href="#step-3-apply-classical-mds-i-e-eigenvectors-of-the-centered-gram-matrix">2.10.1.4. Step 3: Apply Classical MDS i.e. eigenvectors of the centered Gram matrix</a></li>
+<li><a class="reference internal" href="#centering-the-data-in-mds">2.10.1.5. Centering the Data in MDS</a></li>
+<li><a class="reference internal" href="#double-centering-formula">2.10.1.6. Double Centering Formula</a></li>
+<li><a class="reference internal" href="#centering-vs-standardizing">2.10.1.7. Centering vs. Standardizing</a></li>
+<li><a class="reference internal" href="#why-use-centering-in-mds">2.10.1.8. Why Use Centering in MDS</a></li>
+<li><a class="reference internal" href="#isomap-comparison-with-pca-principal-component-analysis">2.10.1.9. ISOMAP comparison with PCA (Principal Component Analysis)</a></li>
+<li><a class="reference internal" href="#similarity-matrix-gram-matrix-in-pca">2.10.1.10. Similarity Matrix / Gram Matrix in PCA</a></li>
+<li><a class="reference internal" href="#isomap-isometric-mapping">2.10.1.11. Isomap (Isometric Mapping)</a><ul>
+<li><a class="reference internal" href="#similarity-matrix-gram-matrix-in-isomap">2.10.1.11.1. Similarity Matrix / Gram Matrix in Isomap</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comparison">2.10.1.12. Comparison</a></li>
+<li><a class="reference internal" href="#summary">2.10.1.13. Summary</a></li>
+<li><a class="reference internal" href="#isomap-comparison-with-laplacian-eigenmaps">2.10.1.14. ISOMAP comparison with Laplacian Eigenmaps</a></li>
+<li><a class="reference internal" href="#id1">2.10.1.15. Summary</a></li>
+<li><a class="reference internal" href="#laplacian-eigenmaps-explanation">2.10.1.16. Laplacian Eigenmaps Explanation</a></li>
+<li><a class="reference internal" href="#step-by-step-implementation">2.10.1.17. Step-by-Step Implementation</a></li>
+<li><a class="reference internal" href="#objective">2.10.1.18. Objective</a></li>
+<li><a class="reference internal" href="#steps-of-the-algorithm">2.10.1.19. Steps of the Algorithm</a><ul>
+<li><a class="reference internal" href="#construct-the-neighborhood-graph">2.10.1.19.1. 1. Construct the Neighborhood Graph</a></li>
+<li><a class="reference internal" href="#compute-the-graph-laplacian">2.10.1.19.2. 2. Compute the Graph Laplacian</a></li>
+<li><a class="reference internal" href="#solve-the-eigenvalue-problem">2.10.1.19.3. 3. Solve the Eigenvalue Problem</a></li>
+<li><a class="reference internal" href="#output-the-embedding">2.10.1.19.4. 4. Output the Embedding</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#synthesis-largest-vs-smallest-eigenvalues">2.10.1.20. Synthesis: Largest vs. Smallest Eigenvalues</a></li>
+<li><a class="reference internal" href="#similarity-gram-matrix-in-laplacian-eigenmaps">2.10.1.21. Similarity/Gram Matrix in Laplacian Eigenmaps</a></li>
+<li><a class="reference internal" href="#objective-function-derivation">2.10.1.22. Objective Function Derivation</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>2. Principal Component Analysis</div>
+         </div>
+     </a>
+     <a id="button-next" href="twodim.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>2.10.2. Two-Dimensional Latent Space</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

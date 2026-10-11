@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>3.8.2. LDA &#8212; Dive into Deep Learning Personalized 1.0.3 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.8.3. ELBO" href="lda_vi.html" />
+    <link rel="prev" title="3.8.1. Probabilistic Latent Semantic Analysis (PLSA)" href="plsa.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">3. </span>LDA</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">3.8.2. </span>LDA</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_lda/lda.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_pca/index.html">2. Principal Component Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/laplacian.html">2.4.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/laplacian.html#laplacian-eigenmaps-explanation">2.4.2. Laplacian Eigenmaps Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html">2.4.3. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#from-x-to-z">2.4.4. From <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-unifying-view-of-dimensionality-reduction">2.4.5. A Unifying View of Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca">2.4.6. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-and-the-gram-matrix">2.4.7. PCA and the Gram Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap">2.4.8. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap-global-vs-local">2.4.9. Isomap: Global vs. Local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#laplacian-eigenmaps">2.4.10. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-1-construct-the-neighborhood-graph">2.4.11. Step 1: Construct the Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-2-construct-the-weight-matrix">2.4.12. Step 2: Construct the Weight Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#intuition-behind-the-heat-kernel">2.4.13. Intuition Behind the Heat Kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-3-degree-matrix">2.4.14. Step 3: Degree Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-4-graph-laplacian">2.4.15. Step 4: Graph Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-5-solve-the-eigenvalue-problem">2.4.16. Step 5: Solve the Eigenvalue Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-does-laplacian-eigenmaps-use-small-eigenvalues">2.4.17. Why Does Laplacian Eigenmaps Use Small Eigenvalues?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-vs-laplacian-eigenmaps">2.4.18. PCA vs. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-laplacian-eigenmaps-objective">2.4.19. The Laplacian Eigenmaps Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne">2.4.20. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#high-dimensional-similarities-in-t-sne">2.4.21. High-Dimensional Similarities in t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#perplexity">2.4.22. Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#intuition-for-perplexity">2.4.23. Intuition for Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#symmetric-high-dimensional-probabilities">2.4.24. Symmetric High-Dimensional Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#low-dimensional-similarities">2.4.25. Low-Dimensional Similarities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-objective">2.4.26. t-SNE Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-optimization">2.4.27. t-SNE Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-t-sne-gradient">2.4.28. The t-SNE Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#early-exaggeration">2.4.29. Early Exaggeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap">2.4.30. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-neighborhood-graph">2.4.31. UMAP Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#low-dimensional-umap-similarity">2.4.32. Low-Dimensional UMAP Similarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-cross-entropy-objective">2.4.33. UMAP Cross-Entropy Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#attraction-and-repulsion-in-umap">2.4.34. Attraction and Repulsion in UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-isomap-laplacian-eigenmaps-t-sne-and-umap">2.4.35. PCA, Isomap, Laplacian Eigenmaps, t-SNE, and UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-eigenvalue-perspective">2.4.36. The Eigenvalue Perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#local-vs-global-structure">2.4.37. Local vs. Global Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap-strong-global-geometry">2.4.38. Isomap: Strong Global Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#laplacian-eigenmaps-local-structure">2.4.39. Laplacian Eigenmaps: Local Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-strong-local-neighborhood-preservation">2.4.40. t-SNE: Strong Local Neighborhood Preservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-local-structure-with-broader-layout-information">2.4.41. UMAP: Local Structure with Broader Layout Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-better-global-vs-local-summary">2.4.42. A Better Global-vs-Local Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-does-k-nn-create-local-structure">2.4.43. Why Does k-NN Create Local Structure?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#similarity-vs-distance">2.4.44. Similarity vs. Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-the-exponential-kernel-works">2.4.45. Why the Exponential Kernel Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-different-methods-need-different-similarity-definitions">2.4.46. Why Different Methods Need Different Similarity Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#one-n-times-n-matrix-different-meanings">2.4.47. One <span class="math notranslate nohighlight">\(N\times N\)</span> Matrix, Different Meanings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-unified-view">2.4.48. A Unified View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-useful-mental-model">2.4.49. A Useful Mental Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#comparison-of-the-five-methods">2.4.50. Comparison of the Five Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#important-corrections-to-remember">2.4.51. Important Corrections to Remember</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#final-summary">2.4.52. Final Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html">2.4.53. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#autoencoder">2.4.54. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#id3">2.4.55. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#important-connection-linear-autoencoder-and-pca">2.4.56. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#non-linear-autoencoder">2.4.57. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#latent-space-geometry">2.4.58. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.4.59. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#comparison-table">2.4.60. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.4.61. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.4.62. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#the-bigger-picture">2.4.63. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#why-use-an-autoencoder">2.4.64. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#important-limitation-of-autoencoders">2.4.65. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-vs-autoencoder-core-intuition">2.4.66. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#d-latent-space-example">2.4.67. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#summary">2.4.68. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html">2.4.69. PCA vs. Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#id7">2.4.70. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.4.71. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#non-negativity-in-gaussian-matrix-factorization">2.4.72. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#probabilistic-model-1">2.4.73. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#derivation-of-the-poisson-matrix-factorization-update">2.4.74. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#poisson-matrix-factorization-with-gamma-priors">2.4.75. Poisson Matrix Factorization with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.4.76. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#variational-updates">2.4.77. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#solving-for-the-variational-parameters">2.4.78. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#complete-variational-inference-algorithm">2.4.79. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#id14">2.4.80. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. LDA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plsa.html">3.8.1. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.8.2. LDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lda_vi.html">3.8.3. ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lda_etm.html">3.8.4. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_pca/index.html">2. Principal Component Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/laplacian.html">2.4.1. Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/laplacian.html#laplacian-eigenmaps-explanation">2.4.2. Laplacian Eigenmaps Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html">2.4.3. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#from-x-to-z">2.4.4. From <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-unifying-view-of-dimensionality-reduction">2.4.5. A Unifying View of Dimensionality Reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca">2.4.6. PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-and-the-gram-matrix">2.4.7. PCA and the Gram Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap">2.4.8. Isomap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap-global-vs-local">2.4.9. Isomap: Global vs. Local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#laplacian-eigenmaps">2.4.10. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-1-construct-the-neighborhood-graph">2.4.11. Step 1: Construct the Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-2-construct-the-weight-matrix">2.4.12. Step 2: Construct the Weight Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#intuition-behind-the-heat-kernel">2.4.13. Intuition Behind the Heat Kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-3-degree-matrix">2.4.14. Step 3: Degree Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-4-graph-laplacian">2.4.15. Step 4: Graph Laplacian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#step-5-solve-the-eigenvalue-problem">2.4.16. Step 5: Solve the Eigenvalue Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-does-laplacian-eigenmaps-use-small-eigenvalues">2.4.17. Why Does Laplacian Eigenmaps Use Small Eigenvalues?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-vs-laplacian-eigenmaps">2.4.18. PCA vs. Laplacian Eigenmaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-laplacian-eigenmaps-objective">2.4.19. The Laplacian Eigenmaps Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne">2.4.20. t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#high-dimensional-similarities-in-t-sne">2.4.21. High-Dimensional Similarities in t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#perplexity">2.4.22. Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#intuition-for-perplexity">2.4.23. Intuition for Perplexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#symmetric-high-dimensional-probabilities">2.4.24. Symmetric High-Dimensional Probabilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#low-dimensional-similarities">2.4.25. Low-Dimensional Similarities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-objective">2.4.26. t-SNE Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-optimization">2.4.27. t-SNE Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-t-sne-gradient">2.4.28. The t-SNE Gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#early-exaggeration">2.4.29. Early Exaggeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap">2.4.30. UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-neighborhood-graph">2.4.31. UMAP Neighborhood Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#low-dimensional-umap-similarity">2.4.32. Low-Dimensional UMAP Similarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-cross-entropy-objective">2.4.33. UMAP Cross-Entropy Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#attraction-and-repulsion-in-umap">2.4.34. Attraction and Repulsion in UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#pca-isomap-laplacian-eigenmaps-t-sne-and-umap">2.4.35. PCA, Isomap, Laplacian Eigenmaps, t-SNE, and UMAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#the-eigenvalue-perspective">2.4.36. The Eigenvalue Perspective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#local-vs-global-structure">2.4.37. Local vs. Global Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#isomap-strong-global-geometry">2.4.38. Isomap: Strong Global Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#laplacian-eigenmaps-local-structure">2.4.39. Laplacian Eigenmaps: Local Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#t-sne-strong-local-neighborhood-preservation">2.4.40. t-SNE: Strong Local Neighborhood Preservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#umap-local-structure-with-broader-layout-information">2.4.41. UMAP: Local Structure with Broader Layout Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-better-global-vs-local-summary">2.4.42. A Better Global-vs-Local Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-does-k-nn-create-local-structure">2.4.43. Why Does k-NN Create Local Structure?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#similarity-vs-distance">2.4.44. Similarity vs. Distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-the-exponential-kernel-works">2.4.45. Why the Exponential Kernel Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#why-different-methods-need-different-similarity-definitions">2.4.46. Why Different Methods Need Different Similarity Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#one-n-times-n-matrix-different-meanings">2.4.47. One <span class="math notranslate nohighlight">\(N\times N\)</span> Matrix, Different Meanings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-unified-view">2.4.48. A Unified View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#a-useful-mental-model">2.4.49. A Useful Mental Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#comparison-of-the-five-methods">2.4.50. Comparison of the Five Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#important-corrections-to-remember">2.4.51. Important Corrections to Remember</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/twodim.html#final-summary">2.4.52. Final Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html">2.4.53. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#autoencoder">2.4.54. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#id3">2.4.55. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#important-connection-linear-autoencoder-and-pca">2.4.56. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#non-linear-autoencoder">2.4.57. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#latent-space-geometry">2.4.58. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.4.59. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#comparison-table">2.4.60. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.4.61. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.4.62. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#the-bigger-picture">2.4.63. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#why-use-an-autoencoder">2.4.64. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#important-limitation-of-autoencoders">2.4.65. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#pca-vs-autoencoder-core-intuition">2.4.66. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#d-latent-space-example">2.4.67. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/autoencoder.html#summary">2.4.68. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html">2.4.69. PCA vs. Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#id7">2.4.70. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.4.71. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#non-negativity-in-gaussian-matrix-factorization">2.4.72. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#probabilistic-model-1">2.4.73. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#derivation-of-the-poisson-matrix-factorization-update">2.4.74. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#poisson-matrix-factorization-with-gamma-priors">2.4.75. Poisson Matrix Factorization with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.4.76. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#variational-updates">2.4.77. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#solving-for-the-variational-parameters">2.4.78. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#complete-variational-inference-algorithm">2.4.79. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_pca/factor.html#id14">2.4.80. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. LDA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plsa.html">3.8.1. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.8.2. LDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lda_vi.html">3.8.3. ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lda_etm.html">3.8.4. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="lda">
+<span id="sec-lda"></span><h1><span class="section-number">3.8.2. </span>LDA<a class="headerlink" href="#lda" title="Permalink to this heading">¶</a><div class="d2l-tabs" style="float:right"><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-pytorch-colab/blob/master/chapter_lda/lda.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-pytorch-colab/blob/master/chapter_lda/lda.ipynb'); return false;"> <button style="float:right", id="Colab_[pytorch]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [pytorch] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[pytorch]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-en-colab/blob/master/chapter_lda/lda.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-en-colab/blob/master/chapter_lda/lda.ipynb'); return false;"> <button style="float:right", id="Colab_[mxnet]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [mxnet] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[mxnet]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-jax-colab/blob/master/chapter_lda/lda.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-jax-colab/blob/master/chapter_lda/lda.ipynb'); return false;"> <button style="float:right", id="Colab_[jax]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [jax] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[jax]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-tensorflow-colab/blob/master/chapter_lda/lda.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-tensorflow-colab/blob/master/chapter_lda/lda.ipynb'); return false;"> <button style="float:right", id="Colab_[tensorflow]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [tensorflow] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[tensorflow]"> Open the notebook in Colab</div></div></div></h1>
+<p>Probabilistic Latent Semantic Analysis (PLSA) and Latent Dirichlet
+Allocation (LDA) are both probabilistic models used for topic modeling,
+which is a method to discover abstract topics in a collection of
+documents. LDA is considered an improvement over PLSA in several
+significant ways. Here’s a comparison of the two and an explanation of
+the improvements introduced by LDA:</p>
+<section id="generative-process">
+<h2><span class="section-number">3.8.2.1. </span>1. <strong>Generative Process</strong><a class="headerlink" href="#generative-process" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PLSA:</strong> PLSA models each document as a mixture of topics, but it
+does not have a generative process for documents. The mixture weights
+are learned directly from the training data, meaning the model does
+not naturally generalize to new, unseen documents. Specifically, PLSA
+does not define a probability distribution over the topic mixtures
+for the entire collection, making it challenging to predict for new
+documents.</p></li>
+<li><p><strong>LDA:</strong> LDA introduces a generative process, where each document is
+assumed to be generated by first choosing a distribution over topics
+(drawn from a Dirichlet distribution), and then each word in the
+document is generated by first choosing a topic (according to the
+document’s distribution over topics) and then choosing a word
+(according to the topic’s distribution over words). This process
+allows LDA to define a complete generative model, including priors,
+making it possible to generalize to new documents.</p></li>
+</ul>
+</section>
+<section id="handling-new-documents">
+<h2><span class="section-number">3.8.2.2. </span>2. <strong>Handling New Documents</strong><a class="headerlink" href="#handling-new-documents" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PLSA:</strong> The model parameters include a topic distribution for each
+document in the training set, but it does not provide a mechanism for
+assigning topics to new, unseen documents because it lacks a prior
+distribution over topics.</p></li>
+<li><p><strong>LDA:</strong> LDA addresses this limitation by using Dirichlet priors for
+the distribution of topics over documents and words over topics. This
+allows LDA to infer the topic distribution for new documents using
+Bayesian inference, making it capable of handling new, unseen
+documents.</p></li>
+</ul>
+</section>
+<section id="parameter-estimation-and-regularization">
+<h2><span class="section-number">3.8.2.3. </span>3. <strong>Parameter Estimation and Regularization</strong><a class="headerlink" href="#parameter-estimation-and-regularization" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PLSA:</strong> PLSA is prone to overfitting because it lacks a prior
+distribution, and the parameters are estimated directly from the data
+without regularization. This can be problematic, especially with
+small datasets.</p></li>
+<li><p><strong>LDA:</strong> LDA incorporates Dirichlet priors, which act as
+regularizers. The Dirichlet prior helps prevent overfitting by
+smoothing the distribution of topics over documents and words over
+topics. This regularization effect makes LDA more robust and capable
+of providing more coherent topics, especially with limited data.</p></li>
+</ul>
+</section>
+<section id="interpretability-and-coherence-of-topics">
+<h2><span class="section-number">3.8.2.4. </span>4. <strong>Interpretability and Coherence of Topics</strong><a class="headerlink" href="#interpretability-and-coherence-of-topics" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PLSA:</strong> Topics generated by PLSA may not always be as coherent or
+interpretable because the model is more prone to overfitting and does
+not include a mechanism for encouraging sparsity in the topic
+distributions.</p></li>
+<li><p><strong>LDA:</strong> The use of Dirichlet priors in LDA encourages sparsity in
+the topic distributions, leading to more interpretable and coherent
+topics. This sparsity implies that each document is typically
+associated with a small number of topics, and each topic is
+characterized by a small number of words with high probabilities,
+making the results more interpretable.</p></li>
+</ul>
+<p>In Latent Dirichlet Allocation (LDA), the estimation of the parameters (
+p(w|z) ) (the probability of word ( w ) given topic ( z )) and ( p(z|d)
+) (the probability of topic ( z ) given document ( d )) involves a
+generative process that includes priors and the use of inference
+algorithms. Here’s a breakdown of how these parameters are estimated in
+LDA:</p>
+</section>
+<section id="generative-model">
+<h2><span class="section-number">3.8.2.5. </span>1. <strong>Generative Model</strong><a class="headerlink" href="#generative-model" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>LDA’s Generative Process:</strong></p>
+<ol class="arabic simple">
+<li><p>For each topic ( z ), draw a distribution over words (
+<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\phi`</span></a>_z ) from a Dirichlet distribution with
+hyperparameter ( <a href="#id3"><span class="problematic" id="id4">:raw-latex:`\beta `): ( :raw-latex:`</span></a>phi`_z
+<a href="#id5"><span class="problematic" id="id6">:raw-latex:`\sim `:raw-latex:`</span></a>text{Dir}`(<a href="#id7"><span class="problematic" id="id8">:raw-latex:`\beta`</span></a>) ).</p></li>
+<li><p>For each document ( d ), draw a distribution over topics (
+<a href="#id9"><span class="problematic" id="id10">:raw-latex:`\theta`</span></a>_d ) from a Dirichlet distribution with
+hyperparameter ( <a href="#id11"><span class="problematic" id="id12">:raw-latex:`\alpha `): ( :raw-latex:`</span></a>theta`_d
+<a href="#id13"><span class="problematic" id="id14">:raw-latex:`\sim `:raw-latex:`</span></a>text{Dir}`(<a href="#id15"><span class="problematic" id="id16">:raw-latex:`\alpha`</span></a>) ).</p></li>
+<li><p>For each word ( w ) in document ( d ):</p>
+<ul>
+<li><p>Draw a topic ( z_{d,n} ) from the multinomial distribution (
+<a href="#id17"><span class="problematic" id="id18">:raw-latex:`\theta`</span></a>_d ).</p></li>
+<li><p>Draw a word ( w_{d,n} ) from the multinomial distribution (
+<a href="#id19"><span class="problematic" id="id20">:raw-latex:`\phi`</span></a><em>{z</em>{d,n}} ).</p></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="parameter-estimation">
+<h2><span class="section-number">3.8.2.6. </span>2. <strong>Parameter Estimation</strong><a class="headerlink" href="#parameter-estimation" title="Permalink to this heading">¶</a></h2>
+<p>The parameters ( p(w|z) ) and ( p(z|d) ) correspond to the distributions
+( <a href="#id21"><span class="problematic" id="id22">:raw-latex:`\phi`</span></a>_z ) and ( <a href="#id23"><span class="problematic" id="id24">:raw-latex:`\theta`</span></a>_d ), respectively.</p>
+<section id="estimating-p-w-z-topic-word-distribution-raw-latex-phi-z">
+<h3><span class="section-number">3.8.2.6.1. </span>**Estimating ( p(w|z) ) (Topic-Word Distribution ( <a href="#id25"><span class="problematic" id="id26">:raw-latex:`\phi`</span></a>_z )):**<a class="headerlink" href="#estimating-p-w-z-topic-word-distribution-raw-latex-phi-z" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>After Inference (Variational Inference or Gibbs Sampling):</strong></p>
+<ul>
+<li><p>For each topic ( z ), the parameter ( <a href="#id27"><span class="problematic" id="id28">:raw-latex:`\phi`</span></a>_z )
+represents the distribution over words. This is estimated from the
+posterior distributions obtained during inference.</p></li>
+<li><p>Using Gibbs Sampling, for instance, the estimate of (
+<a href="#id29"><span class="problematic" id="id30">:raw-latex:`\phi`</span></a>_z ) can be computed as: [ <a href="#id31"><span class="problematic" id="id32">:raw-latex:`\phi`</span></a><em>z
+=
+:raw-latex:`frac{n_{w,z} + beta}{sum_{w’} (n_{w’,z} + beta)}`
+] where ( n</em>{w,z} ) is the count of word ( w ) being assigned to
+topic ( z ) across the corpus, and ( :raw-latex:<a href="#id33"><span class="problematic" id="id34">`</span></a>beta <a href="#id35"><span class="problematic" id="id36">`</span></a>) is the
+hyperparameter of the Dirichlet prior.</p></li>
+</ul>
+</li>
+<li><p><strong>Interpretation:</strong></p>
+<ul>
+<li><p>( <a href="#id37"><span class="problematic" id="id38">:raw-latex:`\phi`</span></a>_z ) is a multinomial distribution over words
+for topic ( z ). The elements of ( <a href="#id39"><span class="problematic" id="id40">:raw-latex:`\phi`</span></a>_z ) give the
+probabilities of observing each word given the topic ( z ).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="estimating-p-z-d-document-topic-distribution-raw-latex-theta-d">
+<h3><span class="section-number">3.8.2.6.2. </span>**Estimating ( p(z|d) ) (Document-Topic Distribution ( <a href="#id41"><span class="problematic" id="id42">:raw-latex:`\theta`</span></a>_d )):**<a class="headerlink" href="#estimating-p-z-d-document-topic-distribution-raw-latex-theta-d" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>After Inference:</strong></p>
+<ul>
+<li><p>For each document ( d ), the parameter ( <a href="#id43"><span class="problematic" id="id44">:raw-latex:`\theta`</span></a>_d )
+represents the distribution over topics. This is inferred using
+the document-specific posterior distributions.</p></li>
+<li><p>Using Gibbs Sampling, for example, the estimate of (
+<a href="#id45"><span class="problematic" id="id46">:raw-latex:`\theta`</span></a>_d ) can be computed as: [
+<a href="#id47"><span class="problematic" id="id48">:raw-latex:`\theta`</span></a><em>d =
+:raw-latex:`frac{n_{z,d} + alpha}{sum_{z’} (n_{z’,d} + alpha)}`
+] where ( n</em>{z,d} ) is the count of words in document ( d )
+being assigned to topic ( z ), and ( :raw-latex:<a href="#id49"><span class="problematic" id="id50">`</span></a>alpha <a href="#id51"><span class="problematic" id="id52">`</span></a>) is the
+hyperparameter of the Dirichlet prior.</p></li>
+</ul>
+</li>
+<li><p><strong>Interpretation:</strong></p>
+<ul>
+<li><p>( <a href="#id53"><span class="problematic" id="id54">:raw-latex:`\theta`</span></a>_d ) is a multinomial distribution over
+topics for document ( d ). The elements of (
+<a href="#id55"><span class="problematic" id="id56">:raw-latex:`\theta`</span></a>_d ) give the probabilities of each topic
+being present in the document.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="summary">
+<h2><span class="section-number">3.8.2.7. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">¶</a></h2>
+<p>In LDA, unlike PLSA, the parameters ( p(w|z) ) and ( p(z|d) ) are not
+directly calculated from data counts alone but are inferred as part of a
+probabilistic model that includes prior distributions. This inference
+involves techniques like Variational Inference or Gibbs Sampling, and
+the use of Dirichlet priors ( <a href="#id57"><span class="problematic" id="id58">:raw-latex:`\alpha `) and (
+:raw-latex:`</span></a>beta <cite>) helps in regularizing these estimates and ensuring
+generalization to new documents. The resulting parameters (
+:raw-latex:</cite>phi`_z ) and ( <a href="#id59"><span class="problematic" id="id60">:raw-latex:`\theta`</span></a>_d ) provide the
+probabilities of words given topics and topics given documents,
+respectively.</p>
+<p>Latent Dirichlet Allocation (LDA) is an extension and improvement over
+Probabilistic Latent Semantic Analysis (PLSA) in several key ways. To
+understand these improvements in terms of formulas, we can compare their
+respective models and the mathematical implications:</p>
+</section>
+<section id="model-definition-and-generative-process">
+<h2><span class="section-number">3.8.2.8. </span>1. <strong>Model Definition and Generative Process</strong><a class="headerlink" href="#model-definition-and-generative-process" title="Permalink to this heading">¶</a></h2>
+<section id="plsa-model">
+<h3><span class="section-number">3.8.2.8.1. </span><strong>PLSA Model:</strong><a class="headerlink" href="#plsa-model" title="Permalink to this heading">¶</a></h3>
+<p>In PLSA, the generative model for a document ( d ) and word ( w )
+involves the following:</p>
+<ul class="simple">
+<li><p><strong>Probability of a word given a topic ( z )</strong>: [ p(w|z) =
+<a href="#id61"><span class="problematic" id="id62">:raw-latex:`\phi`</span></a><em>{w|z} ] where ( :raw-latex:`phi`</em>{w|z} )
+represents the probability of word ( w ) given topic ( z ).</p></li>
+<li><p><strong>Probability of a topic given a document ( d )</strong>: [ p(z|d) =
+<a href="#id63"><span class="problematic" id="id64">:raw-latex:`\theta`</span></a><em>{z|d} ] where ( :raw-latex:`theta`</em>{z|d} )
+represents the probability of topic ( z ) given document ( d ).</p></li>
+<li><p><strong>Joint probability of a word and a document</strong>: [ p(d, w) = p(d)
+<a href="#id65"><span class="problematic" id="id66">:raw-latex:`\sum`</span></a>_{z} p(z|d)p(w|z) ]</p></li>
+</ul>
+<p>PLSA does not define a prior distribution over
+(<a href="#id67"><span class="problematic" id="id68">:raw-latex:`\theta`</span></a><em>{z|d} ) and cannot naturally extend to new
+documents since (:raw-latex:`theta`</em>{z|d} ) is only defined for
+documents in the training set.</p>
+</section>
+<section id="lda-model">
+<h3><span class="section-number">3.8.2.8.2. </span><strong>LDA Model:</strong><a class="headerlink" href="#lda-model" title="Permalink to this heading">¶</a></h3>
+<p>In LDA, the generative model introduces prior distributions over the
+parameters, making the model more robust and capable of generalization.</p>
+<ul class="simple">
+<li><p><strong>Dirichlet Prior for Document-Topic Distribution</strong>: [
+<a href="#id69"><span class="problematic" id="id70">:raw-latex:`\theta`</span></a>_d
+<a href="#id71"><span class="problematic" id="id72">:raw-latex:`\sim `:raw-latex:`</span></a>text{Dir}`(<a href="#id73"><span class="problematic" id="id74">:raw-latex:`\alpha`</span></a>) ]
+where ( <a href="#id75"><span class="problematic" id="id76">:raw-latex:`\theta`</span></a>_d ) is the topic distribution for
+document ( d ), and ( :raw-latex:<a href="#id77"><span class="problematic" id="id78">`</span></a>alpha <a href="#id79"><span class="problematic" id="id80">`</span></a>) is the Dirichlet prior
+parameter.</p></li>
+<li><p><strong>Dirichlet Prior for Topic-Word Distribution</strong>: [
+<a href="#id81"><span class="problematic" id="id82">:raw-latex:`\phi`</span></a>_z
+<a href="#id83"><span class="problematic" id="id84">:raw-latex:`\sim `:raw-latex:`</span></a>text{Dir}`(<a href="#id85"><span class="problematic" id="id86">:raw-latex:`\beta`</span></a>) ] where
+( <a href="#id87"><span class="problematic" id="id88">:raw-latex:`\phi`</span></a>_z ) is the word distribution for topic ( z ),
+and ( :raw-latex:<a href="#id89"><span class="problematic" id="id90">`</span></a>beta <a href="#id91"><span class="problematic" id="id92">`</span></a>) is the Dirichlet prior parameter.</p></li>
+<li><p><strong>Probability of a word given a topic</strong>: [ p(w|z) =
+<a href="#id93"><span class="problematic" id="id94">:raw-latex:`\phi`</span></a>_{w|z} ]</p></li>
+<li><p><strong>Probability of a topic given a document</strong>: [ p(z|d) =
+<a href="#id95"><span class="problematic" id="id96">:raw-latex:`\theta`</span></a>_{z|d} ]</p></li>
+<li><p><strong>Joint probability of a word, topic, and document</strong>: [ p(d, w, z) =
+p(d)p(<a href="#id97"><span class="problematic" id="id98">:raw-latex:`\theta`</span></a>_d)p(z|:raw-latex:<cite>theta</cite>_d)p(w|z,
+<a href="#id99"><span class="problematic" id="id100">:raw-latex:`\phi`</span></a>_z) ]</p></li>
+</ul>
+</section>
+</section>
+<section id="formulaic-differences-and-implications">
+<span id="summary-1"></span><span id="parameter-estimation-and-regularization-1"></span><h2><span class="section-number">3.8.2.9. </span>2. <strong>Formulaic Differences and Implications</strong><a class="headerlink" href="#formulaic-differences-and-implications" title="Permalink to this heading">¶</a></h2>
+<section id="id101">
+<h3><span class="section-number">3.8.2.9.1. </span><strong>Parameter Estimation and Regularization:</strong><a class="headerlink" href="#id101" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>PLSA</strong> directly estimates ( <a href="#id102"><span class="problematic" id="id103">:raw-latex:`\phi`</span></a><em>{w|z} ) and (
+:raw-latex:`theta`</em>{z|d} ) from data without priors, which can
+lead to overfitting.</p></li>
+<li><p><strong>LDA</strong> uses Dirichlet priors ( <a href="#id104"><span class="problematic" id="id105">:raw-latex:`\alpha `) and (
+:raw-latex:`</span></a>beta <cite>) over ( :raw-latex:</cite>theta`_d ) and (
+<a href="#id106"><span class="problematic" id="id107">:raw-latex:`\phi`</span></a><em>z ) respectively: [
+p(:raw-latex:`theta`d|:raw-latex:`alpha`) =
+:raw-latex:`frac{Gamma(sum_{i=1}^K alpha_i)}{prod_{i=1}^K Gamma(alpha_i)}`
+:raw-latex:`prod`{i=1}^K
+:raw-latex:`theta`</em>{d,i}<sup>{:raw-latex:</sup>alpha`i - 1} ] [
+p(<a href="#id108"><span class="problematic" id="id109">:raw-latex:`\phi`</span></a>z|:raw-latex:<cite>beta</cite>) =
+<a href="#id110"><span class="problematic" id="id111">:raw-latex:`\frac{\Gamma(\sum_{i=1}^V \beta_i)}{\prod_{i=1}^V \Gamma(\beta_i)}`</span></a>
+<a href="#id112"><span class="problematic" id="id113">:raw-latex:`\prod`</span></a>{i=1}^V
+<a href="#id114"><span class="problematic" id="id115">:raw-latex:`\phi`</span></a>{z,i}`{<a href="#id116"><span class="problematic" id="id117">:raw-latex:`\beta`</span></a>_i - 1} ] These priors
+act as regularizers, preventing the model from overfitting and
+allowing it to generalize better to new data.</p></li>
+</ul>
+</section>
+<section id="inference-and-generalization">
+<h3><span class="section-number">3.8.2.9.2. </span><strong>Inference and Generalization:</strong><a class="headerlink" href="#inference-and-generalization" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>PLSA</strong> cannot easily handle new documents because it does not
+define a generative process for document-topic distributions.</p></li>
+<li><p><strong>LDA</strong> can infer the topic distribution ( <a href="#id118"><span class="problematic" id="id119">:raw-latex:`\theta`</span></a>_d )
+for new documents using the posterior distribution: [
+p(<a href="#id120"><span class="problematic" id="id121">:raw-latex:`\theta`</span></a><em>d | w_d, :raw-latex:`alpha`,
+:raw-latex:`beta`)
+:raw-latex:`propto `p(:raw-latex:`theta`d|:raw-latex:`alpha`)
+:raw-latex:`prod`{n=1}^{N_d} :raw-latex:`sum`</em>{z=1}^K
+p(z|:raw-latex:<cite>theta</cite>_d) p(w_n|z, <a href="#id122"><span class="problematic" id="id123">:raw-latex:`\beta`</span></a>) ] This is
+possible because of the inclusion of the Dirichlet prior (
+<a href="#id124"><span class="problematic" id="id125">:raw-latex:`\alpha `) on the document-topic distribution (
+:raw-latex:`</span></a>theta`_d ), allowing LDA to extend to new, unseen
+documents.</p></li>
+</ul>
+</section>
+</section>
+<section id="id126">
+<h2><span class="section-number">3.8.2.10. </span>Summary<a class="headerlink" href="#id126" title="Permalink to this heading">¶</a></h2>
+<p>In summary, LDA’s inclusion of Dirichlet priors ( <a href="#id127"><span class="problematic" id="id128">:raw-latex:`\alpha `)
+and ( :raw-latex:`</span></a>beta <a href="#id129"><span class="problematic" id="id130">`</span></a>) provides a more principled framework,
+enabling better regularization and generalization compared to PLSA. The
+explicit modeling of these priors allows LDA to infer the distribution
+of topics for new documents, overcoming a key limitation of PLSA. This
+leads to more robust and interpretable models, especially when dealing
+with sparse data or the need for generalization.</p>
+<p>I’ll provide an overview of simple implementations for PLSA and
+variational inference for LDA using Python. These implementations are
+meant for educational purposes and do not include all optimizations or
+robustness checks.</p>
+</section>
+<section id="model-complexity">
+<h2><span class="section-number">3.8.2.11. </span>1. <strong>Model Complexity</strong><a class="headerlink" href="#model-complexity" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PLSA:</strong> PLSA has a simpler model structure without priors on the
+topic distributions. The EM algorithm used in PLSA involves
+calculating posterior probabilities (<code class="docutils literal notranslate"><span class="pre">p(z|d,w)</span></code>) and updating the
+model parameters (<code class="docutils literal notranslate"><span class="pre">p(w|z)</span></code> and <code class="docutils literal notranslate"><span class="pre">p(z|d)</span></code>). The absence of a prior
+means fewer parameters and simpler updates.</p></li>
+<li><p><strong>LDA:</strong> LDA introduces Dirichlet priors for both the document-topic
+distribution (<code class="docutils literal notranslate"><span class="pre">θ_d</span></code>) and the topic-word distribution (<code class="docutils literal notranslate"><span class="pre">φ_z</span></code>). The
+inference process in LDA, such as Variational Inference or Gibbs
+Sampling, requires iterative updates of the variational parameters
+(<code class="docutils literal notranslate"><span class="pre">γ_d</span></code>, <code class="docutils literal notranslate"><span class="pre">φ_dw</span></code>) or topic assignments for each word. The
+additional complexity of handling priors and performing more
+intricate updates can make LDA computationally more intensive.</p></li>
+</ul>
+</section>
+<section id="inference-algorithm">
+<h2><span class="section-number">3.8.2.12. </span>2. <strong>Inference Algorithm</strong><a class="headerlink" href="#inference-algorithm" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PLSA:</strong> The EM algorithm used in PLSA generally has straightforward
+updates that converge relatively quickly. However, PLSA can suffer
+from overfitting and lacks a probabilistic generative process for new
+documents.</p></li>
+<li><p><strong>LDA:</strong> Variational Inference in LDA involves optimizing variational
+parameters, which can be computationally expensive due to the need
+for calculating digamma functions and ensuring convergence of the
+variational lower bound. Gibbs Sampling, another common inference
+method for LDA, involves iteratively sampling topic assignments for
+each word, which can be slow for large datasets.</p></li>
+</ul>
+</section>
+<section id="convergence-and-scalability">
+<span id="summary-2"></span><h2><span class="section-number">3.8.2.13. </span>3. <strong>Convergence and Scalability</strong><a class="headerlink" href="#convergence-and-scalability" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>PLSA:</strong> Convergence criteria in PLSA are typically based on changes
+in the likelihood function. PLSA may converge faster due to fewer
+parameters being updated.</p></li>
+<li><p><strong>LDA:</strong> Convergence criteria in LDA involve the variational lower
+bound or changes in the distribution of the latent variables. The
+presence of priors and the need to maintain a coherent generative
+model can result in slower convergence, particularly for large
+datasets with many documents and words.</p></li>
+</ul>
+</section>
+<section id="id131">
+<h2><span class="section-number">3.8.2.14. </span><strong>Summary</strong><a class="headerlink" href="#id131" title="Permalink to this heading">¶</a></h2>
+<p>While LDA generally provides a more robust and principled approach to
+topic modeling, especially for handling new documents and providing
+interpretable topics, it can be computationally slower than PLSA due to
+the complexity of the model and the inference algorithms used. The
+specific implementation and optimization techniques can significantly
+impact the relative speed of both methods. For practical applications,
+it is crucial to consider these trade-offs and possibly use efficient
+implementations or approximations to balance accuracy and computational
+efficiency.</p>
+<p>Probabilistic Latent Semantic Analysis (PLSA) and Latent Dirichlet
+Allocation (LDA) are both probabilistic models used for topic modeling,
+which is a method to discover abstract topics in a collection of
+documents. LDA is considered an improvement over PLSA in several
+significant ways. Here’s a comparison of the two and an explanation of
+the improvements introduced by LDA:</p>
+<p>While LDA generally provides a more robust and principled approach to
+topic modeling, especially for handling new documents and providing
+interpretable topics, it can be computationally slower than PLSA due to
+the complexity of the model and the inference algorithms used. The
+specific implementation and optimization techniques can significantly
+impact the relative speed of both methods. For practical applications,
+it is crucial to consider these trade-offs and possibly use efficient
+implementations or approximations to balance accuracy and computational
+efficiency.</p>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">3.8.2. LDA</a><ul>
+<li><a class="reference internal" href="#generative-process">3.8.2.1. 1. <strong>Generative Process</strong></a></li>
+<li><a class="reference internal" href="#handling-new-documents">3.8.2.2. 2. <strong>Handling New Documents</strong></a></li>
+<li><a class="reference internal" href="#parameter-estimation-and-regularization">3.8.2.3. 3. <strong>Parameter Estimation and Regularization</strong></a></li>
+<li><a class="reference internal" href="#interpretability-and-coherence-of-topics">3.8.2.4. 4. <strong>Interpretability and Coherence of Topics</strong></a></li>
+<li><a class="reference internal" href="#generative-model">3.8.2.5. 1. <strong>Generative Model</strong></a></li>
+<li><a class="reference internal" href="#parameter-estimation">3.8.2.6. 2. <strong>Parameter Estimation</strong></a><ul>
+<li><a class="reference internal" href="#estimating-p-w-z-topic-word-distribution-raw-latex-phi-z">3.8.2.6.1. **Estimating ( p(w|z) ) (Topic-Word Distribution ( :raw-latex:`\phi`_z )):**</a></li>
+<li><a class="reference internal" href="#estimating-p-z-d-document-topic-distribution-raw-latex-theta-d">3.8.2.6.2. **Estimating ( p(z|d) ) (Document-Topic Distribution ( :raw-latex:`\theta`_d )):**</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#summary">3.8.2.7. Summary</a></li>
+<li><a class="reference internal" href="#model-definition-and-generative-process">3.8.2.8. 1. <strong>Model Definition and Generative Process</strong></a><ul>
+<li><a class="reference internal" href="#plsa-model">3.8.2.8.1. <strong>PLSA Model:</strong></a></li>
+<li><a class="reference internal" href="#lda-model">3.8.2.8.2. <strong>LDA Model:</strong></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#formulaic-differences-and-implications">3.8.2.9. 2. <strong>Formulaic Differences and Implications</strong></a><ul>
+<li><a class="reference internal" href="#id101">3.8.2.9.1. <strong>Parameter Estimation and Regularization:</strong></a></li>
+<li><a class="reference internal" href="#inference-and-generalization">3.8.2.9.2. <strong>Inference and Generalization:</strong></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id126">3.8.2.10. Summary</a></li>
+<li><a class="reference internal" href="#model-complexity">3.8.2.11. 1. <strong>Model Complexity</strong></a></li>
+<li><a class="reference internal" href="#inference-algorithm">3.8.2.12. 2. <strong>Inference Algorithm</strong></a></li>
+<li><a class="reference internal" href="#convergence-and-scalability">3.8.2.13. 3. <strong>Convergence and Scalability</strong></a></li>
+<li><a class="reference internal" href="#id131">3.8.2.14. <strong>Summary</strong></a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="plsa.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>3.8.1. Probabilistic Latent Semantic Analysis (PLSA)</div>
+         </div>
+     </a>
+     <a id="button-next" href="lda_vi.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>3.8.3. ELBO</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>

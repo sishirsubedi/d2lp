@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>2.10.2. Two-Dimensional Latent Space &#8212; Dive into Deep Learning Personalized 1.0.3 documentation</title>
+
+    <link rel="stylesheet" href="../_static/material-design-lite-1.3.0/material.blue-deep_orange.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx_materialdesign_theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fontawesome/all.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/fonts.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/d2l.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/d2l.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.10.3. PCA vs. Autoencoder" href="autoencoder.html" />
+    <link rel="prev" title="2.10.1. Laplacian" href="laplacian.html" /> 
+  </head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer"><header class="mdl-layout__header mdl-layout__header--waterfall ">
+    <div class="mdl-layout__header-row">
+        
+        <nav class="mdl-navigation breadcrumb">
+            <a class="mdl-navigation__link" href="index.html"><span class="section-number">2. </span>Principal Component Analysis</a><i class="material-icons">navigate_next</i>
+            <a class="mdl-navigation__link is-active"><span class="section-number">2.10.2. </span>Two-Dimensional Latent Space</a>
+        </nav>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+        
+<form class="form-inline pull-sm-right" action="../search.html" method="get">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+        <label id="quick-search-icon" class="mdl-button mdl-js-button mdl-button--icon"  for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="q"  id="waterfall-exp" placeholder="Search" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </div>
+      </div>
+      <div class="mdl-tooltip" data-mdl-for="quick-search-icon">
+      Quick search
+      </div>
+</form>
+        
+<a id="button-show-source"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    href="../_sources/chapter_pca/twodim.rst.txt" rel="nofollow">
+  <i class="material-icons">code</i>
+</a>
+<div class="mdl-tooltip" data-mdl-for="button-show-source">
+Show Source
+</div>
+        </nav>
+    </div>
+    <div class="mdl-layout__header-row header-links">
+      <div class="mdl-layout-spacer"></div>
+      <nav class="mdl-navigation">
+      </nav>
+    </div>
+</header><header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Principal Component Analysis</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html">2.10.1. Laplacian</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.10.2. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#autoencoder">2.10.4. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id3">2.10.5. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-connection-linear-autoencoder-and-pca">2.10.6. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#non-linear-autoencoder">2.10.7. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#latent-space-geometry">2.10.8. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.10.9. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#comparison-table">2.10.10. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.10.11. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.10.12. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#the-bigger-picture">2.10.13. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#why-use-an-autoencoder">2.10.14. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-limitation-of-autoencoders">2.10.15. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-core-intuition">2.10.16. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#d-latent-space-example">2.10.17. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#summary">2.10.18. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html">2.10.19. PCA vs. Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id7">2.10.20. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.10.21. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#non-negativity-in-gaussian-matrix-factorization">2.10.22. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#probabilistic-model-1">2.10.23. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#derivation-of-the-poisson-matrix-factorization-update">2.10.24. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors">2.10.25. Poisson Matrix Factorization with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.10.26. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#variational-updates">2.10.27. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#solving-for-the-variational-parameters">2.10.28. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#complete-variational-inference-algorithm">2.10.29. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id14">2.10.30. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. Probabilistic Matrix Factorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lsa.html">3.1. LSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.2. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_1.html">3.3. LDA 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_2.html">3.4. LDA 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.5. LDA VI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.6. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+        <main class="mdl-layout__content" tabIndex="0">
+
+	<script type="text/javascript" src="../_static/sphinx_materialdesign_theme.js "></script>
+    <header class="mdl-layout__drawer">
+    
+          <!-- Title -->
+      <span class="mdl-layout-title">
+          <a class="title" href="../index.html">
+              <img class="logo" src="../_static/logo-with-text.png" alt="Dive into Deep Learning Personalized"/>
+          </a>
+      </span>
+    
+    
+      <div class="globaltoc">
+        <span class="mdl-layout-title toc">Table Of Contents</span>
+        
+        
+            
+            <nav class="mdl-navigation">
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_introduction/index.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Principal Component Analysis</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="laplacian.html">2.10.1. Laplacian</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.10.2. Two-Dimensional Latent Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html">2.10.3. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#autoencoder">2.10.4. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#id3">2.10.5. PCA vs. Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-connection-linear-autoencoder-and-pca">2.10.6. Important Connection: Linear Autoencoder and PCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#non-linear-autoencoder">2.10.7. Non-Linear Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#latent-space-geometry">2.10.8. Latent Space Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-reconstruction-view">2.10.9. PCA vs. Autoencoder: Reconstruction View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#comparison-table">2.10.10. Comparison Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-and-autoencoder-a-more-important-comparison">2.10.11. PCA and Autoencoder: A More Important Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#relationship-to-previous-dimensionality-reduction-methods">2.10.12. Relationship to Previous Dimensionality Reduction Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#the-bigger-picture">2.10.13. The Bigger Picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#why-use-an-autoencoder">2.10.14. Why Use an Autoencoder?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#important-limitation-of-autoencoders">2.10.15. Important Limitation of Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#pca-vs-autoencoder-core-intuition">2.10.16. PCA vs. Autoencoder: Core Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#d-latent-space-example">2.10.17. 2D Latent Space Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoencoder.html#summary">2.10.18. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html">2.10.19. PCA vs. Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id7">2.10.20. Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#gaussian-matrix-factorization-in-a-probabilistic-context">2.10.21. Gaussian Matrix Factorization in a Probabilistic Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#non-negativity-in-gaussian-matrix-factorization">2.10.22. Non-Negativity in Gaussian Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#probabilistic-model-1">2.10.23. Poisson Matrix Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#derivation-of-the-poisson-matrix-factorization-update">2.10.24. Derivation of the Poisson Matrix Factorization Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors">2.10.25. Poisson Matrix Factorization with Gamma Priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#poisson-matrix-factorization-with-gamma-priors-and-elbo">2.10.26. Poisson Matrix Factorization with Gamma Priors and ELBO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#variational-updates">2.10.27. Variational Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#solving-for-the-variational-parameters">2.10.28. Solving for the Variational Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#complete-variational-inference-algorithm">2.10.29. Complete Variational Inference Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factor.html#id14">2.10.30. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_lda/index.html">3. Probabilistic Matrix Factorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lsa.html">3.1. LSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/plsa.html">3.2. Probabilistic Latent Semantic Analysis (PLSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_1.html">3.3. LDA 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_2.html">3.4. LDA 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_vi.html">3.5. LDA VI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter_lda/lda_etm.html">3.6. LDA ETM</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_references/zreferences.html">References</a></li>
+</ul>
+
+            </nav>
+        
+        </div>
+    
+</header>
+
+    <div class="document">
+        <div class="page-content" role="main">
+        
+  <section id="two-dimensional-latent-space">
+<span id="sec-twodim"></span><h1><span class="section-number">2.10.2. </span>Two-Dimensional Latent Space<a class="headerlink" href="#two-dimensional-latent-space" title="Permalink to this heading">¶</a><div class="d2l-tabs" style="float:right"><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-pytorch-colab/blob/master/chapter_pca/twodim.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-pytorch-colab/blob/master/chapter_pca/twodim.ipynb'); return false;"> <button style="float:right", id="Colab_[pytorch]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [pytorch] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[pytorch]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-en-colab/blob/master/chapter_pca/twodim.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-en-colab/blob/master/chapter_pca/twodim.ipynb'); return false;"> <button style="float:right", id="Colab_[mxnet]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [mxnet] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[mxnet]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-jax-colab/blob/master/chapter_pca/twodim.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-jax-colab/blob/master/chapter_pca/twodim.ipynb'); return false;"> <button style="float:right", id="Colab_[jax]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [jax] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[jax]"> Open the notebook in Colab</div></div><div class="d2l-tabs__tab"><a href="https://colab.research.google.com/github/d2l-ai/d2l-tensorflow-colab/blob/master/chapter_pca/twodim.ipynb" onclick="captureOutboundLink('https://colab.research.google.com/github/d2l-ai/d2l-tensorflow-colab/blob/master/chapter_pca/twodim.ipynb'); return false;"> <button style="float:right", id="Colab_[tensorflow]" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect"> <i class=" fas fa-external-link-alt"></i> Colab [tensorflow] </button></a><div class="mdl-tooltip" data-mdl-for="Colab_[tensorflow]"> Open the notebook in Colab</div></div></div></h1>
+<p>The goal of dimensionality reduction is to take a high-dimensional
+dataset</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-0">
+<span class="eqno">(2.10.13)<a class="headerlink" href="#equation-chapter-pca-twodim-0" title="Permalink to this equation">¶</a></span>\[X = \{x_1,x_2,\ldots,x_n\}, \qquad x_i \in \mathbb{R}^m\]</div>
+<p>and represent each data point using a much smaller number of dimensions:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-1">
+<span class="eqno">(2.10.14)<a class="headerlink" href="#equation-chapter-pca-twodim-1" title="Permalink to this equation">¶</a></span>\[x_i \in \mathbb{R}^m
+\quad\longrightarrow\quad
+z_i \in \mathbb{R}^d,
+\qquad d \ll m.\]</div>
+<p>A particularly useful case is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-2">
+<span class="eqno">(2.10.15)<a class="headerlink" href="#equation-chapter-pca-twodim-2" title="Permalink to this equation">¶</a></span>\[d=2,\]</div>
+<p>because the resulting representation can be directly visualized as a
+two-dimensional scatter plot.</p>
+<p>We will call the original representation the <strong>high-dimensional space</strong>
+and the new representation the <strong>latent space</strong> or <strong>embedding space</strong>.</p>
+<p>The central question is:</p>
+<blockquote>
+<div><p><strong>How should we place the points :math:`z_i` in a low-dimensional
+space so that important relationships between the original points
+:math:`x_i` are preserved?</strong></p>
+</div></blockquote>
+<p>Different dimensionality-reduction methods answer this question
+differently.</p>
+<section id="the-general-idea">
+<h2><span class="section-number">2.10.2.1. </span>The General Idea<a class="headerlink" href="#the-general-idea" title="Permalink to this heading">¶</a></h2>
+<p>Most nonlinear dimensionality-reduction methods can be understood using
+the following pipeline:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-3">
+<span class="eqno">(2.10.16)<a class="headerlink" href="#equation-chapter-pca-twodim-3" title="Permalink to this equation">¶</a></span>\[X
+\longrightarrow
+\text{relationships between points}
+\longrightarrow
+\text{low-dimensional embedding } Z.\]</div>
+<p>The important part is the middle step.</p>
+<p>Instead of directly asking</p>
+<blockquote>
+<div><p>“What are the new coordinates?”</p>
+</div></blockquote>
+<p>we first ask</p>
+<blockquote>
+<div><p>“Which points should be considered similar or close?”</p>
+</div></blockquote>
+<p>This leads naturally to a matrix describing relationships between pairs
+of observations.</p>
+<p>For <span class="math notranslate nohighlight">\(n\)</span> observations, such a matrix has the form</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-4">
+<span class="eqno">(2.10.17)<a class="headerlink" href="#equation-chapter-pca-twodim-4" title="Permalink to this equation">¶</a></span>\[N \times N.\]</div>
+<p>For example,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-5">
+<span class="eqno">(2.10.18)<a class="headerlink" href="#equation-chapter-pca-twodim-5" title="Permalink to this equation">¶</a></span>\[\begin{split}S =
+\begin{bmatrix}
+s_{11} &amp; s_{12} &amp; \cdots &amp; s_{1n}\\
+s_{21} &amp; s_{22} &amp; \cdots &amp; s_{2n}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+s_{n1} &amp; s_{n2} &amp; \cdots &amp; s_{nn}
+\end{bmatrix}.\end{split}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(s_{ij}\)</span> describes the relationship between points
+<span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span>.</p>
+<p>Depending on the method, this matrix may represent:</p>
+<ul class="simple">
+<li><p>covariance,</p></li>
+<li><p>inner products,</p></li>
+<li><p>Euclidean distances,</p></li>
+<li><p>geodesic distances,</p></li>
+<li><p>graph weights,</p></li>
+<li><p>probabilities,</p></li>
+<li><p>or fuzzy neighborhood memberships.</p></li>
+</ul>
+<p>Therefore, a useful common theme is:</p>
+<blockquote>
+<div><p><strong>Many dimensional-reduction methods first construct an
+:math:`Ntimes N` relationship matrix and then find a low-dimensional
+representation that preserves some property of that matrix.</strong></p>
+</div></blockquote>
+<p>However, this statement needs an important qualification.</p>
+<p><strong>PCA does not normally construct an :math:`Ntimes N` similarity
+matrix.</strong> Standard PCA works primarily with an <span class="math notranslate nohighlight">\(m\times m\)</span>
+covariance matrix or directly with the centered data matrix. An
+<span class="math notranslate nohighlight">\(N\times N\)</span> Gram matrix can also be used in a dual formulation.</p>
+</section>
+<hr class="docutils" />
+<section id="from-x-to-z">
+<h2><span class="section-number">2.10.2.2. </span>From <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span><a class="headerlink" href="#from-x-to-z" title="Permalink to this heading">¶</a></h2>
+<p>Let</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-6">
+<span class="eqno">(2.10.19)<a class="headerlink" href="#equation-chapter-pca-twodim-6" title="Permalink to this equation">¶</a></span>\[X \in \mathbb{R}^{n\times m}\]</div>
+<p>contain <span class="math notranslate nohighlight">\(n\)</span> observations and <span class="math notranslate nohighlight">\(m\)</span> features.</p>
+<p>Dimensionality reduction attempts to construct</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-7">
+<span class="eqno">(2.10.20)<a class="headerlink" href="#equation-chapter-pca-twodim-7" title="Permalink to this equation">¶</a></span>\[Z \in \mathbb{R}^{n\times d},
+\qquad d\ll m.\]</div>
+<p>For two-dimensional visualization,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-8">
+<span class="eqno">(2.10.21)<a class="headerlink" href="#equation-chapter-pca-twodim-8" title="Permalink to this equation">¶</a></span>\[\begin{split}Z =
+\begin{bmatrix}
+z_{11} &amp; z_{12}\\
+z_{21} &amp; z_{22}\\
+\vdots &amp; \vdots\\
+z_{n1} &amp; z_{n2}
+\end{bmatrix}.\end{split}\]</div>
+<p>Each row</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-9">
+<span class="eqno">(2.10.22)<a class="headerlink" href="#equation-chapter-pca-twodim-9" title="Permalink to this equation">¶</a></span>\[z_i=(z_{i1},z_{i2})\]</div>
+<p>is the two-dimensional representation of the original point <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
+<p>The methods differ mainly in <strong>what information about :math:`X` is
+preserved when constructing :math:`Z`</strong>.</p>
+</section>
+<section id="a-unifying-view-of-dimensionality-reduction">
+<h2><span class="section-number">2.10.2.3. </span>A Unifying View of Dimensionality Reduction<a class="headerlink" href="#a-unifying-view-of-dimensionality-reduction" title="Permalink to this heading">¶</a></h2>
+<p>We can summarize several important methods using the following idea:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-10">
+<span class="eqno">(2.10.23)<a class="headerlink" href="#equation-chapter-pca-twodim-10" title="Permalink to this equation">¶</a></span>\[X
+\longrightarrow
+\text{relationship representation}
+\longrightarrow
+Z.\]</div>
+<p>The relationship representation might be:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Relationship
+representation</p></th>
+<th class="head"><p>Main idea</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PCA</p></td>
+<td><p>Covariance / Gram
+matrix</p></td>
+<td><p>Preserve directions
+of maximum variance</p></td>
+</tr>
+<tr class="row-odd"><td><p>Isomap</p></td>
+<td><p>Geodesic distance
+matrix</p></td>
+<td><p>Preserve global
+manifold distances</p></td>
+</tr>
+<tr class="row-even"><td><p>Laplacian Eigenmaps</p></td>
+<td><p>Graph weight matrix /
+Laplacian</p></td>
+<td><p>Preserve local
+neighborhoods</p></td>
+</tr>
+<tr class="row-odd"><td><p>t-SNE</p></td>
+<td><p>Probability
+affinities</p></td>
+<td><p>Preserve local
+neighbor
+probabilities</p></td>
+</tr>
+<tr class="row-even"><td><p>UMAP</p></td>
+<td><p>Fuzzy weighted
+neighborhood graph</p></td>
+<td><p>Preserve local
+topology and
+neighborhood
+structure</p></td>
+</tr>
+</tbody>
+</table>
+<p>The important difference is therefore not simply whether a method uses a
+matrix.</p>
+<p>The important difference is:</p>
+<blockquote>
+<div><p><strong>What does the matrix mean, and how is it converted into a
+low-dimensional embedding?</strong></p>
+</div></blockquote>
+</section>
+<section id="pca">
+<h2><span class="section-number">2.10.2.4. </span>PCA<a class="headerlink" href="#pca" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="main-idea">
+<h2><span class="section-number">2.10.2.5. </span>Main Idea<a class="headerlink" href="#main-idea" title="Permalink to this heading">¶</a></h2>
+<p>PCA is a <strong>linear</strong> dimensionality-reduction method.</p>
+<p>The data is first centered:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-11">
+<span class="eqno">(2.10.24)<a class="headerlink" href="#equation-chapter-pca-twodim-11" title="Permalink to this equation">¶</a></span>\[X_c = X-\mathbf{1}\mu^T,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> is the vector of feature means.</p>
+<p>The covariance matrix is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-12">
+<span class="eqno">(2.10.25)<a class="headerlink" href="#equation-chapter-pca-twodim-12" title="Permalink to this equation">¶</a></span>\[\Sigma =
+\frac{1}{n-1}X_c^T X_c.\]</div>
+<p>Thus,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-13">
+<span class="eqno">(2.10.26)<a class="headerlink" href="#equation-chapter-pca-twodim-13" title="Permalink to this equation">¶</a></span>\[\Sigma\in\mathbb{R}^{m\times m}.\]</div>
+<p>We then solve</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-14">
+<span class="eqno">(2.10.27)<a class="headerlink" href="#equation-chapter-pca-twodim-14" title="Permalink to this equation">¶</a></span>\[\Sigma w_k = \lambda_k w_k.\]</div>
+<p>The eigenvectors corresponding to the largest eigenvalues are selected.</p>
+<p>If</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-15">
+<span class="eqno">(2.10.28)<a class="headerlink" href="#equation-chapter-pca-twodim-15" title="Permalink to this equation">¶</a></span>\[W_d =
+\begin{bmatrix}
+w_1&amp;w_2&amp;\cdots&amp;w_d
+\end{bmatrix},\]</div>
+<p>then the low-dimensional representation is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-16">
+<span class="eqno">(2.10.29)<a class="headerlink" href="#equation-chapter-pca-twodim-16" title="Permalink to this equation">¶</a></span>\[Z=X_cW_d.\]</div>
+</section>
+<section id="why-the-largest-eigenvalues">
+<h2><span class="section-number">2.10.2.6. </span>Why the Largest Eigenvalues?<a class="headerlink" href="#why-the-largest-eigenvalues" title="Permalink to this heading">¶</a></h2>
+<p>The eigenvalue <span class="math notranslate nohighlight">\(\lambda_k\)</span> represents the amount of variance
+captured by the corresponding principal direction <span class="math notranslate nohighlight">\(w_k\)</span>.</p>
+<p>Therefore:</p>
+<ul class="simple">
+<li><p>large eigenvalue <span class="math notranslate nohighlight">\(\rightarrow\)</span> large variance,</p></li>
+<li><p>small eigenvalue <span class="math notranslate nohighlight">\(\rightarrow\)</span> small variance.</p></li>
+</ul>
+<p>PCA keeps the directions with the <strong>largest eigenvalues</strong>.</p>
+<p>For example,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-17">
+<span class="eqno">(2.10.30)<a class="headerlink" href="#equation-chapter-pca-twodim-17" title="Permalink to this equation">¶</a></span>\[\lambda_1 &gt; \lambda_2 &gt; \lambda_3 &gt; \cdots\]</div>
+<p>means that the first principal component explains the most variance.</p>
+<p>Therefore, for PCA:</p>
+<blockquote>
+<div><p><strong>Keep the largest eigenvalues.</strong></p>
+</div></blockquote>
+</section>
+<section id="pca-and-the-gram-matrix">
+<h2><span class="section-number">2.10.2.7. </span>PCA and the Gram Matrix<a class="headerlink" href="#pca-and-the-gram-matrix" title="Permalink to this heading">¶</a></h2>
+<p>There is another useful view of PCA.</p>
+<p>For centered data,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-18">
+<span class="eqno">(2.10.31)<a class="headerlink" href="#equation-chapter-pca-twodim-18" title="Permalink to this equation">¶</a></span>\[K=X_cX_c^T\]</div>
+<p>is an <span class="math notranslate nohighlight">\(n\times n\)</span> Gram matrix.</p>
+<p>Its entries are</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-19">
+<span class="eqno">(2.10.32)<a class="headerlink" href="#equation-chapter-pca-twodim-19" title="Permalink to this equation">¶</a></span>\[K_{ij}=x_i^Tx_j.\]</div>
+<p>Thus, <span class="math notranslate nohighlight">\(K_{ij}\)</span> measures the inner-product relationship between
+observations <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>This gives us an important connection:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-20">
+<span class="eqno">(2.10.33)<a class="headerlink" href="#equation-chapter-pca-twodim-20" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{PCA can be expressed using either feature-space covariance or sample-space Gram matrices.}
+}\]</div>
+<p>However, the standard PCA implementation usually works with the
+covariance matrix or SVD rather than explicitly constructing the
+<span class="math notranslate nohighlight">\(n\times n\)</span> Gram matrix.</p>
+</section>
+<section id="isomap">
+<h2><span class="section-number">2.10.2.8. </span>Isomap<a class="headerlink" href="#isomap" title="Permalink to this heading">¶</a></h2>
+<p>Isomap is a nonlinear dimensional-reduction method designed to preserve
+the geometry of a manifold.</p>
+<p>The basic pipeline is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-21">
+<span class="eqno">(2.10.34)<a class="headerlink" href="#equation-chapter-pca-twodim-21" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+\text{k-NN graph}
+\rightarrow
+\text{geodesic distances}
+\rightarrow
+\text{MDS}
+\rightarrow
+Z.\]</div>
+</section>
+<section id="step-1-construct-a-neighborhood-graph">
+<h2><span class="section-number">2.10.2.9. </span>Step 1: Construct a Neighborhood Graph<a class="headerlink" href="#step-1-construct-a-neighborhood-graph" title="Permalink to this heading">¶</a></h2>
+<p>For every point <span class="math notranslate nohighlight">\(x_i\)</span>, identify its <span class="math notranslate nohighlight">\(k\)</span> nearest neighbors.</p>
+<p>Connect neighboring points using edges whose weights are their Euclidean
+distances.</p>
+<p>The graph contains only local connections.</p>
+<p>For example:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-22">
+<span class="eqno">(2.10.35)<a class="headerlink" href="#equation-chapter-pca-twodim-22" title="Permalink to this equation">¶</a></span>\[x_i
+\leftrightarrow
+x_j\]</div>
+<p>if <span class="math notranslate nohighlight">\(x_j\)</span> is one of the neighbors of <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
+</section>
+<section id="step-2-compute-geodesic-distances">
+<h2><span class="section-number">2.10.2.10. </span>Step 2: Compute Geodesic Distances<a class="headerlink" href="#step-2-compute-geodesic-distances" title="Permalink to this heading">¶</a></h2>
+<p>The Euclidean distance between two points may not represent their true
+distance along a curved manifold.</p>
+<p>Instead, Isomap approximates the manifold distance using the shortest
+path through the neighborhood graph.</p>
+<p>For example,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-23">
+<span class="eqno">(2.10.36)<a class="headerlink" href="#equation-chapter-pca-twodim-23" title="Permalink to this equation">¶</a></span>\[x_i
+\rightarrow
+x_a
+\rightarrow
+x_b
+\rightarrow
+x_j\]</div>
+<p>may be the shortest path between <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(x_j\)</span>.</p>
+<p>The resulting distance is called the <strong>geodesic distance</strong>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-24">
+<span class="eqno">(2.10.37)<a class="headerlink" href="#equation-chapter-pca-twodim-24" title="Permalink to this equation">¶</a></span>\[D_{ij}^{geo}.\]</div>
+<p>After computing shortest paths between all pairs, we obtain</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-25">
+<span class="eqno">(2.10.38)<a class="headerlink" href="#equation-chapter-pca-twodim-25" title="Permalink to this equation">¶</a></span>\[D^{geo}\in\mathbb{R}^{n\times n}.\]</div>
+</section>
+<section id="step-3-apply-classical-mds">
+<h2><span class="section-number">2.10.2.11. </span>Step 3: Apply Classical MDS<a class="headerlink" href="#step-3-apply-classical-mds" title="Permalink to this heading">¶</a></h2>
+<p>Classical MDS converts the geodesic distance matrix into a Gram matrix.</p>
+<p>Define the centering matrix</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-26">
+<span class="eqno">(2.10.39)<a class="headerlink" href="#equation-chapter-pca-twodim-26" title="Permalink to this equation">¶</a></span>\[H=I-\frac{1}{n}\mathbf{1}\mathbf{1}^T.\]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-27">
+<span class="eqno">(2.10.40)<a class="headerlink" href="#equation-chapter-pca-twodim-27" title="Permalink to this equation">¶</a></span>\[K=-\frac{1}{2}HD^2H,\]</div>
+<p>where <span class="math notranslate nohighlight">\(D^2\)</span> means the element-wise squared distance matrix.</p>
+<p>We then solve</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-28">
+<span class="eqno">(2.10.41)<a class="headerlink" href="#equation-chapter-pca-twodim-28" title="Permalink to this equation">¶</a></span>\[Kv_k=\lambda_kv_k.\]</div>
+<p>The embedding is constructed using the eigenvectors corresponding to the
+<strong>largest positive eigenvalues</strong>:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-29">
+<span class="eqno">(2.10.42)<a class="headerlink" href="#equation-chapter-pca-twodim-29" title="Permalink to this equation">¶</a></span>\[Z=
+V_d\Lambda_d^{1/2}.\]</div>
+<p>This point is important.</p>
+<blockquote>
+<div><p><strong>Isomap uses classical MDS after computing geodesic distances, and
+classical MDS keeps the largest positive eigenvalues of the centered
+Gram matrix.</strong></p>
+</div></blockquote>
+<p>It is therefore incorrect to say that Isomap simply keeps the smallest
+eigenvalues.</p>
+</section>
+<section id="isomap-global-vs-local">
+<h2><span class="section-number">2.10.2.12. </span>Isomap: Global vs. Local<a class="headerlink" href="#isomap-global-vs-local" title="Permalink to this heading">¶</a></h2>
+<p>Isomap begins with local information because the neighborhood graph is
+constructed using nearby points.</p>
+<p>However, it then computes shortest paths between <strong>all pairs of
+points</strong>.</p>
+<p>Therefore, the final distance matrix contains global relationships:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-30">
+<span class="eqno">(2.10.43)<a class="headerlink" href="#equation-chapter-pca-twodim-30" title="Permalink to this equation">¶</a></span>\[D^{geo}_{ij}\]</div>
+<p>for every pair <span class="math notranslate nohighlight">\((i,j)\)</span>.</p>
+<p>This is why Isomap is generally described as emphasizing <strong>global
+manifold geometry</strong>.</p>
+<p>A useful mental model is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-31">
+<span class="eqno">(2.10.44)<a class="headerlink" href="#equation-chapter-pca-twodim-31" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{local graph}
+\rightarrow
+\text{global shortest paths}
+\rightarrow
+\text{global embedding}
+}\]</div>
+</section>
+<section id="laplacian-eigenmaps">
+<h2><span class="section-number">2.10.2.13. </span>Laplacian Eigenmaps<a class="headerlink" href="#laplacian-eigenmaps" title="Permalink to this heading">¶</a></h2>
+<p>Laplacian Eigenmaps takes a different approach.</p>
+<p>Instead of attempting to preserve distances between every pair of
+points, it focuses primarily on <strong>local neighborhoods</strong>.</p>
+<p>The basic pipeline is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-32">
+<span class="eqno">(2.10.45)<a class="headerlink" href="#equation-chapter-pca-twodim-32" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+\text{k-NN graph}
+\rightarrow
+W
+\rightarrow
+D
+\rightarrow
+L
+\rightarrow
+\text{eigenvectors}
+\rightarrow
+Z.\]</div>
+</section>
+<section id="step-1-construct-the-neighborhood-graph">
+<h2><span class="section-number">2.10.2.14. </span>Step 1: Construct the Neighborhood Graph<a class="headerlink" href="#step-1-construct-the-neighborhood-graph" title="Permalink to this heading">¶</a></h2>
+<p>For each point <span class="math notranslate nohighlight">\(x_i\)</span>, identify its <span class="math notranslate nohighlight">\(k\)</span> nearest neighbors.</p>
+<p>Only these local relationships are represented in the graph.</p>
+<p>This is an important difference from a full pairwise distance matrix.</p>
+</section>
+<section id="step-2-construct-the-weight-matrix">
+<h2><span class="section-number">2.10.2.15. </span>Step 2: Construct the Weight Matrix<a class="headerlink" href="#step-2-construct-the-weight-matrix" title="Permalink to this heading">¶</a></h2>
+<p>Let</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-33">
+<span class="eqno">(2.10.46)<a class="headerlink" href="#equation-chapter-pca-twodim-33" title="Permalink to this equation">¶</a></span>\[W\in\mathbb{R}^{n\times n}\]</div>
+<p>be the graph weight matrix.</p>
+<p>For a binary graph,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-34">
+<span class="eqno">(2.10.47)<a class="headerlink" href="#equation-chapter-pca-twodim-34" title="Permalink to this equation">¶</a></span>\[\begin{split}W_{ij}=
+\begin{cases}
+1,&amp;\text{if }i\text{ and }j\text{ are neighbors},\\
+0,&amp;\text{otherwise}.
+\end{cases}\end{split}\]</div>
+<p>Another common choice is the heat kernel:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-35">
+<span class="eqno">(2.10.48)<a class="headerlink" href="#equation-chapter-pca-twodim-35" title="Permalink to this equation">¶</a></span>\[W_{ij}
+=
+\exp\left(
+-\frac{\|x_i-x_j\|^2}{2\sigma^2}
+\right).\]</div>
+<p>Nearby points receive larger weights.</p>
+<p>Farther points receive smaller weights.</p>
+</section>
+<section id="intuition-behind-the-heat-kernel">
+<h2><span class="section-number">2.10.2.16. </span>Intuition Behind the Heat Kernel<a class="headerlink" href="#intuition-behind-the-heat-kernel" title="Permalink to this heading">¶</a></h2>
+<p>Consider</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-36">
+<span class="eqno">(2.10.49)<a class="headerlink" href="#equation-chapter-pca-twodim-36" title="Permalink to this equation">¶</a></span>\[W_{ij}
+=
+\exp\left(
+-\frac{\|x_i-x_j\|^2}{2\sigma^2}
+\right).\]</div>
+<p>If</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-37">
+<span class="eqno">(2.10.50)<a class="headerlink" href="#equation-chapter-pca-twodim-37" title="Permalink to this equation">¶</a></span>\[\|x_i-x_j\|\approx0,\]</div>
+<p>then</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-38">
+<span class="eqno">(2.10.51)<a class="headerlink" href="#equation-chapter-pca-twodim-38" title="Permalink to this equation">¶</a></span>\[W_{ij}\approx1.\]</div>
+<p>If the distance becomes large,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-39">
+<span class="eqno">(2.10.52)<a class="headerlink" href="#equation-chapter-pca-twodim-39" title="Permalink to this equation">¶</a></span>\[\|x_i-x_j\|\rightarrow\infty,\]</div>
+<p>then</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-40">
+<span class="eqno">(2.10.53)<a class="headerlink" href="#equation-chapter-pca-twodim-40" title="Permalink to this equation">¶</a></span>\[W_{ij}\rightarrow0.\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-41">
+<span class="eqno">(2.10.54)<a class="headerlink" href="#equation-chapter-pca-twodim-41" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{small distance}
+\rightarrow
+\text{large similarity}
+}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-42">
+<span class="eqno">(2.10.55)<a class="headerlink" href="#equation-chapter-pca-twodim-42" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{large distance}
+\rightarrow
+\text{small similarity}.
+}\]</div>
+<p>The parameter <span class="math notranslate nohighlight">\(\sigma\)</span> controls the scale of the kernel.</p>
+<p>A smaller <span class="math notranslate nohighlight">\(\sigma\)</span> gives a more local similarity measure, while a
+larger <span class="math notranslate nohighlight">\(\sigma\)</span> produces a smoother neighborhood.</p>
+</section>
+<section id="step-3-degree-matrix">
+<h2><span class="section-number">2.10.2.17. </span>Step 3: Degree Matrix<a class="headerlink" href="#step-3-degree-matrix" title="Permalink to this heading">¶</a></h2>
+<p>Define the degree of node <span class="math notranslate nohighlight">\(i\)</span> as</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-43">
+<span class="eqno">(2.10.56)<a class="headerlink" href="#equation-chapter-pca-twodim-43" title="Permalink to this equation">¶</a></span>\[D_{ii}=\sum_jW_{ij}.\]</div>
+<p>The degree matrix is therefore</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-44">
+<span class="eqno">(2.10.57)<a class="headerlink" href="#equation-chapter-pca-twodim-44" title="Permalink to this equation">¶</a></span>\[\begin{split}D=
+\begin{bmatrix}
+D_{11}&amp;0&amp;\cdots&amp;0\\
+0&amp;D_{22}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;D_{nn}
+\end{bmatrix}.\end{split}\]</div>
+</section>
+<section id="step-4-graph-laplacian">
+<h2><span class="section-number">2.10.2.18. </span>Step 4: Graph Laplacian<a class="headerlink" href="#step-4-graph-laplacian" title="Permalink to this heading">¶</a></h2>
+<p>The unnormalized graph Laplacian is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-45">
+<span class="eqno">(2.10.58)<a class="headerlink" href="#equation-chapter-pca-twodim-45" title="Permalink to this equation">¶</a></span>\[L=D-W.\]</div>
+<p>Other variants include the normalized Laplacians</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-46">
+<span class="eqno">(2.10.59)<a class="headerlink" href="#equation-chapter-pca-twodim-46" title="Permalink to this equation">¶</a></span>\[L_{\mathrm{sym}}
+=
+I-D^{-1/2}WD^{-1/2}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-47">
+<span class="eqno">(2.10.60)<a class="headerlink" href="#equation-chapter-pca-twodim-47" title="Permalink to this equation">¶</a></span>\[L_{\mathrm{rw}}
+=
+I-D^{-1}W.\]</div>
+</section>
+<section id="step-5-solve-the-eigenvalue-problem">
+<h2><span class="section-number">2.10.2.19. </span>Step 5: Solve the Eigenvalue Problem<a class="headerlink" href="#step-5-solve-the-eigenvalue-problem" title="Permalink to this heading">¶</a></h2>
+<p>For the unnormalized Laplacian formulation, Laplacian Eigenmaps solves
+the generalized eigenvalue problem</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-48">
+<span class="eqno">(2.10.61)<a class="headerlink" href="#equation-chapter-pca-twodim-48" title="Permalink to this equation">¶</a></span>\[Ly=\lambda Dy.\]</div>
+<p>The eigenvalues are ordered as</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-49">
+<span class="eqno">(2.10.62)<a class="headerlink" href="#equation-chapter-pca-twodim-49" title="Permalink to this equation">¶</a></span>\[\lambda_0\leq\lambda_1\leq\lambda_2\leq\cdots.\]</div>
+<p>For a connected graph,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-50">
+<span class="eqno">(2.10.63)<a class="headerlink" href="#equation-chapter-pca-twodim-50" title="Permalink to this equation">¶</a></span>\[\lambda_0=0\]</div>
+<p>corresponds to a trivial constant eigenvector.</p>
+<p>This eigenvector is discarded.</p>
+<p>The embedding uses the eigenvectors corresponding to the next smallest
+eigenvalues:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-51">
+<span class="eqno">(2.10.64)<a class="headerlink" href="#equation-chapter-pca-twodim-51" title="Permalink to this equation">¶</a></span>\[y_1,y_2,\ldots,y_d.\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-52">
+<span class="eqno">(2.10.65)<a class="headerlink" href="#equation-chapter-pca-twodim-52" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{Laplacian Eigenmaps}
+\rightarrow
+\text{smallest non-zero eigenvalues}.
+}\]</div>
+</section>
+<section id="why-does-laplacian-eigenmaps-use-small-eigenvalues">
+<h2><span class="section-number">2.10.2.20. </span>Why Does Laplacian Eigenmaps Use Small Eigenvalues?<a class="headerlink" href="#why-does-laplacian-eigenmaps-use-small-eigenvalues" title="Permalink to this heading">¶</a></h2>
+<p>The objective function is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-53">
+<span class="eqno">(2.10.66)<a class="headerlink" href="#equation-chapter-pca-twodim-53" title="Permalink to this equation">¶</a></span>\[\frac{1}{2}
+\sum_{i,j}
+W_{ij}
+\|z_i-z_j\|^2.\]</div>
+<p>If two points have a large weight <span class="math notranslate nohighlight">\(W_{ij}\)</span>, they are considered
+strongly connected.</p>
+<p>The objective therefore strongly penalizes placing them far apart.</p>
+<p>The method tries to find an embedding where strongly connected points
+remain close.</p>
+<p>This leads to the graph-smoothness interpretation:</p>
+<blockquote>
+<div><p><strong>The embedding should change slowly across strongly connected
+edges.</strong></p>
+</div></blockquote>
+<p>The eigenvectors with small eigenvalues provide the smoothest nontrivial
+functions on the graph.</p>
+</section>
+<section id="pca-vs-laplacian-eigenmaps">
+<span id="pca-1"></span><h2><span class="section-number">2.10.2.21. </span>PCA vs. Laplacian Eigenmaps<a class="headerlink" href="#pca-vs-laplacian-eigenmaps" title="Permalink to this heading">¶</a></h2>
+<p>This gives an important distinction.</p>
+</section>
+<section id="laplacian-eigenmaps-1">
+<span id="id1"></span><h2><span class="section-number">2.10.2.22. </span>PCA<a class="headerlink" href="#laplacian-eigenmaps-1" title="Permalink to this heading">¶</a></h2>
+<p>PCA solves</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-54">
+<span class="eqno">(2.10.67)<a class="headerlink" href="#equation-chapter-pca-twodim-54" title="Permalink to this equation">¶</a></span>\[\Sigma w=\lambda w\]</div>
+<p>and keeps the directions with the <strong>largest eigenvalues</strong>.</p>
+<p>Why?</p>
+<p>Because large eigenvalues correspond to large variance.</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">2.10.2.23. </span>Laplacian Eigenmaps<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
+<p>Laplacian Eigenmaps solves</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-55">
+<span class="eqno">(2.10.68)<a class="headerlink" href="#equation-chapter-pca-twodim-55" title="Permalink to this equation">¶</a></span>\[Ly=\lambda Dy\]</div>
+<p>and keeps the eigenvectors with the <strong>smallest non-zero eigenvalues</strong>.</p>
+<p>Why?</p>
+<p>Because small eigenvalues correspond to smooth functions on the
+neighborhood graph.</p>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-56">
+<span class="eqno">(2.10.69)<a class="headerlink" href="#equation-chapter-pca-twodim-56" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{PCA: largest eigenvalues}
+}\]</div>
+<p>while</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-57">
+<span class="eqno">(2.10.70)<a class="headerlink" href="#equation-chapter-pca-twodim-57" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{Laplacian Eigenmaps: smallest non-zero eigenvalues}
+}\]</div>
+<p>These two statements should not be generalized to all
+dimensional-reduction methods.</p>
+<p>In particular, <strong>Isomap uses classical MDS and therefore keeps the
+largest positive eigenvalues of its centered Gram matrix.</strong></p>
+</section>
+<section id="the-laplacian-eigenmaps-objective">
+<h2><span class="section-number">2.10.2.24. </span>The Laplacian Eigenmaps Objective<a class="headerlink" href="#the-laplacian-eigenmaps-objective" title="Permalink to this heading">¶</a></h2>
+<p>Let</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-58">
+<span class="eqno">(2.10.71)<a class="headerlink" href="#equation-chapter-pca-twodim-58" title="Permalink to this equation">¶</a></span>\[\begin{split}Z=
+\begin{bmatrix}
+z_1^T\\
+z_2^T\\
+\vdots\\
+z_n^T
+\end{bmatrix}.\end{split}\]</div>
+<p>The objective is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-59">
+<span class="eqno">(2.10.72)<a class="headerlink" href="#equation-chapter-pca-twodim-59" title="Permalink to this equation">¶</a></span>\[\sum_{i,j}
+W_{ij}\|z_i-z_j\|^2.\]</div>
+<p>Expanding,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-60">
+<span class="eqno">(2.10.73)<a class="headerlink" href="#equation-chapter-pca-twodim-60" title="Permalink to this equation">¶</a></span>\[\|z_i-z_j\|^2
+=
+z_i^Tz_i+z_j^Tz_j-2z_i^Tz_j.\]</div>
+<p>Using the degree matrix and graph Laplacian, this can be written as</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-61">
+<span class="eqno">(2.10.74)<a class="headerlink" href="#equation-chapter-pca-twodim-61" title="Permalink to this equation">¶</a></span>\[\sum_{i,j}
+W_{ij}\|z_i-z_j\|^2
+=
+2\,\mathrm{Tr}(Z^TLZ).\]</div>
+<p>Thus, Laplacian Eigenmaps can be interpreted as minimizing</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-62">
+<span class="eqno">(2.10.75)<a class="headerlink" href="#equation-chapter-pca-twodim-62" title="Permalink to this equation">¶</a></span>\[\mathrm{Tr}(Z^TLZ)\]</div>
+<p>subject to an appropriate normalization such as</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-63">
+<span class="eqno">(2.10.76)<a class="headerlink" href="#equation-chapter-pca-twodim-63" title="Permalink to this equation">¶</a></span>\[Z^TDZ=I.\]</div>
+<p>This leads to the generalized eigenvalue problem</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-64">
+<span class="eqno">(2.10.77)<a class="headerlink" href="#equation-chapter-pca-twodim-64" title="Permalink to this equation">¶</a></span>\[Ly=\lambda Dy.\]</div>
+</section>
+<section id="t-sne">
+<h2><span class="section-number">2.10.2.25. </span>t-SNE<a class="headerlink" href="#t-sne" title="Permalink to this heading">¶</a></h2>
+<p>t-SNE takes a substantially different approach.</p>
+<p>It does not simply solve an eigenvalue problem.</p>
+<p>Instead, t-SNE constructs:</p>
+<ol class="arabic simple">
+<li><p>similarities in the high-dimensional space,</p></li>
+<li><p>similarities in the low-dimensional space,</p></li>
+<li><p>a loss measuring their disagreement,</p></li>
+<li><p>and then optimizes the low-dimensional coordinates.</p></li>
+</ol>
+<p>The basic idea is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-65">
+<span class="eqno">(2.10.78)<a class="headerlink" href="#equation-chapter-pca-twodim-65" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+P
+\rightarrow
+Z
+\rightarrow
+Q
+\rightarrow
+\text{KL divergence}.\]</div>
+</section>
+<section id="high-dimensional-similarities-in-t-sne">
+<h2><span class="section-number">2.10.2.26. </span>High-Dimensional Similarities in t-SNE<a class="headerlink" href="#high-dimensional-similarities-in-t-sne" title="Permalink to this heading">¶</a></h2>
+<p>For each point <span class="math notranslate nohighlight">\(x_i\)</span>, t-SNE defines a conditional probability</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-66">
+<span class="eqno">(2.10.79)<a class="headerlink" href="#equation-chapter-pca-twodim-66" title="Permalink to this equation">¶</a></span>\[p_{j|i}
+=
+\frac{
+\exp\left(
+-\frac{\|x_i-x_j\|^2}{2\sigma_i^2}
+\right)
+}{
+\sum_{k\neq i}
+\exp\left(
+-\frac{\|x_i-x_k\|^2}{2\sigma_i^2}
+\right)
+}.\]</div>
+<p>This can be interpreted as:</p>
+<blockquote>
+<div><p>If we choose a neighbor of <span class="math notranslate nohighlight">\(x_i\)</span> according to the Gaussian
+similarity, what is the probability that we choose <span class="math notranslate nohighlight">\(x_j\)</span>?</p>
+</div></blockquote>
+<p>The bandwidth <span class="math notranslate nohighlight">\(\sigma_i\)</span> is allowed to vary from point to point.</p>
+</section>
+<section id="perplexity">
+<h2><span class="section-number">2.10.2.27. </span>Perplexity<a class="headerlink" href="#perplexity" title="Permalink to this heading">¶</a></h2>
+<p>The value of <span class="math notranslate nohighlight">\(\sigma_i\)</span> is selected using the <strong>perplexity</strong>
+parameter.</p>
+<p>For point <span class="math notranslate nohighlight">\(i\)</span>, define the Shannon entropy</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-67">
+<span class="eqno">(2.10.80)<a class="headerlink" href="#equation-chapter-pca-twodim-67" title="Permalink to this equation">¶</a></span>\[H(P_i)
+=
+-\sum_j
+p_{j|i}\log_2p_{j|i}.\]</div>
+<p>Perplexity is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-68">
+<span class="eqno">(2.10.81)<a class="headerlink" href="#equation-chapter-pca-twodim-68" title="Permalink to this equation">¶</a></span>\[\operatorname{Perplexity}(P_i)
+=
+2^{H(P_i)}.\]</div>
+<p>The algorithm searches for <span class="math notranslate nohighlight">\(\sigma_i\)</span> such that</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-69">
+<span class="eqno">(2.10.82)<a class="headerlink" href="#equation-chapter-pca-twodim-69" title="Permalink to this equation">¶</a></span>\[2^{H(P_i)}
+\approx
+\text{desired perplexity}.\]</div>
+<p>This search is typically performed using binary search.</p>
+</section>
+<section id="intuition-for-perplexity">
+<h2><span class="section-number">2.10.2.28. </span>Intuition for Perplexity<a class="headerlink" href="#intuition-for-perplexity" title="Permalink to this heading">¶</a></h2>
+<p>Perplexity can be thought of as an <strong>effective neighborhood size</strong>.</p>
+<p>For example, a perplexity of approximately <span class="math notranslate nohighlight">\(30\)</span> means that the
+Gaussian distribution around each point behaves roughly as though the
+point has about <span class="math notranslate nohighlight">\(30\)</span> effective neighbors.</p>
+<p>It is not exactly the same as saying:</p>
+<blockquote>
+<div><p>“Only 30 nearest neighbors are used.”</p>
+</div></blockquote>
+<p>Rather, the Gaussian probabilities are defined over the other points,
+while <span class="math notranslate nohighlight">\(\sigma_i\)</span> is adjusted so that the resulting distribution
+has the desired entropy.</p>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-70">
+<span class="eqno">(2.10.83)<a class="headerlink" href="#equation-chapter-pca-twodim-70" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{Perplexity controls the effective neighborhood scale in t-SNE.}
+}\]</div>
+</section>
+<section id="symmetric-high-dimensional-probabilities">
+<h2><span class="section-number">2.10.2.29. </span>Symmetric High-Dimensional Probabilities<a class="headerlink" href="#symmetric-high-dimensional-probabilities" title="Permalink to this heading">¶</a></h2>
+<p>The conditional probabilities are converted into symmetric pairwise
+probabilities:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-71">
+<span class="eqno">(2.10.84)<a class="headerlink" href="#equation-chapter-pca-twodim-71" title="Permalink to this equation">¶</a></span>\[p_{ij}
+=
+\frac{
+p_{j|i}+p_{i|j}
+}{
+2n
+}.\]</div>
+<p>This gives a symmetric probability distribution over pairs.</p>
+</section>
+<section id="low-dimensional-similarities">
+<h2><span class="section-number">2.10.2.30. </span>Low-Dimensional Similarities<a class="headerlink" href="#low-dimensional-similarities" title="Permalink to this heading">¶</a></h2>
+<p>Suppose the low-dimensional points are</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-72">
+<span class="eqno">(2.10.85)<a class="headerlink" href="#equation-chapter-pca-twodim-72" title="Permalink to this equation">¶</a></span>\[z_1,z_2,\ldots,z_n.\]</div>
+<p>t-SNE uses a Student-<span class="math notranslate nohighlight">\(t\)</span> distribution with one degree of freedom.</p>
+<p>The pairwise similarity is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-73">
+<span class="eqno">(2.10.86)<a class="headerlink" href="#equation-chapter-pca-twodim-73" title="Permalink to this equation">¶</a></span>\[q_{ij}
+=
+\frac{
+(1+\|z_i-z_j\|^2)^{-1}
+}{
+\sum_{k\neq l}
+(1+\|z_k-z_l\|^2)^{-1}
+}.\]</div>
+<p>The heavy tails of the Student-<span class="math notranslate nohighlight">\(t\)</span> distribution are important.</p>
+<p>They allow moderately distant points in the low-dimensional space to
+retain non-negligible probability.</p>
+<p>This helps reduce the tendency of many high-dimensional points to
+collapse into the same small region.</p>
+</section>
+<section id="t-sne-objective">
+<h2><span class="section-number">2.10.2.31. </span>t-SNE Objective<a class="headerlink" href="#t-sne-objective" title="Permalink to this heading">¶</a></h2>
+<p>The goal is to make the low-dimensional distribution <span class="math notranslate nohighlight">\(Q\)</span> resemble
+the high-dimensional distribution <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>t-SNE minimizes</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-74">
+<span class="eqno">(2.10.87)<a class="headerlink" href="#equation-chapter-pca-twodim-74" title="Permalink to this equation">¶</a></span>\[\operatorname{KL}(P\|Q)
+=
+\sum_{i\neq j}
+p_{ij}
+\log
+\frac{p_{ij}}{q_{ij}}.\]</div>
+<p>This is an important correction to a common notation error:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-75">
+<span class="eqno">(2.10.88)<a class="headerlink" href="#equation-chapter-pca-twodim-75" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{t-SNE minimizes }KL(P\|Q),
+\text{ not }KL(Q\|P).
+}\]</div>
+</section>
+<section id="t-sne-optimization">
+<h2><span class="section-number">2.10.2.32. </span>t-SNE Optimization<a class="headerlink" href="#t-sne-optimization" title="Permalink to this heading">¶</a></h2>
+<p>Unlike PCA, Isomap, and Laplacian Eigenmaps, t-SNE does not obtain the
+embedding simply by solving one eigenvalue problem.</p>
+<p>Instead:</p>
+<ol class="arabic simple">
+<li><p>Construct the high-dimensional probabilities <span class="math notranslate nohighlight">\(P\)</span>.</p></li>
+<li><p>Initialize the low-dimensional coordinates <span class="math notranslate nohighlight">\(Z\)</span>.</p></li>
+<li><p>Compute low-dimensional probabilities <span class="math notranslate nohighlight">\(Q\)</span>.</p></li>
+<li><p>Compute the KL-divergence gradient.</p></li>
+<li><p>Update <span class="math notranslate nohighlight">\(Z\)</span> using gradient-based optimization.</p></li>
+<li><p>Repeat.</p></li>
+</ol>
+<p>Conceptually,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-76">
+<span class="eqno">(2.10.89)<a class="headerlink" href="#equation-chapter-pca-twodim-76" title="Permalink to this equation">¶</a></span>\[Z^{(t+1)}
+=
+Z^{(t)}
+-
+\eta
+\nabla_Z
+\operatorname{KL}(P\|Q).\]</div>
+<p>Modern implementations use additional optimization techniques such as
+momentum and early exaggeration.</p>
+</section>
+<section id="the-t-sne-gradient">
+<h2><span class="section-number">2.10.2.33. </span>The t-SNE Gradient<a class="headerlink" href="#the-t-sne-gradient" title="Permalink to this heading">¶</a></h2>
+<p>The gradient can be written as</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-77">
+<span class="eqno">(2.10.90)<a class="headerlink" href="#equation-chapter-pca-twodim-77" title="Permalink to this equation">¶</a></span>\[\frac{\partial C}{\partial z_i}
+=
+4
+\sum_{j\neq i}
+(p_{ij}-q_{ij})
+(z_i-z_j)
+(1+\|z_i-z_j\|^2)^{-1},\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-78">
+<span class="eqno">(2.10.91)<a class="headerlink" href="#equation-chapter-pca-twodim-78" title="Permalink to this equation">¶</a></span>\[C=\operatorname{KL}(P\|Q).\]</div>
+<p>The important intuition is more useful than memorizing the exact
+equation.</p>
+<p>If two points have a large high-dimensional similarity <span class="math notranslate nohighlight">\(p_{ij}\)</span>
+but insufficient low-dimensional similarity <span class="math notranslate nohighlight">\(q_{ij}\)</span>, they
+experience an <strong>attractive force</strong>.</p>
+<p>If the low-dimensional configuration produces too much similarity
+between points, the optimization produces a <strong>repulsive effect</strong>.</p>
+<p>Thus t-SNE can be viewed as a system of attractive and repulsive forces.</p>
+</section>
+<section id="early-exaggeration">
+<h2><span class="section-number">2.10.2.34. </span>Early Exaggeration<a class="headerlink" href="#early-exaggeration" title="Permalink to this heading">¶</a></h2>
+<p>Many t-SNE implementations temporarily multiply the high-dimensional
+affinities by an exaggeration factor during the early stages of
+optimization.</p>
+<p>Conceptually,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-79">
+<span class="eqno">(2.10.92)<a class="headerlink" href="#equation-chapter-pca-twodim-79" title="Permalink to this equation">¶</a></span>\[P
+\rightarrow
+\alpha P\]</div>
+<p>for some <span class="math notranslate nohighlight">\(\alpha&gt;1\)</span> during the initial optimization phase.</p>
+<p>This encourages strongly related points to form coherent local groups
+early in the optimization.</p>
+<p>After the early phase, the exaggeration is reduced or removed.</p>
+</section>
+<section id="umap">
+<h2><span class="section-number">2.10.2.35. </span>UMAP<a class="headerlink" href="#umap" title="Permalink to this heading">¶</a></h2>
+<p>UMAP is another nonlinear dimensionality-reduction method.</p>
+<p>Like Laplacian Eigenmaps, UMAP begins by constructing a neighborhood
+graph.</p>
+<p>However, UMAP does not simply perform an eigenvalue decomposition of the
+graph Laplacian.</p>
+<p>Instead, it constructs a <strong>weighted fuzzy neighborhood graph</strong> and then
+directly optimizes a low-dimensional layout.</p>
+<p>The conceptual pipeline is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-80">
+<span class="eqno">(2.10.93)<a class="headerlink" href="#equation-chapter-pca-twodim-80" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+\text{k-NN graph}
+\rightarrow
+\text{fuzzy weighted graph}
+\rightarrow
+Z
+\rightarrow
+\text{cross-entropy optimization}.\]</div>
+</section>
+<section id="umap-neighborhood-graph">
+<h2><span class="section-number">2.10.2.36. </span>UMAP Neighborhood Graph<a class="headerlink" href="#umap-neighborhood-graph" title="Permalink to this heading">¶</a></h2>
+<p>UMAP first finds the <span class="math notranslate nohighlight">\(k\)</span> nearest neighbors of each point.</p>
+<p>For each point <span class="math notranslate nohighlight">\(i\)</span>, it estimates a local connectivity scale.</p>
+<p>A simplified form of the membership strength is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-81">
+<span class="eqno">(2.10.94)<a class="headerlink" href="#equation-chapter-pca-twodim-81" title="Permalink to this equation">¶</a></span>\[w_{ij}
+=
+\exp
+\left(
+-\frac{d(x_i,x_j)-\rho_i}{\sigma_i}
+\right),\]</div>
+<p>for appropriate neighboring points, where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\rho_i\)</span> represents a local distance offset,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_i\)</span> controls the local scale.</p></li>
+</ul>
+<p>The exact UMAP construction involves additional details concerning fuzzy
+simplicial sets and the combination of directed memberships.</p>
+<p>The important intuition is:</p>
+<blockquote>
+<div><p><strong>UMAP creates a weighted local neighborhood graph whose edge weights
+describe how strongly points are connected.</strong></p>
+</div></blockquote>
+</section>
+<section id="low-dimensional-umap-similarity">
+<h2><span class="section-number">2.10.2.37. </span>Low-Dimensional UMAP Similarity<a class="headerlink" href="#low-dimensional-umap-similarity" title="Permalink to this heading">¶</a></h2>
+<p>UMAP defines a smooth similarity function in the low-dimensional space.</p>
+<p>A commonly used form is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-82">
+<span class="eqno">(2.10.95)<a class="headerlink" href="#equation-chapter-pca-twodim-82" title="Permalink to this equation">¶</a></span>\[f(d)
+=
+\frac{1}{1+a d^{2b}},\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-83">
+<span class="eqno">(2.10.96)<a class="headerlink" href="#equation-chapter-pca-twodim-83" title="Permalink to this equation">¶</a></span>\[d=\|z_i-z_j\|\]</div>
+<p>and <span class="math notranslate nohighlight">\(a,b\)</span> are parameters determined from UMAP’s embedding
+settings.</p>
+<p>Thus:</p>
+<ul class="simple">
+<li><p>small <span class="math notranslate nohighlight">\(d\)</span> <span class="math notranslate nohighlight">\(\rightarrow\)</span> similarity near <span class="math notranslate nohighlight">\(1\)</span>,</p></li>
+<li><p>large <span class="math notranslate nohighlight">\(d\)</span> <span class="math notranslate nohighlight">\(\rightarrow\)</span> similarity near <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+</ul>
+</section>
+<section id="umap-cross-entropy-objective">
+<h2><span class="section-number">2.10.2.38. </span>UMAP Cross-Entropy Objective<a class="headerlink" href="#umap-cross-entropy-objective" title="Permalink to this heading">¶</a></h2>
+<p>UMAP tries to make the low-dimensional fuzzy graph resemble the
+high-dimensional fuzzy graph.</p>
+<p>A conceptual cross-entropy objective is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-84">
+<span class="eqno">(2.10.97)<a class="headerlink" href="#equation-chapter-pca-twodim-84" title="Permalink to this equation">¶</a></span>\[C
+=
+\sum_{i,j}
+\left[
+w_{ij}\log f(d_{ij})
++
+(1-w_{ij})
+\log(1-f(d_{ij}))
+\right].\]</div>
+<p>Equivalently, when written as a loss to minimize, sign conventions may
+produce</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-85">
+<span class="eqno">(2.10.98)<a class="headerlink" href="#equation-chapter-pca-twodim-85" title="Permalink to this equation">¶</a></span>\[C
+=
+-\sum_{i,j}
+\left[
+w_{ij}\log f(d_{ij})
++
+(1-w_{ij})
+\log(1-f(d_{ij}))
+\right].\]</div>
+<p>The exact implementation uses efficient sampling rather than explicitly
+evaluating every pair.</p>
+</section>
+<section id="attraction-and-repulsion-in-umap">
+<h2><span class="section-number">2.10.2.39. </span>Attraction and Repulsion in UMAP<a class="headerlink" href="#attraction-and-repulsion-in-umap" title="Permalink to this heading">¶</a></h2>
+<p>The UMAP objective has two important effects.</p>
+</section>
+<section id="attraction">
+<h2><span class="section-number">2.10.2.40. </span>Attraction<a class="headerlink" href="#attraction" title="Permalink to this heading">¶</a></h2>
+<p>If</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-86">
+<span class="eqno">(2.10.99)<a class="headerlink" href="#equation-chapter-pca-twodim-86" title="Permalink to this equation">¶</a></span>\[w_{ij}\]</div>
+<p>is large, points <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> are strongly connected in the
+high-dimensional graph.</p>
+<p>The optimization therefore encourages</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-87">
+<span class="eqno">(2.10.100)<a class="headerlink" href="#equation-chapter-pca-twodim-87" title="Permalink to this equation">¶</a></span>\[z_i
+\approx
+z_j.\]</div>
+</section>
+<section id="repulsion">
+<h2><span class="section-number">2.10.2.41. </span>Repulsion<a class="headerlink" href="#repulsion" title="Permalink to this heading">¶</a></h2>
+<p>For pairs that are not strongly connected, the optimization discourages
+them from becoming artificially close.</p>
+<p>Thus UMAP can be understood as balancing</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-88">
+<span class="eqno">(2.10.101)<a class="headerlink" href="#equation-chapter-pca-twodim-88" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{attraction between neighbors}
+}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-89">
+<span class="eqno">(2.10.102)<a class="headerlink" href="#equation-chapter-pca-twodim-89" title="Permalink to this equation">¶</a></span>\[\boxed{
+\text{repulsion between non-neighbors}.
+}\]</div>
+</section>
+<section id="pca-isomap-laplacian-eigenmaps-t-sne-and-umap">
+<h2><span class="section-number">2.10.2.42. </span>PCA, Isomap, Laplacian Eigenmaps, t-SNE, and UMAP<a class="headerlink" href="#pca-isomap-laplacian-eigenmaps-t-sne-and-umap" title="Permalink to this heading">¶</a></h2>
+<p>We can now compare the main ideas.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>H
+igh-dimensional
+representation</p></th>
+<th class="head"><p>Low-dimensional
+method</p></th>
+<th class="head"><p>Main objective</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PCA</p></td>
+<td><p>Covariance /
+Gram matrix</p></td>
+<td><p>Linear
+projection</p></td>
+<td><p>Maximize
+variance</p></td>
+</tr>
+<tr class="row-odd"><td><p>Isomap</p></td>
+<td><p>Geodesic
+distances</p></td>
+<td><p>Classical MDS</p></td>
+<td><p>Preserve
+geodesic
+distances</p></td>
+</tr>
+<tr class="row-even"><td><p>Laplacian
+Eigenmaps</p></td>
+<td><p>Local graph
+weights</p></td>
+<td><p>Laplacian
+eigenvectors</p></td>
+<td><p>Preserve local
+neighborhoods</p></td>
+</tr>
+<tr class="row-odd"><td><p>t-SNE</p></td>
+<td><p>Pairwise
+probabilities</p></td>
+<td><p>Gradient
+optimization</p></td>
+<td><p>Minimize
+:
+math:<cite>KL(P|Q)</cite></p></td>
+</tr>
+<tr class="row-even"><td><p>UMAP</p></td>
+<td><p>Fuzzy
+neighborhood
+graph</p></td>
+<td><p>Gradient
+optimization</p></td>
+<td><p>Minimize
+cross-entropy</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-eigenvalue-perspective">
+<span id="pca-2"></span><h2><span class="section-number">2.10.2.43. </span>The Eigenvalue Perspective<a class="headerlink" href="#the-eigenvalue-perspective" title="Permalink to this heading">¶</a></h2>
+<p>It is tempting to summarize dimensionality reduction by saying:</p>
+<blockquote>
+<div><p>“Construct a matrix and take its eigenvectors.”</p>
+</div></blockquote>
+<p>This is true for some methods but not all.</p>
+<p>A better summary is:</p>
+</section>
+<section id="isomap-1">
+<span id="id3"></span><h2><span class="section-number">2.10.2.44. </span>PCA<a class="headerlink" href="#isomap-1" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-90">
+<span class="eqno">(2.10.103)<a class="headerlink" href="#equation-chapter-pca-twodim-90" title="Permalink to this equation">¶</a></span>\[\text{Covariance}
+\rightarrow
+\text{eigenvectors}
+\rightarrow
+\text{largest eigenvalues}.\]</div>
+</section>
+<section id="laplacian-eigenmaps-2">
+<span id="id4"></span><h2><span class="section-number">2.10.2.45. </span>Isomap<a class="headerlink" href="#laplacian-eigenmaps-2" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-91">
+<span class="eqno">(2.10.104)<a class="headerlink" href="#equation-chapter-pca-twodim-91" title="Permalink to this equation">¶</a></span>\[\text{Geodesic distances}
+\rightarrow
+\text{MDS Gram matrix}
+\rightarrow
+\text{largest positive eigenvalues}.\]</div>
+</section>
+<section id="t-sne-1">
+<span id="id5"></span><h2><span class="section-number">2.10.2.46. </span>Laplacian Eigenmaps<a class="headerlink" href="#t-sne-1" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-92">
+<span class="eqno">(2.10.105)<a class="headerlink" href="#equation-chapter-pca-twodim-92" title="Permalink to this equation">¶</a></span>\[\text{Local graph}
+\rightarrow
+\text{Laplacian}
+\rightarrow
+\text{smallest non-zero eigenvalues}.\]</div>
+</section>
+<section id="umap-1">
+<span id="id6"></span><h2><span class="section-number">2.10.2.47. </span>t-SNE<a class="headerlink" href="#umap-1" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-93">
+<span class="eqno">(2.10.106)<a class="headerlink" href="#equation-chapter-pca-twodim-93" title="Permalink to this equation">¶</a></span>\[\text{Probabilities}
+\rightarrow
+\text{KL divergence}
+\rightarrow
+\text{gradient optimization}.\]</div>
+</section>
+<section id="id7">
+<h2><span class="section-number">2.10.2.48. </span>UMAP<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-94">
+<span class="eqno">(2.10.107)<a class="headerlink" href="#equation-chapter-pca-twodim-94" title="Permalink to this equation">¶</a></span>\[\text{Fuzzy graph}
+\rightarrow
+\text{cross-entropy}
+\rightarrow
+\text{gradient optimization}.\]</div>
+<p>This distinction is extremely important.</p>
+</section>
+<section id="local-vs-global-structure">
+<h2><span class="section-number">2.10.2.49. </span>Local vs. Global Structure<a class="headerlink" href="#local-vs-global-structure" title="Permalink to this heading">¶</a></h2>
+<p>One of the most useful ways to understand these algorithms is to ask:</p>
+<blockquote>
+<div><p><strong>Does the method primarily try to preserve local neighborhoods or
+global relationships?</strong></p>
+</div></blockquote>
+<p>However, the answer should not be treated as an absolute classification.</p>
+</section>
+<section id="isomap-strong-global-geometry">
+<h2><span class="section-number">2.10.2.50. </span>Isomap: Strong Global Geometry<a class="headerlink" href="#isomap-strong-global-geometry" title="Permalink to this heading">¶</a></h2>
+<p>Isomap constructs a local graph but then computes shortest paths between
+all pairs.</p>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-95">
+<span class="eqno">(2.10.108)<a class="headerlink" href="#equation-chapter-pca-twodim-95" title="Permalink to this equation">¶</a></span>\[\text{local graph}
+\rightarrow
+\text{global geodesic distances}.\]</div>
+<p>The final MDS step attempts to preserve these global distances.</p>
+<p>Therefore, Isomap is commonly described as emphasizing <strong>global manifold
+geometry</strong>.</p>
+</section>
+<section id="laplacian-eigenmaps-local-structure">
+<h2><span class="section-number">2.10.2.51. </span>Laplacian Eigenmaps: Local Structure<a class="headerlink" href="#laplacian-eigenmaps-local-structure" title="Permalink to this heading">¶</a></h2>
+<p>Laplacian Eigenmaps uses a neighborhood graph and its objective is based
+on</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-96">
+<span class="eqno">(2.10.109)<a class="headerlink" href="#equation-chapter-pca-twodim-96" title="Permalink to this equation">¶</a></span>\[\sum_{i,j}W_{ij}\|z_i-z_j\|^2.\]</div>
+<p>Only graph-connected pairs have a direct contribution.</p>
+<p>Therefore, the method strongly emphasizes local relationships.</p>
+<p>It is consequently described as a <strong>local</strong> manifold-learning method.</p>
+</section>
+<section id="t-sne-strong-local-neighborhood-preservation">
+<h2><span class="section-number">2.10.2.52. </span>t-SNE: Strong Local Neighborhood Preservation<a class="headerlink" href="#t-sne-strong-local-neighborhood-preservation" title="Permalink to this heading">¶</a></h2>
+<p>t-SNE converts distances into probability affinities and minimizes</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-97">
+<span class="eqno">(2.10.110)<a class="headerlink" href="#equation-chapter-pca-twodim-97" title="Permalink to this equation">¶</a></span>\[KL(P\|Q).\]</div>
+<p>The KL objective is particularly sensitive to cases where a
+high-dimensional neighbor has been assigned too little probability in
+the embedding.</p>
+<p>Therefore, t-SNE strongly emphasizes preserving local neighborhoods.</p>
+<p>This is one reason t-SNE is very effective for visualizing clusters.</p>
+<p>However, an important warning is:</p>
+<blockquote>
+<div><p><strong>Distances between separated t-SNE clusters should generally not be
+interpreted as reliable global distances.</strong></p>
+</div></blockquote>
+<p>Two clusters being far apart in a t-SNE plot does not necessarily mean
+that they are far apart in the original high-dimensional space.</p>
+</section>
+<section id="umap-local-structure-with-broader-layout-information">
+<h2><span class="section-number">2.10.2.53. </span>UMAP: Local Structure with Broader Layout Information<a class="headerlink" href="#umap-local-structure-with-broader-layout-information" title="Permalink to this heading">¶</a></h2>
+<p>UMAP starts from a local k-nearest-neighbor graph.</p>
+<p>Therefore, local neighborhood relationships are central to the method.</p>
+<p>However, UMAP’s fuzzy graph representation and attractive/repulsive
+optimization can produce a broader global organization than t-SNE in
+many datasets.</p>
+<p>It is therefore often described as preserving both local and global
+structure better than t-SNE.</p>
+<p>However, this statement should be interpreted carefully.</p>
+<blockquote>
+<div><p><strong>UMAP does not guarantee that global distances in the embedding are
+faithful to global distances in the original space.</strong></p>
+</div></blockquote>
+<p>Its global organization depends on the data, graph construction,
+hyperparameters, initialization, and optimization.</p>
+</section>
+<section id="a-better-global-vs-local-summary">
+<h2><span class="section-number">2.10.2.54. </span>A Better Global-vs-Local Summary<a class="headerlink" href="#a-better-global-vs-local-summary" title="Permalink to this heading">¶</a></h2>
+<p>A useful practical summary is:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Local structure</p></th>
+<th class="head"><p>Global structure</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PCA</p></td>
+<td><p>Moderate</p></td>
+<td><p>Strong linear/global
+structure</p></td>
+</tr>
+<tr class="row-odd"><td><p>Isomap</p></td>
+<td><p>Used to construct
+graph</p></td>
+<td><p>Strong</p></td>
+</tr>
+<tr class="row-even"><td><p>Laplacian Eigenmaps</p></td>
+<td><p>Strong</p></td>
+<td><p>Limited</p></td>
+</tr>
+<tr class="row-odd"><td><p>t-SNE</p></td>
+<td><p>Very strong</p></td>
+<td><p>Weak / unreliable</p></td>
+</tr>
+<tr class="row-even"><td><p>UMAP</p></td>
+<td><p>Strong</p></td>
+<td><p>Often better than
+t-SNE, but not
+guaranteed</p></td>
+</tr>
+</tbody>
+</table>
+<p>The important point is that <strong>local vs. global is not simply determined
+by whether an :math:`Ntimes N` matrix exists</strong>.</p>
+<p>Instead, we should ask:</p>
+<blockquote>
+<div><p><strong>Which relationships does the objective function prioritize?</strong></p>
+</div></blockquote>
+</section>
+<section id="why-does-k-nn-create-local-structure">
+<h2><span class="section-number">2.10.2.55. </span>Why Does k-NN Create Local Structure?<a class="headerlink" href="#why-does-k-nn-create-local-structure" title="Permalink to this heading">¶</a></h2>
+<p>Suppose we have <span class="math notranslate nohighlight">\(n\)</span> points.</p>
+<p>A full pairwise distance matrix contains</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-98">
+<span class="eqno">(2.10.111)<a class="headerlink" href="#equation-chapter-pca-twodim-98" title="Permalink to this equation">¶</a></span>\[n^2\]</div>
+<p>entries.</p>
+<p>For example,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-99">
+<span class="eqno">(2.10.112)<a class="headerlink" href="#equation-chapter-pca-twodim-99" title="Permalink to this equation">¶</a></span>\[\begin{split}D=
+\begin{bmatrix}
+d_{11}&amp;d_{12}&amp;\cdots&amp;d_{1n}\\
+d_{21}&amp;d_{22}&amp;\cdots&amp;d_{2n}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+d_{n1}&amp;d_{n2}&amp;\cdots&amp;d_{nn}
+\end{bmatrix}.\end{split}\]</div>
+<p>A k-NN graph keeps only approximately <span class="math notranslate nohighlight">\(k\)</span> meaningful neighbors per
+point.</p>
+<p>Thus, instead of considering all relationships equally, it focuses on</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-100">
+<span class="eqno">(2.10.113)<a class="headerlink" href="#equation-chapter-pca-twodim-100" title="Permalink to this equation">¶</a></span>\[k\ll n.\]</div>
+<p>This is why k-NN graphs are naturally associated with local structure.</p>
+</section>
+<section id="similarity-vs-distance">
+<h2><span class="section-number">2.10.2.56. </span>Similarity vs. Distance<a class="headerlink" href="#similarity-vs-distance" title="Permalink to this heading">¶</a></h2>
+<p>A common source of confusion is that some methods work with
+<strong>similarity</strong> while others work with <strong>distance</strong>.</p>
+<p>A distance behaves like</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-101">
+<span class="eqno">(2.10.114)<a class="headerlink" href="#equation-chapter-pca-twodim-101" title="Permalink to this equation">¶</a></span>\[d_{ij}\uparrow
+\quad\Rightarrow\quad
+\text{points become less similar}.\]</div>
+<p>A similarity behaves like</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-102">
+<span class="eqno">(2.10.115)<a class="headerlink" href="#equation-chapter-pca-twodim-102" title="Permalink to this equation">¶</a></span>\[s_{ij}\uparrow
+\quad\Rightarrow\quad
+\text{points become more similar}.\]</div>
+<p>For example, the heat kernel</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-103">
+<span class="eqno">(2.10.116)<a class="headerlink" href="#equation-chapter-pca-twodim-103" title="Permalink to this equation">¶</a></span>\[W_{ij}
+=
+\exp
+\left(
+-\frac{\|x_i-x_j\|^2}{2\sigma^2}
+\right)\]</div>
+<p>converts a distance into a similarity.</p>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-104">
+<span class="eqno">(2.10.117)<a class="headerlink" href="#equation-chapter-pca-twodim-104" title="Permalink to this equation">¶</a></span>\[\text{distance}
+\rightarrow
+\text{similarity}\]</div>
+<p>is a common preprocessing step.</p>
+</section>
+<section id="why-the-exponential-kernel-works">
+<h2><span class="section-number">2.10.2.57. </span>Why the Exponential Kernel Works<a class="headerlink" href="#why-the-exponential-kernel-works" title="Permalink to this heading">¶</a></h2>
+<p>Consider</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-105">
+<span class="eqno">(2.10.118)<a class="headerlink" href="#equation-chapter-pca-twodim-105" title="Permalink to this equation">¶</a></span>\[W_{ij}
+=
+\exp(-d_{ij}^2/c),\]</div>
+<p>where <span class="math notranslate nohighlight">\(c&gt;0\)</span>.</p>
+<p>If</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-106">
+<span class="eqno">(2.10.119)<a class="headerlink" href="#equation-chapter-pca-twodim-106" title="Permalink to this equation">¶</a></span>\[d_{ij}=0,\]</div>
+<p>then</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-107">
+<span class="eqno">(2.10.120)<a class="headerlink" href="#equation-chapter-pca-twodim-107" title="Permalink to this equation">¶</a></span>\[W_{ij}=1.\]</div>
+<p>If</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-108">
+<span class="eqno">(2.10.121)<a class="headerlink" href="#equation-chapter-pca-twodim-108" title="Permalink to this equation">¶</a></span>\[d_{ij}\]</div>
+<p>increases, then</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-109">
+<span class="eqno">(2.10.122)<a class="headerlink" href="#equation-chapter-pca-twodim-109" title="Permalink to this equation">¶</a></span>\[W_{ij}\]</div>
+<p>decreases rapidly toward zero.</p>
+<p>Thus,</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-110">
+<span class="eqno">(2.10.123)<a class="headerlink" href="#equation-chapter-pca-twodim-110" title="Permalink to this equation">¶</a></span>\[d_{ij}\uparrow
+\quad\Rightarrow\quad
+W_{ij}\downarrow.\]</div>
+<p>This makes the exponential kernel a convenient way to transform distance
+into a smooth similarity measure.</p>
+</section>
+<section id="why-different-methods-need-different-similarity-definitions">
+<span id="pca-3"></span><h2><span class="section-number">2.10.2.58. </span>Why Different Methods Need Different Similarity Definitions<a class="headerlink" href="#why-different-methods-need-different-similarity-definitions" title="Permalink to this heading">¶</a></h2>
+<p>There is no single universally correct definition of similarity.</p>
+<p>For example:</p>
+</section>
+<section id="isomap-2">
+<span id="id8"></span><h2><span class="section-number">2.10.2.59. </span>PCA<a class="headerlink" href="#isomap-2" title="Permalink to this heading">¶</a></h2>
+<p>Uses covariance and inner products.</p>
+</section>
+<section id="laplacian-eigenmaps-3">
+<span id="id9"></span><h2><span class="section-number">2.10.2.60. </span>Isomap<a class="headerlink" href="#laplacian-eigenmaps-3" title="Permalink to this heading">¶</a></h2>
+<p>Uses geodesic distance.</p>
+</section>
+<section id="t-sne-2">
+<span id="id10"></span><h2><span class="section-number">2.10.2.61. </span>Laplacian Eigenmaps<a class="headerlink" href="#t-sne-2" title="Permalink to this heading">¶</a></h2>
+<p>Uses local graph weights.</p>
+</section>
+<section id="umap-2">
+<span id="id11"></span><h2><span class="section-number">2.10.2.62. </span>t-SNE<a class="headerlink" href="#umap-2" title="Permalink to this heading">¶</a></h2>
+<p>Uses probability affinities.</p>
+</section>
+<section id="id12">
+<h2><span class="section-number">2.10.2.63. </span>UMAP<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h2>
+<p>Uses fuzzy graph membership strengths.</p>
+<p>Therefore, when comparing dimensionality-reduction methods, we should
+ask two separate questions:</p>
+<ol class="arabic simple">
+<li><p><strong>How is similarity defined?</strong></p></li>
+<li><p><strong>What does the algorithm do with that similarity?</strong></p></li>
+</ol>
+</section>
+<section id="one-n-times-n-matrix-different-meanings">
+<h2><span class="section-number">2.10.2.64. </span>One <span class="math notranslate nohighlight">\(N\times N\)</span> Matrix, Different Meanings<a class="headerlink" href="#one-n-times-n-matrix-different-meanings" title="Permalink to this heading">¶</a></h2>
+<p>The same matrix shape does not imply the same mathematical meaning.</p>
+<p>For example:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-111">
+<span class="eqno">(2.10.124)<a class="headerlink" href="#equation-chapter-pca-twodim-111" title="Permalink to this equation">¶</a></span>\[S_{ij}\]</div>
+<p>could mean:</p>
+<ul class="simple">
+<li><p>covariance,</p></li>
+<li><p>inner product,</p></li>
+<li><p>Euclidean distance,</p></li>
+<li><p>geodesic distance,</p></li>
+<li><p>graph weight,</p></li>
+<li><p>probability,</p></li>
+<li><p>fuzzy membership.</p></li>
+</ul>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-112">
+<span class="eqno">(2.10.125)<a class="headerlink" href="#equation-chapter-pca-twodim-112" title="Permalink to this equation">¶</a></span>\[\boxed{
+N\times N
+\text{ describes the shape, not the meaning.}
+}\]</div>
+<p>This is an important conceptual point.</p>
+</section>
+<section id="a-unified-view">
+<span id="pca-4"></span><h2><span class="section-number">2.10.2.65. </span>A Unified View<a class="headerlink" href="#a-unified-view" title="Permalink to this heading">¶</a></h2>
+<p>We can now describe the methods using the same template.</p>
+</section>
+<section id="isomap-3">
+<span id="id13"></span><h2><span class="section-number">2.10.2.66. </span>PCA<a class="headerlink" href="#isomap-3" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-113">
+<span class="eqno">(2.10.126)<a class="headerlink" href="#equation-chapter-pca-twodim-113" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+\text{variance/covariance}
+\rightarrow
+\text{eigenvectors}
+\rightarrow
+Z.\]</div>
+<p>It asks:</p>
+<blockquote>
+<div><p>Which linear directions explain the most variance?</p>
+</div></blockquote>
+</section>
+<section id="laplacian-eigenmaps-4">
+<span id="id14"></span><h2><span class="section-number">2.10.2.67. </span>Isomap<a class="headerlink" href="#laplacian-eigenmaps-4" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-114">
+<span class="eqno">(2.10.127)<a class="headerlink" href="#equation-chapter-pca-twodim-114" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+\text{k-NN graph}
+\rightarrow
+\text{geodesic distances}
+\rightarrow
+\text{MDS}
+\rightarrow
+Z.\]</div>
+<p>It asks:</p>
+<blockquote>
+<div><p>Can we preserve distances along the manifold?</p>
+</div></blockquote>
+</section>
+<section id="t-sne-3">
+<span id="id15"></span><h2><span class="section-number">2.10.2.68. </span>Laplacian Eigenmaps<a class="headerlink" href="#t-sne-3" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-115">
+<span class="eqno">(2.10.128)<a class="headerlink" href="#equation-chapter-pca-twodim-115" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+\text{k-NN graph}
+\rightarrow
+W
+\rightarrow
+L
+\rightarrow
+\text{eigenvectors}
+\rightarrow
+Z.\]</div>
+<p>It asks:</p>
+<blockquote>
+<div><p>Can we keep neighboring points close?</p>
+</div></blockquote>
+</section>
+<section id="umap-3">
+<span id="id16"></span><h2><span class="section-number">2.10.2.69. </span>t-SNE<a class="headerlink" href="#umap-3" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-116">
+<span class="eqno">(2.10.129)<a class="headerlink" href="#equation-chapter-pca-twodim-116" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+P
+\rightarrow
+Q(Z)
+\rightarrow
+KL(P\|Q)
+\rightarrow
+Z.\]</div>
+<p>It asks:</p>
+<blockquote>
+<div><p>Can the low-dimensional space reproduce the neighborhood
+probabilities?</p>
+</div></blockquote>
+</section>
+<section id="id17">
+<h2><span class="section-number">2.10.2.70. </span>UMAP<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h2>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-117">
+<span class="eqno">(2.10.130)<a class="headerlink" href="#equation-chapter-pca-twodim-117" title="Permalink to this equation">¶</a></span>\[X
+\rightarrow
+\text{fuzzy k-NN graph}
+\rightarrow
+\text{low-dimensional graph}
+\rightarrow
+\text{cross-entropy}
+\rightarrow
+Z.\]</div>
+<p>It asks:</p>
+<blockquote>
+<div><p>Can the low-dimensional space reproduce the fuzzy neighborhood
+structure?</p>
+</div></blockquote>
+</section>
+<section id="a-useful-mental-model">
+<h2><span class="section-number">2.10.2.71. </span>A Useful Mental Model<a class="headerlink" href="#a-useful-mental-model" title="Permalink to this heading">¶</a></h2>
+<p>The following picture is a useful way to remember the main differences.</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-118">
+<span class="eqno">(2.10.131)<a class="headerlink" href="#equation-chapter-pca-twodim-118" title="Permalink to this equation">¶</a></span>\[\begin{split}\boxed{
+\begin{array}{c}
+\text{High-dimensional data }X\\
+\downarrow\\
+\text{How are points related?}\\
+\downarrow\\
+\text{Relationship representation}\\
+\downarrow\\
+\text{What should be preserved?}\\
+\downarrow\\
+\text{Low-dimensional space }Z
+\end{array}
+}\end{split}\]</div>
+<p>The methods mainly differ in the answers to the two middle questions.</p>
+</section>
+<section id="comparison-of-the-five-methods">
+<h2><span class="section-number">2.10.2.72. </span>Comparison of the Five Methods<a class="headerlink" href="#comparison-of-the-five-methods" title="Permalink to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>PCA</p></th>
+<th class="head"><p>Isomap</p></th>
+<th class="head"><p>Laplacian
+Eigenmaps</p></th>
+<th class="head"><p>t-SNE</p></th>
+<th class="head"><p>UMAP</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Linear/
+nonlinear</p></td>
+<td><p>Linear</p></td>
+<td><p>Nonlinear</p></td>
+<td><p>Nonlinear</p></td>
+<td><p>Nonlinear</p></td>
+<td><p>Nonlinear</p></td>
+</tr>
+<tr class="row-odd"><td><p>Main
+repre
+sentation</p></td>
+<td><p>C
+ovariance
+/ Gram</p></td>
+<td><p>Geodesic
+distances</p></td>
+<td><p>Graph
+weights</p></td>
+<td><p>Prob
+abilities</p></td>
+<td><p>Fuzzy
+graph</p></td>
+</tr>
+<tr class="row-even"><td><p>Nei
+ghborhood
+graph</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Impli
+cit/local
+a
+ffinities</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Main
+focus</p></td>
+<td><p>Variance</p></td>
+<td><p>Global
+manifold
+geometry</p></td>
+<td><p>Local
+geometry</p></td>
+<td><p>Local
+neig
+hborhoods</p></td>
+<td><p>Local
+topology
++ broader
+layout</p></td>
+</tr>
+<tr class="row-even"><td><p>E
+igenvalue
+deco
+mposition</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes,
+through
+MDS</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ei
+genvalues
+selected</p></td>
+<td><p>Largest</p></td>
+<td><p>Largest
+positive</p></td>
+<td><p>Smallest
+non-zero</p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>Main
+opt
+imization</p></td>
+<td><p>Variance
+max
+imization</p></td>
+<td><p>Distance
+pre
+servation</p></td>
+<td><p>Graph
+s
+moothness</p></td>
+<td><p>KL
+d
+ivergence</p></td>
+<td><p>Cros
+s-entropy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Typical
+visu
+alization
+use</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Excellent</p></td>
+<td><p>Excellent</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="important-corrections-to-remember">
+<h2><span class="section-number">2.10.2.73. </span>Important Corrections to Remember<a class="headerlink" href="#important-corrections-to-remember" title="Permalink to this heading">¶</a></h2>
+<p>Several statements about dimensionality reduction are easy to get wrong.</p>
+</section>
+<section id="correction-1-isomap-does-not-simply-use-the-smallest-eigenvalues">
+<h2><span class="section-number">2.10.2.74. </span>Correction 1: Isomap does not simply use the smallest eigenvalues<a class="headerlink" href="#correction-1-isomap-does-not-simply-use-the-smallest-eigenvalues" title="Permalink to this heading">¶</a></h2>
+<p>Isomap performs classical MDS after constructing the geodesic distance
+matrix.</p>
+<p>The centered Gram matrix is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-119">
+<span class="eqno">(2.10.132)<a class="headerlink" href="#equation-chapter-pca-twodim-119" title="Permalink to this equation">¶</a></span>\[K=-\frac{1}{2}HD^2H.\]</div>
+<p>The embedding uses the eigenvectors corresponding to the <strong>largest
+positive eigenvalues</strong>.</p>
+</section>
+<section id="correction-2-laplacian-eigenmaps-uses-the-smallest-non-zero-eigenvalues">
+<h2><span class="section-number">2.10.2.75. </span>Correction 2: Laplacian Eigenmaps uses the smallest non-zero eigenvalues<a class="headerlink" href="#correction-2-laplacian-eigenmaps-uses-the-smallest-non-zero-eigenvalues" title="Permalink to this heading">¶</a></h2>
+<p>For</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-120">
+<span class="eqno">(2.10.133)<a class="headerlink" href="#equation-chapter-pca-twodim-120" title="Permalink to this equation">¶</a></span>\[Ly=\lambda Dy,\]</div>
+<p>the useful embedding coordinates come from the eigenvectors associated
+with the smallest non-zero eigenvalues.</p>
+</section>
+<section id="correction-3-t-sne-minimizes-kl-p-q">
+<h2><span class="section-number">2.10.2.76. </span>Correction 3: t-SNE minimizes <span class="math notranslate nohighlight">\(KL(P\|Q)\)</span><a class="headerlink" href="#correction-3-t-sne-minimizes-kl-p-q" title="Permalink to this heading">¶</a></h2>
+<p>The objective is</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-121">
+<span class="eqno">(2.10.134)<a class="headerlink" href="#equation-chapter-pca-twodim-121" title="Permalink to this equation">¶</a></span>\[KL(P\|Q)
+=
+\sum_{i\neq j}
+p_{ij}
+\log
+\frac{p_{ij}}{q_{ij}}.\]</div>
+<p>It is not generally written as <span class="math notranslate nohighlight">\(KL(Q\|P)\)</span>.</p>
+</section>
+<section id="correction-4-umap-is-not-simply-laplacian-eigenmaps-with-a-different-kernel">
+<h2><span class="section-number">2.10.2.77. </span>Correction 4: UMAP is not simply “Laplacian Eigenmaps with a different kernel”<a class="headerlink" href="#correction-4-umap-is-not-simply-laplacian-eigenmaps-with-a-different-kernel" title="Permalink to this heading">¶</a></h2>
+<p>Both methods use neighborhood graphs, but their mathematical frameworks
+are different.</p>
+<p>Laplacian Eigenmaps solves an eigenvalue problem involving the graph
+Laplacian.</p>
+<p>UMAP constructs a fuzzy topological representation and optimizes a
+low-dimensional layout using a cross-entropy-based objective.</p>
+</section>
+<section id="correction-5-umap-does-not-guarantee-global-distance-preservation">
+<h2><span class="section-number">2.10.2.78. </span>Correction 5: UMAP does not guarantee global distance preservation<a class="headerlink" href="#correction-5-umap-does-not-guarantee-global-distance-preservation" title="Permalink to this heading">¶</a></h2>
+<p>UMAP often gives a more useful global organization than t-SNE, but this
+does not mean that distances between arbitrary clusters in UMAP should
+be interpreted as quantitatively accurate original-space distances.</p>
+</section>
+<section id="final-summary">
+<h2><span class="section-number">2.10.2.79. </span>Final Summary<a class="headerlink" href="#final-summary" title="Permalink to this heading">¶</a></h2>
+<p>The central idea of dimensionality reduction is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-122">
+<span class="eqno">(2.10.135)<a class="headerlink" href="#equation-chapter-pca-twodim-122" title="Permalink to this equation">¶</a></span>\[\boxed{
+X\rightarrow Z,\qquad
+Z\in\mathbb{R}^{n\times d},
+\quad d\ll m.
+}\]</div>
+<p>The difficult part is deciding what information from <span class="math notranslate nohighlight">\(X\)</span> should be
+preserved.</p>
+<p>PCA preserves directions of large variance.</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-123">
+<span class="eqno">(2.10.136)<a class="headerlink" href="#equation-chapter-pca-twodim-123" title="Permalink to this equation">¶</a></span>\[\boxed{\text{PCA}\rightarrow\text{variance}}\]</div>
+<p>Isomap attempts to preserve global geodesic distances.</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-124">
+<span class="eqno">(2.10.137)<a class="headerlink" href="#equation-chapter-pca-twodim-124" title="Permalink to this equation">¶</a></span>\[\boxed{\text{Isomap}\rightarrow\text{geodesic geometry}}\]</div>
+<p>Laplacian Eigenmaps preserves local graph relationships.</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-125">
+<span class="eqno">(2.10.138)<a class="headerlink" href="#equation-chapter-pca-twodim-125" title="Permalink to this equation">¶</a></span>\[\boxed{\text{Laplacian Eigenmaps}\rightarrow\text{local neighborhoods}}\]</div>
+<p>t-SNE preserves local probability-based affinities.</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-126">
+<span class="eqno">(2.10.139)<a class="headerlink" href="#equation-chapter-pca-twodim-126" title="Permalink to this equation">¶</a></span>\[\boxed{\text{t-SNE}\rightarrow\text{local probabilities}}\]</div>
+<p>UMAP preserves a fuzzy representation of local neighborhood structure
+and optimizes a low-dimensional graph.</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-127">
+<span class="eqno">(2.10.140)<a class="headerlink" href="#equation-chapter-pca-twodim-127" title="Permalink to this equation">¶</a></span>\[\boxed{\text{UMAP}\rightarrow\text{fuzzy neighborhood topology}}\]</div>
+<p>A useful final mental model is:</p>
+<div class="math notranslate nohighlight" id="equation-chapter-pca-twodim-128">
+<span class="eqno">(2.10.141)<a class="headerlink" href="#equation-chapter-pca-twodim-128" title="Permalink to this equation">¶</a></span>\[\begin{split}\boxed{
+\begin{array}{ccc}
+\text{PCA} &amp;\rightarrow&amp; \text{variance}\\
+\text{Isomap} &amp;\rightarrow&amp; \text{geodesic distances}\\
+\text{Laplacian Eigenmaps} &amp;\rightarrow&amp; \text{local graph smoothness}\\
+\text{t-SNE} &amp;\rightarrow&amp; \text{probability matching}\\
+\text{UMAP} &amp;\rightarrow&amp; \text{fuzzy graph matching}
+\end{array}
+}\end{split}\]</div>
+<p>Thus, although these methods look very different mathematically, they
+all attempt to solve the same broad problem:</p>
+</section>
+</section>
+
+
+        </div>
+        <div class="side-doc-outline">
+            <div class="side-doc-outline--content"> 
+<div class="localtoc">
+    <p class="caption">
+      <span class="caption-text">Table Of Contents</span>
+    </p>
+    <ul>
+<li><a class="reference internal" href="#">2.10.2. Two-Dimensional Latent Space</a><ul>
+<li><a class="reference internal" href="#the-general-idea">2.10.2.1. The General Idea</a></li>
+<li><a class="reference internal" href="#from-x-to-z">2.10.2.2. From <span class="math notranslate nohighlight">\(X\)</span> to <span class="math notranslate nohighlight">\(Z\)</span></a></li>
+<li><a class="reference internal" href="#a-unifying-view-of-dimensionality-reduction">2.10.2.3. A Unifying View of Dimensionality Reduction</a></li>
+<li><a class="reference internal" href="#pca">2.10.2.4. PCA</a></li>
+<li><a class="reference internal" href="#main-idea">2.10.2.5. Main Idea</a></li>
+<li><a class="reference internal" href="#why-the-largest-eigenvalues">2.10.2.6. Why the Largest Eigenvalues?</a></li>
+<li><a class="reference internal" href="#pca-and-the-gram-matrix">2.10.2.7. PCA and the Gram Matrix</a></li>
+<li><a class="reference internal" href="#isomap">2.10.2.8. Isomap</a></li>
+<li><a class="reference internal" href="#step-1-construct-a-neighborhood-graph">2.10.2.9. Step 1: Construct a Neighborhood Graph</a></li>
+<li><a class="reference internal" href="#step-2-compute-geodesic-distances">2.10.2.10. Step 2: Compute Geodesic Distances</a></li>
+<li><a class="reference internal" href="#step-3-apply-classical-mds">2.10.2.11. Step 3: Apply Classical MDS</a></li>
+<li><a class="reference internal" href="#isomap-global-vs-local">2.10.2.12. Isomap: Global vs. Local</a></li>
+<li><a class="reference internal" href="#laplacian-eigenmaps">2.10.2.13. Laplacian Eigenmaps</a></li>
+<li><a class="reference internal" href="#step-1-construct-the-neighborhood-graph">2.10.2.14. Step 1: Construct the Neighborhood Graph</a></li>
+<li><a class="reference internal" href="#step-2-construct-the-weight-matrix">2.10.2.15. Step 2: Construct the Weight Matrix</a></li>
+<li><a class="reference internal" href="#intuition-behind-the-heat-kernel">2.10.2.16. Intuition Behind the Heat Kernel</a></li>
+<li><a class="reference internal" href="#step-3-degree-matrix">2.10.2.17. Step 3: Degree Matrix</a></li>
+<li><a class="reference internal" href="#step-4-graph-laplacian">2.10.2.18. Step 4: Graph Laplacian</a></li>
+<li><a class="reference internal" href="#step-5-solve-the-eigenvalue-problem">2.10.2.19. Step 5: Solve the Eigenvalue Problem</a></li>
+<li><a class="reference internal" href="#why-does-laplacian-eigenmaps-use-small-eigenvalues">2.10.2.20. Why Does Laplacian Eigenmaps Use Small Eigenvalues?</a></li>
+<li><a class="reference internal" href="#pca-vs-laplacian-eigenmaps">2.10.2.21. PCA vs. Laplacian Eigenmaps</a></li>
+<li><a class="reference internal" href="#laplacian-eigenmaps-1">2.10.2.22. PCA</a></li>
+<li><a class="reference internal" href="#id2">2.10.2.23. Laplacian Eigenmaps</a></li>
+<li><a class="reference internal" href="#the-laplacian-eigenmaps-objective">2.10.2.24. The Laplacian Eigenmaps Objective</a></li>
+<li><a class="reference internal" href="#t-sne">2.10.2.25. t-SNE</a></li>
+<li><a class="reference internal" href="#high-dimensional-similarities-in-t-sne">2.10.2.26. High-Dimensional Similarities in t-SNE</a></li>
+<li><a class="reference internal" href="#perplexity">2.10.2.27. Perplexity</a></li>
+<li><a class="reference internal" href="#intuition-for-perplexity">2.10.2.28. Intuition for Perplexity</a></li>
+<li><a class="reference internal" href="#symmetric-high-dimensional-probabilities">2.10.2.29. Symmetric High-Dimensional Probabilities</a></li>
+<li><a class="reference internal" href="#low-dimensional-similarities">2.10.2.30. Low-Dimensional Similarities</a></li>
+<li><a class="reference internal" href="#t-sne-objective">2.10.2.31. t-SNE Objective</a></li>
+<li><a class="reference internal" href="#t-sne-optimization">2.10.2.32. t-SNE Optimization</a></li>
+<li><a class="reference internal" href="#the-t-sne-gradient">2.10.2.33. The t-SNE Gradient</a></li>
+<li><a class="reference internal" href="#early-exaggeration">2.10.2.34. Early Exaggeration</a></li>
+<li><a class="reference internal" href="#umap">2.10.2.35. UMAP</a></li>
+<li><a class="reference internal" href="#umap-neighborhood-graph">2.10.2.36. UMAP Neighborhood Graph</a></li>
+<li><a class="reference internal" href="#low-dimensional-umap-similarity">2.10.2.37. Low-Dimensional UMAP Similarity</a></li>
+<li><a class="reference internal" href="#umap-cross-entropy-objective">2.10.2.38. UMAP Cross-Entropy Objective</a></li>
+<li><a class="reference internal" href="#attraction-and-repulsion-in-umap">2.10.2.39. Attraction and Repulsion in UMAP</a></li>
+<li><a class="reference internal" href="#attraction">2.10.2.40. Attraction</a></li>
+<li><a class="reference internal" href="#repulsion">2.10.2.41. Repulsion</a></li>
+<li><a class="reference internal" href="#pca-isomap-laplacian-eigenmaps-t-sne-and-umap">2.10.2.42. PCA, Isomap, Laplacian Eigenmaps, t-SNE, and UMAP</a></li>
+<li><a class="reference internal" href="#the-eigenvalue-perspective">2.10.2.43. The Eigenvalue Perspective</a></li>
+<li><a class="reference internal" href="#isomap-1">2.10.2.44. PCA</a></li>
+<li><a class="reference internal" href="#laplacian-eigenmaps-2">2.10.2.45. Isomap</a></li>
+<li><a class="reference internal" href="#t-sne-1">2.10.2.46. Laplacian Eigenmaps</a></li>
+<li><a class="reference internal" href="#umap-1">2.10.2.47. t-SNE</a></li>
+<li><a class="reference internal" href="#id7">2.10.2.48. UMAP</a></li>
+<li><a class="reference internal" href="#local-vs-global-structure">2.10.2.49. Local vs. Global Structure</a></li>
+<li><a class="reference internal" href="#isomap-strong-global-geometry">2.10.2.50. Isomap: Strong Global Geometry</a></li>
+<li><a class="reference internal" href="#laplacian-eigenmaps-local-structure">2.10.2.51. Laplacian Eigenmaps: Local Structure</a></li>
+<li><a class="reference internal" href="#t-sne-strong-local-neighborhood-preservation">2.10.2.52. t-SNE: Strong Local Neighborhood Preservation</a></li>
+<li><a class="reference internal" href="#umap-local-structure-with-broader-layout-information">2.10.2.53. UMAP: Local Structure with Broader Layout Information</a></li>
+<li><a class="reference internal" href="#a-better-global-vs-local-summary">2.10.2.54. A Better Global-vs-Local Summary</a></li>
+<li><a class="reference internal" href="#why-does-k-nn-create-local-structure">2.10.2.55. Why Does k-NN Create Local Structure?</a></li>
+<li><a class="reference internal" href="#similarity-vs-distance">2.10.2.56. Similarity vs. Distance</a></li>
+<li><a class="reference internal" href="#why-the-exponential-kernel-works">2.10.2.57. Why the Exponential Kernel Works</a></li>
+<li><a class="reference internal" href="#why-different-methods-need-different-similarity-definitions">2.10.2.58. Why Different Methods Need Different Similarity Definitions</a></li>
+<li><a class="reference internal" href="#isomap-2">2.10.2.59. PCA</a></li>
+<li><a class="reference internal" href="#laplacian-eigenmaps-3">2.10.2.60. Isomap</a></li>
+<li><a class="reference internal" href="#t-sne-2">2.10.2.61. Laplacian Eigenmaps</a></li>
+<li><a class="reference internal" href="#umap-2">2.10.2.62. t-SNE</a></li>
+<li><a class="reference internal" href="#id12">2.10.2.63. UMAP</a></li>
+<li><a class="reference internal" href="#one-n-times-n-matrix-different-meanings">2.10.2.64. One <span class="math notranslate nohighlight">\(N\times N\)</span> Matrix, Different Meanings</a></li>
+<li><a class="reference internal" href="#a-unified-view">2.10.2.65. A Unified View</a></li>
+<li><a class="reference internal" href="#isomap-3">2.10.2.66. PCA</a></li>
+<li><a class="reference internal" href="#laplacian-eigenmaps-4">2.10.2.67. Isomap</a></li>
+<li><a class="reference internal" href="#t-sne-3">2.10.2.68. Laplacian Eigenmaps</a></li>
+<li><a class="reference internal" href="#umap-3">2.10.2.69. t-SNE</a></li>
+<li><a class="reference internal" href="#id17">2.10.2.70. UMAP</a></li>
+<li><a class="reference internal" href="#a-useful-mental-model">2.10.2.71. A Useful Mental Model</a></li>
+<li><a class="reference internal" href="#comparison-of-the-five-methods">2.10.2.72. Comparison of the Five Methods</a></li>
+<li><a class="reference internal" href="#important-corrections-to-remember">2.10.2.73. Important Corrections to Remember</a></li>
+<li><a class="reference internal" href="#correction-1-isomap-does-not-simply-use-the-smallest-eigenvalues">2.10.2.74. Correction 1: Isomap does not simply use the smallest eigenvalues</a></li>
+<li><a class="reference internal" href="#correction-2-laplacian-eigenmaps-uses-the-smallest-non-zero-eigenvalues">2.10.2.75. Correction 2: Laplacian Eigenmaps uses the smallest non-zero eigenvalues</a></li>
+<li><a class="reference internal" href="#correction-3-t-sne-minimizes-kl-p-q">2.10.2.76. Correction 3: t-SNE minimizes <span class="math notranslate nohighlight">\(KL(P\|Q)\)</span></a></li>
+<li><a class="reference internal" href="#correction-4-umap-is-not-simply-laplacian-eigenmaps-with-a-different-kernel">2.10.2.77. Correction 4: UMAP is not simply “Laplacian Eigenmaps with a different kernel”</a></li>
+<li><a class="reference internal" href="#correction-5-umap-does-not-guarantee-global-distance-preservation">2.10.2.78. Correction 5: UMAP does not guarantee global distance preservation</a></li>
+<li><a class="reference internal" href="#final-summary">2.10.2.79. Final Summary</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+            </div>
+        </div>
+
+      <div class="clearer"></div>
+    </div><div class="pagenation">
+     <a id="button-prev" href="laplacian.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="P">
+         <i class="pagenation-arrow-L fas fa-arrow-left fa-lg"></i>
+         <div class="pagenation-text">
+            <span class="pagenation-direction">Previous</span>
+            <div>2.10.1. Laplacian</div>
+         </div>
+     </a>
+     <a id="button-next" href="autoencoder.html" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--colored" role="botton" accesskey="N">
+         <i class="pagenation-arrow-R fas fa-arrow-right fa-lg"></i>
+        <div class="pagenation-text">
+            <span class="pagenation-direction">Next</span>
+            <div>2.10.3. PCA vs. Autoencoder</div>
+        </div>
+     </a>
+  </div>
+        
+        </main>
+    </div>
+  </body>
+</html>
